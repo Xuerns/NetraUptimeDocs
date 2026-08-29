@@ -1,2 +1,39 @@
+@import 'lenis/dist/lenis.css';
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+
+@theme {
+	--font-display: 'Fraunces', Georgia, serif;
+	--font-sans: 'Inter', Arial, sans-serif;
+	--font-mono: 'JetBrains Mono', monospace;
+	--color-outline-variant: #3c4a42;
+	--color-outline: #86948a;
+	--spacing-360: 90rem;
+}
+
+html {
+	scroll-behavior: auto;
+}
+
+body {
+	margin: 0;
+	background: #131314;
+	color: #e5e2e3;
+	font-family: var(--font-sans);
+}
+
+button,
+a {
+	-webkit-tap-highlight-color: transparent;
+}
+
+.eyebrow {
+	color: #bbcabf;
+	font-family: var(--font-mono);
+	font-size: 0.6875rem;
+	font-weight: 500;
+	letter-spacing: 0.08em;
+	line-height: 1.4;
+	text-transform: uppercase;
+}
