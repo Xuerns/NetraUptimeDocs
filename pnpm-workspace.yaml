@@ -1,3 +1,7 @@
+packages:
+  - '.'
+
 allowBuilds:
-  workerd: true
+  '@tailwindcss/oxide': true
   esbuild: true
+  workerd: true
