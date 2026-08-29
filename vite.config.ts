@@ -12,7 +12,7 @@ export default defineConfig({
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
 			adapter: adapter({
-				fallback: '404.html'
+				fallback: 'index.html'
 			})
 		})
 	]
