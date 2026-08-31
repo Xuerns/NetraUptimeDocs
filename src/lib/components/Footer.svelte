@@ -18,7 +18,8 @@
 	const supportLinks = [
 		{ label: 'Documentation', href: '#quick-start' },
 		{ label: 'Quick Start Guide', href: '#quick-start' },
-		{ label: 'GitHub Repository', href: 'https://github.com', external: true }
+		{ label: 'GitHub Repository', href: 'https://github.com/Xuerns/PulseWatch', external: true },
+		{ label: 'API Reference', href: '/docs/api-reference' }
 	];
 </script>
 
@@ -38,7 +39,7 @@
 
 		<!-- Product Links -->
 		<div>
-			<h4 class="mb-4 text-xs font-bold uppercase tracking-wider text-[#4edea3]">Product</h4>
+			<h4 class="mb-4 text-xs font-bold tracking-wider text-[#4edea3] uppercase">Product</h4>
 			<div class="flex flex-col gap-2.5 text-sm">
 				{#each productLinks as item (item.label)}
 					<a class="text-[#bbcabf] transition-colors hover:text-white" href={item.href}
@@ -50,7 +51,7 @@
 
 		<!-- Company / Project Links -->
 		<div>
-			<h4 class="mb-4 text-xs font-bold uppercase tracking-wider text-[#4edea3]">Project</h4>
+			<h4 class="mb-4 text-xs font-bold tracking-wider text-[#4edea3] uppercase">Project</h4>
 			<div class="flex flex-col gap-2.5 text-sm">
 				{#each companyLinks as item (item.label)}
 					<a class="text-[#bbcabf] transition-colors hover:text-white" href={item.href}
@@ -62,7 +63,7 @@
 
 		<!-- Support / Docs Links -->
 		<div>
-			<h4 class="mb-4 text-xs font-bold uppercase tracking-wider text-[#4edea3]">Resources</h4>
+			<h4 class="mb-4 text-xs font-bold tracking-wider text-[#4edea3] uppercase">Resources</h4>
 			<div class="flex flex-col gap-2.5 text-sm">
 				{#each supportLinks as item (item.label)}
 					<a

@@ -142,7 +142,7 @@ Color is treated as **signal, not atmosphere**. The obsidian base and quiet neut
 
 ## Colors
 
-The palette is unchanged from the platform's core tokens — only how it's *applied* changes with this style.
+The palette is unchanged from the platform's core tokens — only how it's _applied_ changes with this style.
 
 - **Primary (Uptime Green):** `#10B981` / bright variant `#4EDEA3` — used for "Healthy" status, primary buttons, the italic accent word in headlines, and index numerals that need emphasis.
 - **Secondary (Monitoring Blue):** `#3B82F6`-family (`secondary` `#ADC6FF` on dark) — data links, focus rings, configuration affordances.
@@ -178,7 +178,7 @@ Depth is communicated through **borders and flat tonal steps**, not shadows or b
 3.  **Level 2 (Modal/Popover/Emphasized):** `surface-container-high` fill, 1px solid `outline` border (higher contrast than Level 1). Optional 1px inset highlight line at the top edge only, in `on-surface` at 6% opacity — a printed-edge cue, not a glow.
 4.  **Inverse (Statement block):** `surface-container-lowest` / near-black fill, `on-surface` text, primary-colored accents only — used for hero proof panels and closing CTA bands.
 
-Hover/focus states shift the *border* (outline-variant → outline, or → primary/secondary) rather than adding elevation or glow.
+Hover/focus states shift the _border_ (outline-variant → outline, or → primary/secondary) rather than adding elevation or glow.
 
 ## Shapes
 
@@ -192,21 +192,27 @@ Corners tighten up considerably to support the spec-sheet feel:
 ## Components
 
 ### Buttons
+
 Primary CTA: solid fill (`primary` / near-black on light contexts, or `on-surface`-on-`primary` on dark), 4px radius by default, or a full pill when used as a standalone hero CTA. No glow on hover — background lightens one step and the border (if any) sharpens. Secondary buttons are outline-only: 1px `outline-variant` border, transparent fill, border strengthens to `outline` on hover. No ghost blur states.
 
 ### Status Indicators
+
 Unchanged from the base system: an 8px dot inside a pill chip, mono label. The dot still pulses gently for "Healthy"/live states — this is the one element allowed a soft animated glow, since it represents a genuinely live signal, not decorative atmosphere.
 
 ### Panels (formerly "Glass Cards")
+
 Replace glass cards with **bordered panels**: flat `surface-container` fill, 1px `outline-variant` border, no blur, no gradient sheen. A title row is separated from the body by a single 1px `outline-variant` rule. Where cards sit in a grid, prefer adjacent shared borders over per-card gaps so the grid reads as one drafted table.
 
 Each panel may carry a small top-right or top-left **mono tag** (`T-01`, `01/05`, a version string) — this is the signature device replacing the old "beveled glass" stroke.
 
 ### Inputs
+
 Unchanged in mechanics — recessed `rgba(0,0,0,0.2)` background, 1px border, focus ring in secondary blue — but radius drops to 4px to match the tighter shape language, and the focus glow shrinks to a crisp 2px ring rather than a soft 4px halo.
 
 ### Uptime Graphs
+
 Unchanged: stepped interpolation, subtle vertical gradient fill in primary green below the line. Sits inside a bordered panel with a mono meta row (`LAST 24H`, endpoint, interval) above it, echoing the spec-sheet framing used everywhere else.
 
 ### Eyebrows & Meta Rows
+
 New component class formalizing the mono-label pattern seen throughout: a small uppercase JetBrains Mono row, segments separated by `·`, optionally prefixed with a colored dot or index number. Used above headlines, inside card headers, and in footers/keyboard-shortcut lists.

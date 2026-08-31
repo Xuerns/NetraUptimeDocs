@@ -48,7 +48,7 @@
 </script>
 
 <svelte:head>
-	<title>PulseWatch — Know before your users do</title>
+	<title>PulseWatch | Know before your users do</title>
 	<meta
 		name="description"
 		content="Open-source, self-hosted uptime monitoring for websites, APIs, and infrastructure."
