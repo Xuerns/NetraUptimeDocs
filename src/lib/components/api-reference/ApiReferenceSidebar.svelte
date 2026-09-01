@@ -24,7 +24,8 @@
 		GET: 'text-[#adc6ff]',
 		POST: 'text-[#4edea3]',
 		PUT: 'text-[#ffd699]',
-		DELETE: 'text-[#ff99ad]'
+		DELETE: 'text-[#ff99ad]',
+		PATCH: 'text-[#adc6ff]'
 	};
 </script>
 

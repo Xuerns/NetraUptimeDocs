@@ -16,7 +16,7 @@
 	];
 
 	const supportLinks = [
-		{ label: 'Documentation', href: '#quick-start' },
+		{ label: 'Documentation', href: '/docs' },
 		{ label: 'Quick Start Guide', href: '#quick-start' },
 		{ label: 'GitHub Repository', href: 'https://github.com/Xuerns/PulseWatch', external: true },
 		{ label: 'API Reference', href: '/docs/api-reference' }

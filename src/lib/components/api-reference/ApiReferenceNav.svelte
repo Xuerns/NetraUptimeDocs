@@ -1,12 +1,19 @@
 <script lang="ts">
-	import { ArrowUpRight } from 'lucide-svelte';
+	import { ArrowUpRight, ArrowLeft } from 'lucide-svelte';
 	import logo from '$lib/assets/Logo.svg';
 </script>
 
 <nav
-	class="sticky top-0 z-50 flex h-14 w-full items-center justify-between border-b border-[#3c4a42] bg-[#131314] px-8 font-sans text-sm text-[#e5e2e3]"
+	class="sticky top-0 z-50 flex h-14 w-full items-center justify-between border-b border-[#3c4a42] bg-[#131314] px-3 font-sans text-sm text-[#e5e2e3]"
 >
 	<div class="flex items-center gap-4">
+		<a
+			href="/"
+			class="flex size-8 items-center justify-center text-[#bbcabf] transition-all hover:text-white"
+			aria-label="Back to home"
+		>
+			<ArrowLeft size={16} />
+		</a>
 		<a
 			href="/"
 			class="flex items-center gap-2.5 text-[#e5e2e3] transition-opacity hover:opacity-90"
@@ -25,10 +32,10 @@
 			href="https://github.com/Xuerns/PulseWatch"
 			target="_blank"
 			rel="noopener noreferrer"
-			class="flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-[#bbcabf] transition-all hover:border-white/20 hover:bg-white/10 hover:text-white"
+			class="flex size-9 items-center justify-center  text-[#bbcabf] transition-all hover:text-white"
 			aria-label="GitHub Repository"
 		>
-			<svg class="size-4.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+			<svg class="size-6.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
 				<path
 					fill-rule="evenodd"
 					clip-rule="evenodd"

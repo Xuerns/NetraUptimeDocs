@@ -7,6 +7,8 @@
 	import ApiReferenceSidebar from '$lib/components/api-reference/ApiReferenceSidebar.svelte';
 	import ApiReferenceMain from '$lib/components/api-reference/ApiReferenceMain.svelte';
 	import ApiReferenceCodePane from '$lib/components/api-reference/ApiReferenceCodePane.svelte';
+	import ApiReferenceFooter from '$lib/components/api-reference/ApiReferenceFooter.svelte';
+	import DocsSiteFooter from '$lib/components/docs/DocsSiteFooter.svelte';
 
 	let activeEndpointId = $state('auth-register');
 
@@ -52,7 +54,7 @@
 </script>
 
 <svelte:head>
-	<title>PulseWatch - API Reference</title>
+	<title>PulseWatch | API Reference</title>
 	<meta
 		name="description"
 		content="REST API reference for PulseWatch uptime monitoring platform. Integrate monitors, incidents, and status pages programmatically."
@@ -71,6 +73,9 @@
 	<div class="flex min-w-0 flex-grow flex-col xl:flex-row">
 		<div data-reveal class="min-w-0 flex-1">
 			<ApiReferenceMain endpoint={activeEndpoint} />
+			<div data-reveal class="px-6 md:px-8 xl:px-10">
+				<ApiReferenceFooter {activeEndpointId} onSelectEndpoint={handleSelectEndpoint} />
+			</div>
 		</div>
 		<div data-reveal class="min-w-0 flex-shrink-0 xl:w-[440px] 2xl:w-[520px]">
 			<ApiReferenceCodePane codeExample={activeEndpoint.codeExample} />

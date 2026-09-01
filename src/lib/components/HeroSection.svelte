@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ArrowRight, Code2, Server, Terminal } from 'lucide-svelte';
+	import FloatingLines from './FloatingLines.svelte';
 
 	const proofPoints = [
 		{
@@ -20,8 +21,20 @@
 	];
 </script>
 
-<section id="top" class="border-b border-outline-variant" aria-labelledby="hero-heading">
-	<div class="mx-auto grid max-w-360 gap-12 px-6 py-20 lg:grid-cols-12 lg:px-10 lg:py-28">
+<section id="top" class="relative border-b border-outline-variant" aria-labelledby="hero-heading">
+	<div class="pointer-events-none absolute inset-0 overflow-hidden">
+		<FloatingLines
+			enabledWaves={['top', 'bottom']}
+			lineCount={10}
+			lineDistance={100}
+			bendRadius={5}
+			bendStrength={1}
+			interactive={false}
+			parallax={true}
+			linesGradient={['#4edea3', '#c4c3c3', '#10B981']}
+		/>
+	</div>
+	<div class="relative mx-auto grid min-h-[calc(100vh-3rem)] max-w-360 content-center gap-12 px-6 py-20 lg:grid-cols-12 lg:px-10 lg:py-24">
 		<div class="lg:col-span-8">
 			<p data-reveal class="eyebrow mb-6">
 				<span class="mr-2 text-[#4edea3]">01</span> Uptime, under your control
