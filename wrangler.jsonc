@@ -3,6 +3,7 @@
 	"name": "pulsewatch-landingpage",
 	"compatibility_date": "2026-08-28",
 	"assets": {
-		"directory": "./build"
+		"directory": "./build",
+		"not_found_handling": "single-page-application"
 	}
 }
