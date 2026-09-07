@@ -37,7 +37,7 @@ export const docGroups: DocGroup[] = [
 	},
 	{
 		id: 'configuration',
-		label: 'Configuration · Setup',
+		label: 'Configuration',
 		items: [
 			{ id: 'docker-compose', label: 'Docker Compose' },
 			{ id: 'environment-variables', label: 'Environment Variables' },
@@ -46,12 +46,31 @@ export const docGroups: DocGroup[] = [
 	},
 	{
 		id: 'monitors',
-		label: 'Monitors · Alerts',
+		label: 'Monitors',
 		items: [
 			{ id: 'http-https', label: 'HTTP / HTTPS' },
 			{ id: 'tcp-ports', label: 'TCP Ports' },
 			{ id: 'ping', label: 'Ping' },
-			{ id: 'notification-channels', label: 'Notification Channels' }
+			{ id: 'ssl', label: 'SSL Certificate' },
+			{ id: 'domain-expire', label: 'Domain Expiry Check' }
+		]
+	},
+	{
+		id: 'notification',
+		label: 'Notification',
+		items: [
+			{ id: 'email', label: 'Email' },
+			{ id: 'slack', label: 'Slack' },
+			{ id: 'discord', label: 'Discord' },
+			{ id: 'webhook', label: 'Webhook' }
+		]
+	},
+	{
+		id: 'APIkeys',
+		label: 'API Keys',
+		items: [
+			{ id: 'permissions', label: 'Permissions' },
+			{ id: 'cicd', label: 'CI/CD' }
 		]
 	}
 ];
