@@ -15,7 +15,17 @@
 	let expandedGroups = $state<Record<string, boolean>>({
 		'core-concepts': true,
 		configuration: false,
-		monitors: false
+		monitors: false,
+		notification: true,
+		APIkeys: false
+	});
+
+	$effect(() => {
+		for (const group of groups) {
+			if (group.items.some((item) => item.id === activeItemId)) {
+				expandedGroups[group.id] = true;
+			}
+		}
 	});
 
 	function toggleGroup(groupId: string) {

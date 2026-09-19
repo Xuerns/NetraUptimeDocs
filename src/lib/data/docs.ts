@@ -209,10 +209,59 @@ export const sidebarSections = [
 			'ICMP Ping monitors verify host availability by sending echo requests. They measure latency and packet loss to detect network-level issues.'
 	},
 	{
-		id: 'notification-channels',
-		title: 'Notification Channels',
-		subtitle: 'Monitors · Alerts · Notifications',
+		id: 'ssl',
+		title: 'SSL Certificate',
+		subtitle: 'Monitors · Alerts · SSL',
 		description:
-			'Configure notification channels to receive alerts when incidents are detected. Supported channels include Slack, Discord, Email, and Webhooks.'
+			'SSL monitors check the validity and expiration of your SSL/TLS certificates and alert you before they expire.'
+	},
+	{
+		id: 'domain-expire',
+		title: 'Domain Expiry Check',
+		subtitle: 'Monitors · Alerts · Domain',
+		description:
+			'Domain expiry monitors track WHOIS expiration dates and notify you well in advance to prevent accidental domain loss.'
+	},
+	{
+		id: 'email',
+		title: 'Email Notification',
+		subtitle: 'Notification · Email Alerts',
+		description:
+			'Receive downtime notifications and performance summaries directly in your email inbox.'
+	},
+	{
+		id: 'slack',
+		title: 'Slack Notification',
+		subtitle: 'Notification · Integrations · Slack Webhook',
+		description:
+			'Deliver real-time incident and resolution alerts directly to your team Slack channels.'
+	},
+	{
+		id: 'discord',
+		title: 'Discord Notification',
+		subtitle: 'Notification · Integrations · Discord Webhook',
+		description:
+			'Connect PulseWatch uptime monitoring alerts directly to your Discord server using webhooks for instant incident notifications.'
+	},
+	{
+		id: 'webhook',
+		title: 'Custom Webhook',
+		subtitle: 'Notification · Custom Integrations · Webhook',
+		description:
+			'Integrate PulseWatch alerts with your custom REST API endpoints, internal tools, or bots.'
+	},
+	{
+		id: 'permissions',
+		title: 'Permissions',
+		subtitle: 'API Keys · Security · Permissions',
+		description:
+			'Configure granular permissions for API keys to limit access to specific resources and actions.'
+	},
+	{
+		id: 'cicd',
+		title: 'CI/CD Integration',
+		subtitle: 'API Keys · Automation · CI/CD',
+		description:
+			'Use API keys in your CI/CD pipelines to automate monitor creation, status checks, and deployment verification.'
 	}
 ];
