@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Terminal, Settings, HeartPulse, Bell } from 'lucide-svelte';
+	import { Terminal, Settings, HeartPulse, Bell, Code } from 'lucide-svelte';
 	import type { QuickLink } from '$lib/data/docs';
 
 	let { links }: { links: QuickLink[] } = $props();
@@ -8,7 +8,8 @@
 		terminal: Terminal,
 		settings: Settings,
 		'monitor-heart': HeartPulse,
-		bell: Bell
+		bell: Bell,
+		code: Code
 	};
 </script>
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ChevronDown, ChevronUp } from 'lucide-svelte';
+	import { ChevronDown, ChevronUp, ArrowUpRight, Code } from 'lucide-svelte';
 	import type { DocGroup } from '$lib/data/docs';
 
 	let {

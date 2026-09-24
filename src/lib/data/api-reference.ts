@@ -1284,6 +1284,311 @@ export const apiGroups: ApiGroup[] = [
 		]
 	},
 	{
+		id: 'alertrules',
+		label: 'Alert Rules',
+		endpoints: [
+			{
+				id: 'alertrule-list-monitor',
+				method: 'GET',
+				path: '/organization/:orgId/monitors/:monitorId/alert-rules',
+				title: 'List alert rules for monitor',
+				description: 'Retrieve all alert rules configured for a specific monitor.',
+				auth: 'Bearer token + TenantMiddleware',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/monitors/monitor_uuid/alert-rules \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "data": [
+    {
+      "id": "7b83d1c4-6e21-487a-b519-7e3e0c0d1234",
+      "organization_id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+      "monitor_id": "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+      "name": "High Latency Alert",
+      "metric": "response_time_ms",
+      "operator": ">=",
+      "target_value": "1500",
+      "consecutive": 3,
+      "severity": "warning",
+      "is_active": true,
+      "created_at": "2026-09-22T08:00:00Z",
+      "updated_at": "2026-09-22T08:00:00Z"
+    }
+  ]
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'alertrule-create',
+				method: 'POST',
+				path: '/organization/:orgId/monitors/:monitorId/alert-rules',
+				title: 'Create alert rule',
+				description:
+					'Create a new alert rule for a monitor. Breaches trigger warning state (degraded) or critical incidents (monitor down).',
+				auth: 'Bearer token + TenantMiddleware + RequireRole("owner", "admin")',
+				requestBody: [
+					{
+						name: 'name',
+						type: 'string',
+						description: 'Required, min 2, max 100 chars, no HTML.',
+						required: true
+					},
+					{
+						name: 'metric',
+						type: 'string',
+						description: "Required, oneof: 'status_code' | 'response_time_ms' | 'timeout'.",
+						required: true
+					},
+					{
+						name: 'operator',
+						type: 'string',
+						description:
+							"Required, oneof: '==' | '!=' | '>' | '>=' | '<' | '<=' | 'in' | 'not_in'.",
+						required: true
+					},
+					{
+						name: 'target_value',
+						type: 'string',
+						description: "Required, min 1, max 100 chars, e.g. '200', '500', '1000'.",
+						required: true
+					},
+					{
+						name: 'consecutive',
+						type: 'number',
+						description: 'Optional. Default: 3. Consecutive breaches required before triggering.',
+						required: false
+					},
+					{
+						name: 'severity',
+						type: 'string',
+						description: "Required, oneof: 'critical' | 'warning'.",
+						required: true
+					},
+					{
+						name: 'is_active',
+						type: 'boolean',
+						description: 'Optional. Default: true.',
+						required: false
+					}
+				],
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/monitors/monitor_uuid/alert-rules \\
+  -H "Content-Type: application/json" \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
+  -d '{
+    "name": "High Response Time Rule",
+    "metric": "response_time_ms",
+    "operator": ">=",
+    "target_value": "1500",
+    "consecutive": 3,
+    "severity": "warning",
+    "is_active": true
+  }'`,
+					responses: [
+						{
+							status: '201 Created',
+							code: `{
+  "status": "success",
+  "data": {
+    "id": "7b83d1c4-6e21-487a-b519-7e3e0c0d1234",
+    "organization_id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+    "monitor_id": "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+    "name": "High Response Time Rule",
+    "metric": "response_time_ms",
+    "operator": ">=",
+    "target_value": "1500",
+    "consecutive": 3,
+    "severity": "warning",
+    "is_active": true,
+    "created_at": "2026-09-22T08:00:00Z",
+    "updated_at": "2026-09-22T08:00:00Z"
+  }
+}`
+						},
+						{
+							status: '400 Bad Request',
+							code: `{
+  "error": "Validation failed: metric or operator invalid"
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'alertrule-get',
+				method: 'GET',
+				path: '/organization/:orgId/alert-rules/:ruleId',
+				title: 'Get alert rule detail',
+				description: 'Retrieve details of an alert rule by its unique ID.',
+				auth: 'Bearer token + TenantMiddleware',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/alert-rules/rule_uuid \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "data": {
+    "id": "7b83d1c4-6e21-487a-b519-7e3e0c0d1234",
+    "organization_id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+    "monitor_id": "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+    "name": "High Response Time Rule",
+    "metric": "response_time_ms",
+    "operator": ">=",
+    "target_value": "1500",
+    "consecutive": 3,
+    "severity": "warning",
+    "is_active": true,
+    "created_at": "2026-09-22T08:00:00Z",
+    "updated_at": "2026-09-22T08:00:00Z"
+  }
+}`
+						},
+						{
+							status: '404 Not Found',
+							code: `{
+  "error": "Alert rule not found"
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'alertrule-update',
+				method: 'PUT',
+				path: '/organization/:orgId/alert-rules/:ruleId',
+				title: 'Update alert rule',
+				description: 'Update configuration parameters of an existing alert rule.',
+				auth: 'Bearer token + TenantMiddleware + RequireRole("owner", "admin")',
+				requestBody: [
+					{
+						name: 'name',
+						type: 'string',
+						description: 'Optional, min 2, max 100 chars, no HTML.',
+						required: false
+					},
+					{
+						name: 'metric',
+						type: 'string',
+						description: "Optional, oneof: 'status_code' | 'response_time_ms' | 'timeout'.",
+						required: false
+					},
+					{
+						name: 'operator',
+						type: 'string',
+						description:
+							"Optional, oneof: '==' | '!=' | '>' | '>=' | '<' | '<=' | 'in' | 'not_in'.",
+						required: false
+					},
+					{
+						name: 'target_value',
+						type: 'string',
+						description: 'Optional, min 1, max 100 chars.',
+						required: false
+					},
+					{
+						name: 'consecutive',
+						type: 'number',
+						description: 'Optional.',
+						required: false
+					},
+					{
+						name: 'severity',
+						type: 'string',
+						description: "Optional, oneof: 'critical' | 'warning'.",
+						required: false
+					},
+					{
+						name: 'is_active',
+						type: 'boolean',
+						description: 'Optional.',
+						required: false
+					}
+				],
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/alert-rules/rule_uuid \\
+  -H "Content-Type: application/json" \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
+  -d '{
+    "consecutive": 2,
+    "severity": "critical"
+  }'`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "data": {
+    "id": "7b83d1c4-6e21-487a-b519-7e3e0c0d1234",
+    "organization_id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+    "monitor_id": "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+    "name": "High Response Time Rule",
+    "metric": "response_time_ms",
+    "operator": ">=",
+    "target_value": "1500",
+    "consecutive": 2,
+    "severity": "critical",
+    "is_active": true,
+    "created_at": "2026-09-22T08:00:00Z",
+    "updated_at": "2026-09-22T08:15:00Z"
+  }
+}`
+						},
+						{
+							status: '400 Bad Request',
+							code: `{
+  "error": "string"
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'alertrule-delete',
+				method: 'DELETE',
+				path: '/organization/:orgId/alert-rules/:ruleId',
+				title: 'Delete alert rule',
+				description: 'Permanently remove an alert rule.',
+				auth: 'Bearer token + TenantMiddleware + RequireRole("owner", "admin")',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/alert-rules/rule_uuid \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "message": "Alert rule deleted successfully"
+}`
+						},
+						{
+							status: '404 Not Found',
+							code: `{
+  "error": "Alert rule not found"
+}`
+						}
+					]
+				}
+			}
+		]
+	},
+	{
 		id: 'incidents',
 		label: 'Incidents',
 		endpoints: [
@@ -1476,6 +1781,30 @@ export const apiGroups: ApiGroup[] = [
 						required: true
 					},
 					{
+						name: 'logo_url',
+						type: 'string',
+						description: 'Optional. URL for brand logo image.',
+						required: false
+					},
+					{
+						name: 'favicon_url',
+						type: 'string',
+						description: 'Optional. URL for status page favicon.',
+						required: false
+					},
+					{
+						name: 'theme_color',
+						type: 'string',
+						description: "Optional. Hex color code, e.g. '#2563eb'.",
+						required: false
+					},
+					{
+						name: 'custom_css',
+						type: 'string',
+						description: 'Optional. Custom CSS stylesheet override.',
+						required: false
+					},
+					{
 						name: 'monitor_id',
 						type: 'array<string (uuid)>',
 						description: 'Required. Min 1, max 40 items.',
@@ -1655,6 +1984,30 @@ export const apiGroups: ApiGroup[] = [
 						required: false
 					},
 					{
+						name: 'logo_url',
+						type: 'string',
+						description: 'Optional. URL for brand logo image.',
+						required: false
+					},
+					{
+						name: 'favicon_url',
+						type: 'string',
+						description: 'Optional. URL for status page favicon.',
+						required: false
+					},
+					{
+						name: 'theme_color',
+						type: 'string',
+						description: 'Optional. Hex color code.',
+						required: false
+					},
+					{
+						name: 'custom_css',
+						type: 'string',
+						description: 'Optional. Custom CSS stylesheet override.',
+						required: false
+					},
+					{
 						name: 'monitor_id',
 						type: 'array<string (uuid)>',
 						description: 'Optional.',
@@ -1668,7 +2021,8 @@ export const apiGroups: ApiGroup[] = [
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
-    "title": "Updated Status Page"
+    "title": "Updated Status Page",
+    "theme_color": "#10b981"
   }'`,
 					responses: [
 						{
@@ -1698,7 +2052,426 @@ export const apiGroups: ApiGroup[] = [
 							status: '200 OK',
 							code: `{
   "status": "success",
-  "data": [ ... ]
+  "data": [
+    {
+      "id": "uuid",
+      "organization_id": "uuid",
+      "organization": { "id": "uuid", "name": "Acme Corp", "slug": "acme-corp" },
+      "subdomain": "status",
+      "title": "Production Status",
+      "is_public": true
+    }
+  ]
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'statuspage-group-create',
+				method: 'POST',
+				path: '/organization/:orgId/statuspage/:statusPageId/groups',
+				title: 'Create component group',
+				description:
+					'Component groups allow grouping multiple monitors together on the public status page with expandable or collapsible headers.',
+				auth: 'Bearer token + TenantMiddleware',
+				requestBody: [
+					{
+						name: 'name',
+						type: 'string',
+						description: 'Required, min 1, max 100 chars.',
+						required: true
+					},
+					{
+						name: 'display_order',
+						type: 'number',
+						description: 'Optional. Default: 0.',
+						required: false
+					},
+					{
+						name: 'is_expanded',
+						type: 'boolean',
+						description:
+							'Optional. Default: true. Whether group is expanded by default on status page.',
+						required: false
+					}
+				],
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/groups \\
+  -H "Content-Type: application/json" \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
+  -d '{
+    "name": "Core Services",
+    "display_order": 0,
+    "is_expanded": true
+  }'`,
+					responses: [
+						{
+							status: '201 Created',
+							code: `{
+  "status": "success",
+  "data": {
+    "id": "uuid",
+    "status_page_id": "uuid",
+    "name": "Core Services",
+    "display_order": 0,
+    "is_expanded": true,
+    "created_at": "2026-09-22T08:00:00Z",
+    "updated_at": "2026-09-22T08:00:00Z"
+  }
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'statuspage-group-list',
+				method: 'GET',
+				path: '/organization/:orgId/statuspage/:statusPageId/groups',
+				title: 'List component groups',
+				description: 'Retrieve all component groups configured for a status page.',
+				auth: 'Bearer token + TenantMiddleware',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/groups \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "data": [
+    {
+      "id": "uuid",
+      "status_page_id": "uuid",
+      "name": "Core Services",
+      "display_order": 0,
+      "is_expanded": true,
+      "created_at": "2026-09-22T08:00:00Z",
+      "updated_at": "2026-09-22T08:00:00Z"
+    }
+  ]
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'statuspage-group-update',
+				method: 'PUT',
+				path: '/organization/:orgId/statuspage/:statusPageId/groups/:groupId',
+				title: 'Update component group',
+				description:
+					'Update the name, display order, or default expanded state of a component group.',
+				auth: 'Bearer token + TenantMiddleware',
+				requestBody: [
+					{
+						name: 'name',
+						type: 'string',
+						description: 'Optional, min 1, max 100 chars.',
+						required: false
+					},
+					{
+						name: 'display_order',
+						type: 'number',
+						description: 'Optional.',
+						required: false
+					},
+					{
+						name: 'is_expanded',
+						type: 'boolean',
+						description: 'Optional.',
+						required: false
+					}
+				],
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/groups/group_uuid \\
+  -H "Content-Type: application/json" \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
+  -d '{
+    "name": "Platform Infrastructure",
+    "display_order": 1,
+    "is_expanded": true
+  }'`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "data": {
+    "id": "group_uuid",
+    "status_page_id": "statuspage_uuid",
+    "name": "Platform Infrastructure",
+    "display_order": 1,
+    "is_expanded": true,
+    "created_at": "2026-09-22T08:00:00Z",
+    "updated_at": "2026-09-22T08:30:00Z"
+  }
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'statuspage-group-delete',
+				method: 'DELETE',
+				path: '/organization/:orgId/statuspage/:statusPageId/groups/:groupId',
+				title: 'Delete component group',
+				description:
+					'Delete a component group. Any monitors previously assigned to this group will become ungrouped.',
+				auth: 'Bearer token + TenantMiddleware',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/groups/group_uuid \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "message": "Component group deleted successfully"
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'statuspage-monitor-group-assign',
+				method: 'PUT',
+				path: '/organization/:orgId/statuspage/:statusPageId/monitors/:monitorId/group',
+				title: 'Assign monitor to component group',
+				description:
+					'Assigns or unassigns a monitor to/from a component group. Pass null or omit group_id to remove the monitor from its current group.',
+				auth: 'Bearer token + TenantMiddleware',
+				requestBody: [
+					{
+						name: 'group_id',
+						type: 'string|null (uuid)',
+						description: 'Optional. Component group UUID, or null to unassign.',
+						required: false
+					}
+				],
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/monitors/monitor_uuid/group \\
+  -H "Content-Type: application/json" \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
+  -d '{
+    "group_id": "group_uuid"
+  }'`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "message": "Monitor assigned to group successfully"
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'statuspage-maintenance-create',
+				method: 'POST',
+				path: '/organization/:orgId/statuspage/:statusPageId/maintenance',
+				title: 'Create scheduled maintenance',
+				description:
+					'Schedule upcoming system maintenance to display advance notices on the status page.',
+				auth: 'Bearer token + TenantMiddleware',
+				requestBody: [
+					{
+						name: 'title',
+						type: 'string',
+						description: 'Required, min 3, max 120 chars.',
+						required: true
+					},
+					{
+						name: 'description',
+						type: 'string',
+						description: 'Optional. Detailed maintenance description.',
+						required: false
+					},
+					{
+						name: 'scheduled_start',
+						type: 'string (RFC3339)',
+						description: "Required, RFC3339 timestamp, e.g. '2026-04-01T02:00:00Z'.",
+						required: true
+					},
+					{
+						name: 'scheduled_end',
+						type: 'string (RFC3339)',
+						description: "Required, RFC3339 timestamp, e.g. '2026-04-01T05:00:00Z'.",
+						required: true
+					},
+					{
+						name: 'monitor_ids',
+						type: 'array<string (uuid)>',
+						description: 'Optional. List of monitor UUIDs impacted by this maintenance.',
+						required: false
+					}
+				],
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/maintenance \\
+  -H "Content-Type: application/json" \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
+  -d '{
+    "title": "Scheduled Database Migration",
+    "description": "Routine database upgrade on read replicas.",
+    "scheduled_start": "2026-10-01T02:00:00Z",
+    "scheduled_end": "2026-10-01T04:00:00Z",
+    "monitor_ids": ["monitor_uuid_1"]
+  }'`,
+					responses: [
+						{
+							status: '201 Created',
+							code: `{
+  "status": "success",
+  "data": {
+    "id": "maintenance_uuid",
+    "status_page_id": "statuspage_uuid",
+    "title": "Scheduled Database Migration",
+    "description": "Routine database upgrade on read replicas.",
+    "status": "scheduled",
+    "scheduled_start": "2026-10-01T02:00:00Z",
+    "scheduled_end": "2026-10-01T04:00:00Z",
+    "created_at": "2026-09-22T08:00:00Z",
+    "affected_monitor_ids": ["monitor_uuid_1"]
+  }
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'statuspage-maintenance-list',
+				method: 'GET',
+				path: '/organization/:orgId/statuspage/:statusPageId/maintenance',
+				title: 'List scheduled maintenance',
+				description: 'Retrieve all maintenance windows configured for a status page.',
+				auth: 'Bearer token + TenantMiddleware',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/maintenance \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "data": [
+    {
+      "id": "maintenance_uuid",
+      "status_page_id": "statuspage_uuid",
+      "title": "Scheduled Database Migration",
+      "status": "scheduled",
+      "scheduled_start": "2026-10-01T02:00:00Z",
+      "scheduled_end": "2026-10-01T04:00:00Z",
+      "created_at": "2026-09-22T08:00:00Z"
+    }
+  ]
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'statuspage-maintenance-update',
+				method: 'PUT',
+				path: '/organization/:orgId/statuspage/:statusPageId/maintenance/:maintenanceId',
+				title: 'Update scheduled maintenance',
+				description:
+					"Update maintenance window properties or status ('scheduled' | 'in_progress' | 'completed').",
+				auth: 'Bearer token + TenantMiddleware',
+				requestBody: [
+					{
+						name: 'title',
+						type: 'string',
+						description: 'Optional, min 3, max 120 chars.',
+						required: false
+					},
+					{
+						name: 'description',
+						type: 'string',
+						description: 'Optional.',
+						required: false
+					},
+					{
+						name: 'status',
+						type: 'string',
+						description: "Optional, oneof: 'scheduled' | 'in_progress' | 'completed'.",
+						required: false
+					},
+					{
+						name: 'scheduled_start',
+						type: 'string (RFC3339)',
+						description: 'Optional.',
+						required: false
+					},
+					{
+						name: 'scheduled_end',
+						type: 'string (RFC3339)',
+						description: 'Optional.',
+						required: false
+					},
+					{
+						name: 'monitor_ids',
+						type: 'array<string (uuid)>',
+						description: 'Optional.',
+						required: false
+					}
+				],
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/maintenance/maintenance_uuid \\
+  -H "Content-Type: application/json" \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
+  -d '{
+    "status": "in_progress"
+  }'`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "data": {
+    "id": "maintenance_uuid",
+    "status": "in_progress",
+    "actual_start": "2026-10-01T02:00:00Z"
+  }
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'statuspage-maintenance-delete',
+				method: 'DELETE',
+				path: '/organization/:orgId/statuspage/:statusPageId/maintenance/:maintenanceId',
+				title: 'Delete scheduled maintenance',
+				description: 'Permanently remove a scheduled maintenance window.',
+				auth: 'Bearer token + TenantMiddleware',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/maintenance/maintenance_uuid \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "message": "Maintenance deleted successfully"
 }`
 						}
 					]
@@ -1708,8 +2481,9 @@ export const apiGroups: ApiGroup[] = [
 				id: 'statuspage-public',
 				method: 'GET',
 				path: '/public/statuspage/:subdomain',
-				title: 'Public status page',
-				description: 'Access a status page publicly without login. No authentication required.',
+				title: 'Public status page detail',
+				description:
+					'Public endpoint returning complete real-time status page structure, active incidents, component groups, scheduled maintenance, and 90-day history. No authentication required.',
 				auth: 'None',
 				codeExample: {
 					language: 'bash',
@@ -1721,18 +2495,47 @@ export const apiGroups: ApiGroup[] = [
 							code: `{
   "status": "success",
   "data": {
-    "title": "Production Status",
-    "description": "Our production services",
-    "subdomain": "status",
+    "title": "Acme Status",
+    "description": "Real-time system status and incident history",
+    "subdomain": "acme",
+    "overall_status": "operational",
+    "logo_url": "https://example.com/logo.png",
+    "favicon_url": "https://example.com/favicon.ico",
+    "theme_color": "#2563eb",
+    "custom_css": "",
     "monitors": [
       {
         "id": "uuid",
-        "name": "Production API Health",
+        "name": "API Gateway",
         "type": "http",
         "status": "up",
-        "recent_checks": [1, 1, 1, 0, 1, 1, 1]
+        "group_id": "group_uuid",
+        "group_name": "Core Services",
+        "uptime_percent": 99.98,
+        "recent_checks": [1, 1, 1, 1, 1],
+        "daily_stats": [
+          {
+            "date": "2026-09-21",
+            "uptime_percentage": 100.0,
+            "down_checks": 0,
+            "total_checks": 1440,
+            "has_data": true
+          }
+        ]
       }
-    ]
+    ],
+    "component_groups": [
+      {
+        "id": "group_uuid",
+        "name": "Core Services",
+        "display_order": 0,
+        "is_expanded": true
+      }
+    ],
+    "active_incidents": [],
+    "recent_incidents": [],
+    "upcoming_maintenances": [],
+    "ongoing_maintenances": []
   }
 }`
 						},
@@ -1741,6 +2544,97 @@ export const apiGroups: ApiGroup[] = [
 							code: `{
   "error": "Status page not found"
 }`
+						}
+					]
+				}
+			},
+			{
+				id: 'statuspage-public-summary',
+				method: 'GET',
+				path: '/public/statuspage/:subdomain/summary.json',
+				title: 'Public status summary JSON',
+				description:
+					'Standard summary JSON endpoint for integrations, returning the complete status page structure directly at root level JSON.',
+				auth: 'None',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X GET http://localhost:8080/api/v1/public/statuspage/status/summary.json`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "title": "Acme Status",
+  "subdomain": "acme",
+  "overall_status": "operational",
+  "monitors": [ ... ],
+  "component_groups": [ ... ],
+  "active_incidents": [],
+  "upcoming_maintenances": []
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'statuspage-public-status-json',
+				method: 'GET',
+				path: '/public/statuspage/:subdomain/status.json',
+				title: 'Public status health check JSON',
+				description:
+					"Lightweight status health check endpoint. Status values: 'operational', 'degraded', 'partial_outage', 'major_outage', 'maintenance'.",
+				auth: 'None',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X GET http://localhost:8080/api/v1/public/statuspage/status/status.json`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "operational",
+  "description": "All Systems Operational",
+  "updated_at": "2026-09-22T03:30:00Z"
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'statuspage-public-badge',
+				method: 'GET',
+				path: '/public/statuspage/:subdomain/badge.svg',
+				title: 'Public status dynamic SVG badge',
+				description:
+					'Returns a dynamic SVG shields.io-compatible badge representing current real-time status. Ideal for GitHub READMEs and team dashboards.',
+				auth: 'None',
+				notes: [
+					'Content-Type: image/svg+xml',
+					'Color codes: operational (#10b981), degraded (#f59e0b), partial outage (#f97316), major outage (#ef4444), maintenance (#3b82f6)'
+				],
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X GET http://localhost:8080/api/v1/public/statuspage/status/badge.svg`,
+					responses: [
+						{
+							status: '200 OK (image/svg+xml)',
+							code: `<svg xmlns="http://www.w3.org/2000/svg" width="108" height="20" role="img" aria-label="status: operational">
+  <linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <clipPath id="r"><rect width="108" height="20" rx="3" fill="#fff"/></clipPath>
+  <g clip-path="url(#r)">
+    <rect width="47" height="20" fill="#555"/>
+    <rect x="47" width="61" height="20" fill="#10b981"/>
+    <rect width="108" height="20" fill="url(#s)"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="110">
+    <text x="245" y="140" transform="scale(.1)">status</text>
+    <text x="765" y="140" transform="scale(.1)">operational</text>
+  </g>
+</svg>`
 						}
 					]
 				}
@@ -2230,36 +3124,46 @@ export const apiGroups: ApiGroup[] = [
 				id: 'ws-connect',
 				method: 'GET',
 				path: '/ws',
-				title: 'WebSocket connection',
+				title: 'Real-time WebSocket stream',
 				description:
-					'Real-time notifications endpoint. Upgrades HTTP connection to WebSocket and registers the client to receive real-time updates for all organizations the user belongs to.',
-				auth: 'Bearer token',
+					'Real-time streaming endpoint for monitor status transitions, check response times, and failure counts. During handshake, the server loads all organizations the authenticated user belongs to and automatically subscribes the connection to those organization rooms.',
+				auth: 'Bearer token (via httpOnly access_token cookie or WebSocket handshake)',
 				notes: [
-					'Protocol: WebSocket upgrade',
-					'Sends real-time notifications for monitor status changes, incident updates, and more.'
+					'Protocol: WebSocket upgrade (RFC 6455)',
+					'Message Envelope: {"Room": "<orgId>", "Type": "<event_type>", "Payload": {...}}',
+					'Event MONITOR_UPDATED: Dispatched whenever an automated worker check evaluates a monitor state.',
+					'Keep connection alive using standard WebSocket Ping / Pong frames.',
+					'Clients should implement exponential backoff reconnection (1s, 2s, 4s, up to 10s max) on connection loss.'
 				],
 				codeExample: {
 					language: 'javascript',
 					label: 'Example Client',
-					code: `const ws = new WebSocket(
-  "ws://localhost:8080/api/v1/ws",
-  [],
-  { headers: { Cookie: "access_token=..." } }
-);
+					code: `const ws = new WebSocket("ws://localhost:8080/api/v1/ws");
+
+ws.onopen = () => {
+  console.log("WebSocket connected. Subscribed to all org rooms.");
+};
 
 ws.onmessage = (event) => {
-  const data = JSON.parse(event.data);
-  console.log("Notification:", data);
+  const message = JSON.parse(event.data);
+  console.log(\`[\${message.Type}] Room: \${message.Room}\`, message.Payload);
+};
+
+ws.onclose = () => {
+  console.log("Connection closed. Reconnecting with exponential backoff...");
 };`,
 					responses: [
 						{
-							status: 'WebSocket Messages',
+							status: 'MONITOR_UPDATED Envelope',
 							code: `{
-  "type": "monitor.status_change",
-  "data": {
-    "monitor_id": "uuid",
-    "status": "down",
-    "timestamp": "2023-11-01T10:00:00Z"
+  "Room": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+  "Type": "MONITOR_UPDATED",
+  "Payload": {
+    "id": "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+    "status": "up",
+    "response_time": 124,
+    "last_checked": "2026-09-22T10:25:00Z",
+    "failure_count": 0
   }
 }`
 						}
@@ -2569,5 +3473,5 @@ ws.onmessage = (event) => {
 				}
 			}
 		]
-	},
+	}
 ];

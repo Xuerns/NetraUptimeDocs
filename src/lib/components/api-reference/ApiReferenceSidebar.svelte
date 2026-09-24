@@ -16,6 +16,13 @@
 		auth: true
 	});
 
+	$effect(() => {
+		const currentGroup = groups.find((g) => g.endpoints.some((e) => e.id === activeEndpointId));
+		if (currentGroup && !expandedGroups[currentGroup.id]) {
+			expandedGroups[currentGroup.id] = true;
+		}
+	});
+
 	function toggleGroup(groupId: string) {
 		expandedGroups[groupId] = !expandedGroups[groupId];
 	}

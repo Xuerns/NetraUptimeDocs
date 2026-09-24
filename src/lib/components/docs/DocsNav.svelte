@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ArrowLeft } from 'lucide-svelte';
+	import { ArrowLeft, ArrowUpRight } from 'lucide-svelte';
 	import logo from '$lib/assets/Logo.svg';
 </script>
 
@@ -27,7 +27,14 @@
 			Docs
 		</span>
 	</div>
-	<div class="hidden items-center gap-6 text-sm md:flex">
+	<div class="flex items-center gap-6 text-sm">
+		<a
+			href="/docs/api-reference"
+			class="flex items-center gap-1.5 font-mono text-xs text-[#bbcabf] transition-colors hover:text-[#4edea3]"
+		>
+			<span>API Reference</span>
+			<ArrowUpRight size={13} />
+		</a>
 		<a
 			href="https://github.com/Xuerns/PulseWatch"
 			target="_blank"

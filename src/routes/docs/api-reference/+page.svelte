@@ -19,9 +19,19 @@
 
 	function handleSelectEndpoint(id: string) {
 		activeEndpointId = id;
+		if (typeof window !== 'undefined') {
+			window.history.replaceState(null, '', `#${id}`);
+		}
 	}
 
 	onMount(() => {
+		if (typeof window !== 'undefined' && window.location.hash) {
+			const hash = window.location.hash.slice(1);
+			if (apiGroups.flatMap((g) => g.endpoints).some((e) => e.id === hash)) {
+				activeEndpointId = hash;
+			}
+		}
+
 		const lenis = new Lenis({
 			duration: 1.2,
 			easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

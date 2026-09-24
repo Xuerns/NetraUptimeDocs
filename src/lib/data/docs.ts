@@ -77,6 +77,14 @@ export const docGroups: DocGroup[] = [
 
 export const quickLinks: QuickLink[] = [
 	{
+		id: 'api-reference-link',
+		icon: 'code',
+		title: 'API Reference',
+		description:
+			'Complete interactive REST API and WebSocket reference with endpoint schemas and curl examples.',
+		href: '/docs/api-reference'
+	},
+	{
 		id: 'docker-deployment',
 		icon: 'terminal',
 		title: 'Docker Deployment',
