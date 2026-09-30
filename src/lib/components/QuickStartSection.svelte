@@ -2,7 +2,7 @@
 	import { ArrowRight, Copy, Terminal } from 'lucide-svelte';
 
 	const commands = [
-		'git clone https://github.com/username/pulsewatch.git',
+		'git clone https://github.com/Xuerns/PulseWatch.git',
 		'cd pulsewatch && cp .env.example .env',
 		'docker compose up -d'
 	];
@@ -51,7 +51,7 @@
 		</p>
 		<a
 			data-reveal
-			href="#top"
+			href="/docs"
 			class="mt-9 inline-flex items-center gap-2 rounded border border-[#4edea3] bg-[#4edea3] px-5 py-3 font-semibold text-[#003824] transition-colors hover:bg-[#6ffbbe]"
 			>See the full setup guide <ArrowRight size={17} /></a
 		>

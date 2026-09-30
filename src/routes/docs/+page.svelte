@@ -2,17 +2,28 @@
 	import { onMount } from 'svelte';
 	import { gsap } from 'gsap';
 	import Lenis from 'lenis';
-	import { docGroups } from '$lib/data/docs';
+	import { docGroups, docSections } from '$lib/data/docs';
 	import DocsNav from '$lib/components/docs/DocsNav.svelte';
 	import DocsSidebar from '$lib/components/docs/DocsSidebar.svelte';
 	import DocsMainContent from '$lib/components/docs/DocsMainContent.svelte';
+	import DocsToc from '$lib/components/docs/DocsToc.svelte';
 	import DocsFooter from '$lib/components/docs/DocsFooter.svelte';
 	import DocsSiteFooter from '$lib/components/docs/DocsSiteFooter.svelte';
 
 	let activeItemId = $state('getting-started');
 
+	// Get headings for the current section to pass to TOC
+	const currentSection = $derived(
+		docSections.find((s) => s.id === activeItemId) ?? docSections[0]
+	);
+	const currentHeadings = $derived(currentSection?.headings ?? []);
+
 	function handleSelectItem(id: string) {
 		activeItemId = id;
+		if (typeof window !== 'undefined') {
+			window.scrollTo({ top: 0, behavior: 'instant' });
+			window.history.replaceState(null, '', `#${id}`);
+		}
 	}
 
 	onMount(() => {
@@ -39,6 +50,15 @@
 			});
 		});
 
+		// Restore active section from URL hash
+		const hash = window.location.hash.slice(1);
+		if (hash) {
+			const section = docSections.find((s) => s.id === hash);
+			if (section) {
+				activeItemId = hash;
+			}
+		}
+
 		return () => {
 			context.revert();
 			cancelAnimationFrame(rafId);
@@ -57,9 +77,11 @@
 
 <DocsNav />
 
-<div class="flex w-full flex-grow">
+<div class="flex w-full min-h-screen">
+	<!-- Column 1: Left Navigation Sidebar (w-72, sticky) -->
 	<DocsSidebar groups={docGroups} {activeItemId} onSelectItem={handleSelectItem} />
 
+	<!-- Column 2: Main Content (flexible width) -->
 	<div class="flex min-w-0 flex-1 flex-col">
 		<div data-reveal class="min-w-0 flex-1">
 			<DocsMainContent {activeItemId} />
@@ -69,4 +91,7 @@
 		</div>
 		<DocsSiteFooter />
 	</div>
+
+	<!-- Column 3: TOC Right "On this page" (w-64, sticky, visible on xl: >= 1280px) -->
+	<DocsToc headings={currentHeadings} />
 </div>

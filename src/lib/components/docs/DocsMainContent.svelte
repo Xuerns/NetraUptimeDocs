@@ -2,13 +2,32 @@
 	import DocQuickLinks from './DocQuickLinks.svelte';
 	import DocChecklist from './DocChecklist.svelte';
 	import DiscordDocContent from './notifications/DiscordDocContent.svelte';
-	import { quickLinks, checklistSteps, sidebarSections } from '$lib/data/docs';
+	import GettingStartedContent from './GettingStartedContent.svelte';
+	import MonitorsContent from './MonitorsContent.svelte';
+	import ConfigurationContent from './ConfigurationContent.svelte';
+	import AlertRulesContent from './AlertRulesContent.svelte';
+	import StatusPageContent from './StatusPageContent.svelte';
+	import WebhookContent from './WebhookContent.svelte';
+	import { quickLinks, checklistSteps, docSections } from '$lib/data/docs';
 
 	let { activeItemId }: { activeItemId: string } = $props();
 
 	const activeSection = $derived(
-		sidebarSections.find((s) => s.id === activeItemId) ?? sidebarSections[0]
+		docSections.find((s) => s.id === activeItemId) ?? docSections[0]
 	);
+
+	// Sections with dedicated rich content components
+	const richContentSections = [
+		'getting-started',
+		'monitors',
+		'environment-variables',
+		'alert-rules',
+		'status-pages',
+		'discord',
+		'webhook'
+	];
+
+	const hasRichContent = $derived(richContentSections.includes(activeItemId));
 </script>
 
 <main class="flex-1 bg-transparent p-8 lg:p-16 xl:p-20">
@@ -35,6 +54,21 @@
 					<div class="eyebrow pl-2 text-[#bbcabf]/70">Navigation · Quick Links</div>
 					<DocQuickLinks links={quickLinks} />
 				</section>
+			{/if}
+
+			<!-- Rich Content Components -->
+			{#if activeItemId === 'getting-started'}
+				<GettingStartedContent />
+			{:else if activeItemId === 'monitors'}
+				<MonitorsContent />
+			{:else if activeItemId === 'environment-variables'}
+				<ConfigurationContent />
+			{:else if activeItemId === 'alert-rules'}
+				<AlertRulesContent />
+			{:else if activeItemId === 'status-pages'}
+				<StatusPageContent />
+			{:else if activeItemId === 'webhook'}
+				<WebhookContent />
 			{/if}
 
 			<!-- Checklist (only on getting-started) -->

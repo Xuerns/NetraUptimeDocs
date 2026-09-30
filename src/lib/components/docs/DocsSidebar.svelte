@@ -13,11 +13,14 @@
 	} = $props();
 
 	let expandedGroups = $state<Record<string, boolean>>({
-		'core-concepts': true,
-		configuration: false,
-		monitors: false,
-		notification: true,
-		APIkeys: false
+		'getting-started-group': true,
+		'architecture-group': false,
+		'deployment-group': false,
+		'monitors-group': false,
+		'alert-rules-group': false,
+		'notification-group': false,
+		'status-pages-group': false,
+		'api-keys-group': false
 	});
 
 	$effect(() => {

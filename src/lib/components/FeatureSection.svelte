@@ -5,7 +5,10 @@
 		HeartPulse,
 		Network,
 		RadioTower,
-		ShieldCheck
+		ShieldCheck,
+		BadgeCheck,
+		CalendarClock,
+		Lock
 	} from 'lucide-svelte';
 
 	const features = [
@@ -38,6 +41,21 @@
 			title: 'Incident management',
 			copy: 'Capture updates and context in an automatic, chronological incident record.',
 			icon: HeartPulse
+		},
+		{
+			title: 'SSL & Domain checks',
+			copy: 'Track SSL/TLS certificate expiry and WHOIS domain renewal dates before they lapse.',
+			icon: Lock
+		},
+		{
+			title: 'Scheduled maintenance',
+			copy: 'Set maintenance windows that suppress false alarms and show a public banner.',
+			icon: CalendarClock
+		},
+		{
+			title: 'GitHub status badges',
+			copy: 'Embed a dynamic SVG badge in your README that reflects live service status.',
+			icon: BadgeCheck
 		}
 	];
 </script>
