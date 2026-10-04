@@ -1,59 +1,46 @@
 <script lang="ts">
-	import { ArrowRight, Copy, Terminal } from 'lucide-svelte';
-
-	const commands = [
-		'git clone https://github.com/Xuerns/PulseWatch.git',
-		'cd pulsewatch && cp .env.example .env',
-		'docker compose up -d'
-	];
-
-	async function copyCommand(): Promise<void> {
-		await navigator.clipboard.writeText(commands.join('\n'));
-	}
+	import { ArrowRight } from 'lucide-svelte';
+	import InstallCommand from './InstallCommand.svelte';
+	import { links, logos } from '$lib/data/landing';
 </script>
 
-<section id="quick-start" aria-labelledby="quick-start-heading">
-	<div class="mx-auto max-w-3xl px-6 py-20 text-center lg:px-10 lg:py-28">
-		<div data-reveal>
-			<p class="eyebrow"><span class="mr-2 text-[#4edea3]">06</span> Get running</p>
-			<h2
-				id="quick-start-heading"
-				class="mt-5 font-display text-4xl tracking-tight text-[#e5e2e3] sm:text-5xl"
-			>
-				Start monitoring today.
-			</h2>
-			<p class="mx-auto mt-5 max-w-xl text-[#bbcabf]">
-				Three commands stand between your team and a clearer picture of uptime.
-			</p>
-		</div>
+<section id="quick-start" class="relative" aria-labelledby="quick-start-heading">
+	<div class="mx-auto max-w-5xl px-6 py-24 lg:px-10 lg:py-32">
 		<div
 			data-reveal
-			class="mt-10 overflow-hidden rounded border border-outline-variant bg-[#201f20] text-left"
+			class="relative overflow-hidden rounded-[2rem] border border-[#4edea3]/20 px-6 py-16 text-center sm:px-12"
+			style="background: radial-gradient(70% 90% at 50% 0%, rgba(78,222,163,.16), transparent 70%), linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01))"
 		>
-			<div class="flex items-center justify-between border-b border-outline-variant px-5 py-3">
-				<div class="flex items-center gap-2 font-mono text-xs tracking-wider text-[#bbcabf]">
-					<Terminal size={15} class="text-[#4edea3]" /> BASH
-				</div>
-				<button
-					class="flex items-center gap-2 text-xs text-[#bbcabf] transition-colors hover:text-[#4edea3]"
-					onclick={copyCommand}
-					aria-label="Copy setup commands"><Copy size={14} /> Copy</button
-				>
+			<h2
+				id="quick-start-heading"
+				class="font-display text-4xl tracking-tight text-[#f1eeef] sm:text-5xl"
+			>
+				Start monitoring <span class="text-gradient italic">today.</span>
+			</h2>
+			<p class="mx-auto mt-5 max-w-xl text-[#bbcabf]">
+				Run one command and PulseWatch is up at <span class="font-mono text-[#e5e2e3]"
+					>localhost:8080</span
+				>.
+			</p>
+			<div class="mt-9 flex justify-center">
+				<InstallCommand id="cta" />
 			</div>
-			<div class="overflow-x-auto p-5 font-mono text-sm leading-8 text-[#bbcabf]">
-				{#each commands as command (command)}
-					<div><span class="text-[#4edea3]">$</span> {command}</div>
-				{/each}
+			<div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+				<a
+					id="cta-docs"
+					href={links.docs}
+					class="inline-flex items-center gap-2 rounded-full bg-[#4edea3] px-6 py-3 text-sm font-semibold text-[#003824] shadow-[0_0_40px_-8px_#4edea3] transition-colors hover:bg-[#6ffbbe]"
+				>
+					See the full setup guide <ArrowRight size={16} />
+				</a>
+				<a
+					id="cta-github"
+					href={links.github}
+					class="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-[#e5e2e3] transition-colors hover:bg-white/8"
+				>
+					<img src={logos.github} alt="" class="h-4 w-4" /> View on GitHub
+				</a>
 			</div>
 		</div>
-		<p data-reveal class="mt-5 font-mono text-xs tracking-wide text-[#86948a]">
-			THAT'S IT · PULSEWATCH IS RUNNING AT HTTP://LOCALHOST:8080
-		</p>
-		<a
-			data-reveal
-			href="/docs"
-			class="mt-9 inline-flex items-center gap-2 rounded border border-[#4edea3] bg-[#4edea3] px-5 py-3 font-semibold text-[#003824] transition-colors hover:bg-[#6ffbbe]"
-			>See the full setup guide <ArrowRight size={17} /></a
-		>
 	</div>
 </section>

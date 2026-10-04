@@ -137,7 +137,7 @@ export const quickLinks: QuickLink[] = [
 export const checklistSteps: ChecklistStep[] = [
 	{
 		id: 'clone',
-		number: '1.0',
+		number: '',
 		title: 'Clone the Repository',
 		description:
 			'Start by cloning the official PulseWatch repository from GitHub to your server. We recommend placing it in /opt/pulsewatch.',
@@ -182,7 +182,7 @@ export const docSections: DocSection[] = [
 		headings: [
 			{ id: 'gs-overview', title: 'Overview', level: 2 },
 			{ id: 'gs-requirements', title: 'System Requirements', level: 2 },
-			{ id: 'gs-docker-deploy', title: '3-Step Docker Deployment', level: 2 },
+			{ id: 'gs-docker-deploy', title: 'Docker Deployment', level: 2 },
 			{ id: 'gs-verify', title: 'Verifying Services & Healthcheck', level: 2 },
 			{ id: 'gs-next-steps', title: 'Next Steps', level: 2 }
 		]
@@ -302,7 +302,7 @@ export const docSections: DocSection[] = [
 		title: 'Discord Webhook Configuration',
 		subtitle: 'Notification · Integrations · Discord',
 		description:
-			'Follow these 4 steps to create an incoming webhook in Discord and link it to PulseWatch to receive real-time status alerts.',
+			'Create an incoming webhook in Discord and link it to PulseWatch to receive real-time status alerts.',
 		headings: [
 			{ id: 'discord-step1', title: 'Open Server Settings', level: 2 },
 			{ id: 'discord-step2', title: 'Create a New Webhook', level: 2 },

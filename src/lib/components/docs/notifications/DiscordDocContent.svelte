@@ -60,20 +60,14 @@
 			Discord Webhook Configuration
 		</h1>
 		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			Follow these 4 steps to create an incoming webhook in Discord and link it to PulseWatch to receive real-time status alerts.
+			Create an incoming webhook in Discord and link it to PulseWatch to receive real-time status alerts.
 		</p>
 	</header>
 
-	<!-- Steps Flow (Clean vertical timeline matching PulseWatch design without overused containers) -->
-	<div class="flex flex-col gap-12 border-l border-[#3c4a42] pl-6 sm:pl-8">
-		{#each steps as step (step.number)}
+	<!-- Sections -->
+	<div class="flex flex-col gap-12">
+		{#each steps as step (step.title)}
 			<section class="relative flex flex-col gap-4">
-				<!-- Step Number Marker -->
-				<div
-					class="absolute -left-[37px] top-0 flex h-7 w-7 sm:-left-[45px] items-center justify-center rounded-lg border border-[#3c4a42] bg-[#131314] font-mono text-xs font-bold text-[#4edea3]"
-				>
-					{step.number}
-				</div>
 
 				<!-- Step Title and Instructions -->
 				<div class="flex flex-col gap-2">

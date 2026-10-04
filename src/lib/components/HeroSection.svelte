@@ -1,82 +1,70 @@
 <script lang="ts">
-	import { ArrowRight, Code2, Server, Terminal } from 'lucide-svelte';
+	import { ArrowRight, BookOpen } from 'lucide-svelte';
 	import FloatingLines from './FloatingLines.svelte';
-
-	const proofPoints = [
-		{
-			title: 'Open source',
-			copy: 'Inspect the code. Shape the roadmap. Own the stack.',
-			icon: Code2
-		},
-		{
-			title: 'Self-hosted',
-			copy: 'Your telemetry stays on infrastructure you control.',
-			icon: Server
-		},
-		{
-			title: 'Free forever',
-			copy: 'Every feature, without a metered monitoring bill.',
-			icon: Terminal
-		}
-	];
+	import InstallCommand from './InstallCommand.svelte';
+	import LogoCloud from './LogoCloud.svelte';
+	import DashboardPreview from './DashboardPreview.svelte';
+	import { links, logos } from '$lib/data/landing';
 </script>
 
-<section id="top" class="relative border-b border-outline-variant" aria-labelledby="hero-heading">
-	<div class="pointer-events-none absolute inset-0 overflow-hidden">
+<section id="top" class="relative overflow-hidden" aria-labelledby="hero-heading">
+	<div
+		class="pointer-events-none absolute inset-x-0 top-0 h-190 overflow-hidden opacity-70"
+		style="mask-image: linear-gradient(180deg, #000 30%, transparent); -webkit-mask-image: linear-gradient(180deg, #000 30%, transparent)"
+	>
 		<FloatingLines
 			enabledWaves={['top', 'bottom']}
-			lineCount={10}
+			lineCount={8}
 			lineDistance={100}
 			bendRadius={5}
 			bendStrength={1}
 			interactive={false}
 			parallax={true}
-			linesGradient={['#4edea3', '#c4c3c3', '#10B981']}
+			linesGradient={['#4edea3', '#2dd4bf', '#10B981']}
 		/>
 	</div>
-	<div class="relative mx-auto grid min-h-[calc(100vh-3rem)] max-w-360 content-center gap-12 px-6 py-20 lg:grid-cols-12 lg:px-10 lg:py-24">
-		<div class="lg:col-span-8">
-			<p data-reveal class="eyebrow mb-6">
-				<span class="mr-2 text-[#4edea3]">01</span> Uptime, under your control
-			</p>
-			<h1
-				data-reveal
-				id="hero-heading"
-				class="max-w-4xl font-display text-5xl leading-[1.02] tracking-[-0.035em] text-[#e5e2e3] sm:text-6xl lg:text-8xl"
-			>
-				Know before <em class="font-display text-[#4edea3]">your users</em> do.
-			</h1>
-			<p data-reveal class="mt-8 max-w-2xl text-lg leading-8 text-[#bbcabf]">
-				A calm, capable command center for websites, APIs, and infrastructure. Detect failure early
-				and route the right alert to the right person.
-			</p>
-			<div data-reveal class="mt-10 flex flex-col gap-3 sm:flex-row">
-				<a
-					href="#quick-start"
-					class="flex items-center justify-center gap-2 rounded border border-[#4edea3] bg-[#4edea3] px-5 py-3 font-semibold text-[#003824] transition-colors hover:bg-[#6ffbbe]"
-				>
-					Deploy with Docker <Terminal size={17} />
-				</a>
-				<a
-					href="#features"
-					class="flex items-center justify-center gap-2 rounded border border-outline-variant px-5 py-3 font-semibold text-[#e5e2e3] transition-colors hover:border-[#86948a] hover:bg-[#201f20]"
-				>
-					Explore the system <ArrowRight size={17} />
-				</a>
-			</div>
+
+	<div class="relative mx-auto max-w-360 px-6 pt-32 pb-10 text-center lg:px-10 lg:pt-40">
+		<p data-reveal class="pill">
+			<img src={logos.github} alt="" class="h-3.5 w-3.5" />
+			Open source · Self-hosted · AGPL-3.0
+		</p>
+		<h1
+			data-reveal
+			id="hero-heading"
+			class="mx-auto mt-7 max-w-5xl font-display text-5xl leading-[1.04] tracking-[-0.035em] text-[#f1eeef] sm:text-6xl lg:text-7xl"
+		>
+			Self-hosted uptime monitoring <span class="text-gradient italic">&amp; status pages.</span>
+		</h1>
+		<p data-reveal class="mx-auto mt-7 max-w-2xl text-lg leading-8 text-[#bbcabf]">
+			PulseWatch watches your websites, APIs, and servers around the clock, opens an incident the
+			moment something breaks, and alerts the right person on Slack, Discord, email, or webhook. One
+			command to install. Your data never leaves your infrastructure.
+		</p>
+
+		<div data-reveal class="mt-10 flex justify-center">
+			<InstallCommand id="hero" />
 		</div>
 
-		<div
-			data-reveal
-			class="grid overflow-hidden rounded border border-outline-variant bg-[#3c4a42] lg:col-span-4"
-		>
-			{#each proofPoints as point (point.title)}
-				<div class="border-b border-outline-variant bg-[#201f20] p-6 last:border-b-0">
-					<point.icon size={22} class="mb-7 text-[#4edea3]" />
-					<h2 class="font-display text-2xl text-[#e5e2e3]">{point.title}</h2>
-					<p class="mt-2 text-sm leading-6 text-[#bbcabf]">{point.copy}</p>
-				</div>
-			{/each}
+		<div data-reveal class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+			<a
+				id="hero-docs"
+				href={links.docs}
+				class="flex items-center gap-2 rounded-full bg-[#4edea3] px-6 py-3 text-sm font-semibold text-[#003824] shadow-[0_0_40px_-8px_#4edea3] transition-all hover:bg-[#6ffbbe]"
+			>
+				<BookOpen size={16} /> Read the docs
+			</a>
+			<a
+				id="hero-github"
+				href={links.github}
+				class="flex items-center gap-2 rounded-full border border-white/15 bg-white/4 px-6 py-3 text-sm font-semibold text-[#e5e2e3] transition-colors hover:border-white/30 hover:bg-white/8"
+			>
+				<img src={logos.github} alt="" class="h-4 w-4" /> Star on GitHub
+				<ArrowRight size={15} />
+			</a>
 		</div>
+
+		<div data-reveal><LogoCloud /></div>
+		<div data-reveal><DashboardPreview /></div>
 	</div>
 </section>

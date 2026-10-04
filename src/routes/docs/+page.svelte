@@ -75,6 +75,7 @@
 	/>
 </svelte:head>
 
+<div class="docs-fonts">
 <DocsNav />
 
 <div class="flex w-full min-h-screen">
@@ -94,4 +95,5 @@
 
 	<!-- Column 3: TOC Right "On this page" (w-64, sticky, visible on xl: >= 1280px) -->
 	<DocsToc headings={currentHeadings} />
+</div>
 </div>

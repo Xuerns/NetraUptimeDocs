@@ -38,60 +38,16 @@
 		</div>
 	</section>
 
-	<!-- System Requirements -->
-	<section id="gs-requirements" class="flex flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">System Requirements</h2>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			PulseWatch is designed to be lightweight. The minimum requirements for a small to medium deployment:
-		</p>
-		<div class="overflow-hidden rounded-lg border border-white/5">
-			<table class="w-full text-sm">
-				<thead>
-					<tr class="border-b border-white/5 bg-[#1a1d1b]">
-						<th class="px-6 py-3 text-left font-mono text-xs font-medium uppercase tracking-wider text-[#4edea3]">Resource</th>
-						<th class="px-6 py-3 text-left font-mono text-xs font-medium uppercase tracking-wider text-[#4edea3]">Minimum</th>
-						<th class="px-6 py-3 text-left font-mono text-xs font-medium uppercase tracking-wider text-[#4edea3]">Recommended</th>
-					</tr>
-				</thead>
-				<tbody class="divide-y divide-white/5 bg-[#0e0e0f]">
-					<tr>
-						<td class="flex items-center gap-2 px-6 py-4 text-[#e5e2e3]"><Cpu size={14} class="text-[#4edea3]/60" /> CPU</td>
-						<td class="px-6 py-4 text-[#bbcabf]">1 vCPU</td>
-						<td class="px-6 py-4 text-[#bbcabf]">2 vCPU</td>
-					</tr>
-					<tr>
-						<td class="flex items-center gap-2 px-6 py-4 text-[#e5e2e3]"><HardDrive size={14} class="text-[#4edea3]/60" /> RAM</td>
-						<td class="px-6 py-4 text-[#bbcabf]">512 MB</td>
-						<td class="px-6 py-4 text-[#bbcabf]">1 GB</td>
-					</tr>
-					<tr>
-						<td class="flex items-center gap-2 px-6 py-4 text-[#e5e2e3]"><Database size={14} class="text-[#4edea3]/60" /> Disk</td>
-						<td class="px-6 py-4 text-[#bbcabf]">1 GB</td>
-						<td class="px-6 py-4 text-[#bbcabf]">5 GB+</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="rounded-lg border border-[#4edea3]/20 bg-[#4edea3]/5 p-4">
-			<p class="text-sm text-[#4edea3]">
-				<strong>Prerequisites:</strong> Docker Engine 20.10+ and Docker Compose v2.0+ must be installed on your server.
-			</p>
-		</div>
-	</section>
-
-	<!-- 3-Step Docker Deployment -->
+	<!-- Docker Deployment -->
 	<section id="gs-docker-deploy" class="flex flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">3-Step Docker Deployment</h2>
+		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Docker Deployment</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Get PulseWatch running in under 2 minutes with these three commands:
+			Get PulseWatch running in under 2 minutes with Docker:
 		</p>
 
-		<!-- Step 1 -->
+		<!-- Clone & Configure -->
 		<div class="flex flex-col gap-3">
-			<div class="flex items-center gap-3">
-				<span class="flex h-7 w-7 items-center justify-center rounded-lg border border-[#3c4a42] bg-[#131314] font-mono text-xs font-bold text-[#4edea3]">1</span>
-				<h3 class="font-display text-lg font-semibold text-[#e5e2e3]">Clone & Configure</h3>
-			</div>
+			<h3 class="font-display text-lg font-semibold text-[#e5e2e3]">Clone & Configure</h3>
 			<div class="relative overflow-hidden rounded-lg border border-white/5 bg-[#0e0e0f]">
 				<div class="flex items-center justify-between border-b border-white/5 px-5 py-2.5">
 					<div class="flex items-center gap-2 font-mono text-xs text-[#bbcabf]/60"><Terminal size={13} class="text-[#4edea3]/60" /> bash</div>
@@ -109,12 +65,9 @@
 			</div>
 		</div>
 
-		<!-- Step 2 -->
+		<!-- Environment Variables -->
 		<div class="flex flex-col gap-3">
-			<div class="flex items-center gap-3">
-				<span class="flex h-7 w-7 items-center justify-center rounded-lg border border-[#3c4a42] bg-[#131314] font-mono text-xs font-bold text-[#4edea3]">2</span>
-				<h3 class="font-display text-lg font-semibold text-[#e5e2e3]">Edit Environment Variables</h3>
-			</div>
+			<h3 class="font-display text-lg font-semibold text-[#e5e2e3]">Edit Environment Variables</h3>
 			<p class="text-sm leading-relaxed text-[#bbcabf]">
 				Open the <code class="rounded bg-[#1a1d1b] px-1.5 py-0.5 font-mono text-xs text-[#4edea3]">.env</code> file and update at minimum:
 				<code class="rounded bg-[#1a1d1b] px-1.5 py-0.5 font-mono text-xs text-[#4edea3]">JWT_SECRET</code>,
@@ -123,12 +76,9 @@
 			</p>
 		</div>
 
-		<!-- Step 3 -->
+		<!-- Start Services -->
 		<div class="flex flex-col gap-3">
-			<div class="flex items-center gap-3">
-				<span class="flex h-7 w-7 items-center justify-center rounded-lg border border-[#3c4a42] bg-[#131314] font-mono text-xs font-bold text-[#4edea3]">3</span>
-				<h3 class="font-display text-lg font-semibold text-[#e5e2e3]">Start Services</h3>
-			</div>
+			<h3 class="font-display text-lg font-semibold text-[#e5e2e3]">Start Services</h3>
 			<div class="relative overflow-hidden rounded-lg border border-white/5 bg-[#0e0e0f]">
 				<div class="flex items-center justify-between border-b border-white/5 px-5 py-2.5">
 					<div class="flex items-center gap-2 font-mono text-xs text-[#bbcabf]/60"><Terminal size={13} class="text-[#4edea3]/60" /> bash</div>
@@ -171,11 +121,6 @@
 
 <span class="text-[#86948a]"># View application logs</span>
 <span class="text-[#4edea3]">$</span> docker compose logs -f web</pre>
-		</div>
-		<div class="rounded-lg border border-[#4edea3]/20 bg-[#4edea3]/5 p-4">
-			<p class="text-sm text-[#4edea3]">
-				<strong>Health Endpoints:</strong> <code class="text-xs">GET /healthz</code> (liveness probe) and <code class="text-xs">GET /api/v1/health</code> (readiness probe with DB/Redis checks).
-			</p>
 		</div>
 	</section>
 

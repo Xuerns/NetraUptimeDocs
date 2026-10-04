@@ -108,12 +108,6 @@
 	<!-- Security & JWT -->
 	<section id="env-security" class="flex flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Security & JWT</h2>
-		<div class="rounded-lg border border-red-500/20 bg-red-500/5 p-4">
-			<p class="flex items-center gap-2 text-sm text-red-400">
-				<AlertTriangle size={16} />
-				<strong>Critical:</strong> Always change <code class="text-xs">JWT_SECRET</code> from the default value before deploying to production!
-			</p>
-		</div>
 		<div class="overflow-x-auto rounded-lg border border-white/5">
 			<table class="w-full text-sm">
 				<thead>
@@ -177,12 +171,6 @@
 	<!-- Redis -->
 	<section id="env-redis" class="flex flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Redis Cache</h2>
-		<div class="rounded-lg border border-amber-500/20 bg-amber-500/5 p-4">
-			<p class="flex items-center gap-2 text-sm text-amber-300">
-				<AlertTriangle size={16} />
-				<strong>Important:</strong> Redis is crucial for distributed rate limiting and caching. Ensure it's properly configured for production.
-			</p>
-		</div>
 		<div class="overflow-x-auto rounded-lg border border-white/5">
 			<table class="w-full text-sm">
 				<thead>

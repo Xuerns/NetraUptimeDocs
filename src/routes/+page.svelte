@@ -1,24 +1,34 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
 	import Lenis from 'lenis';
 	import AudienceSection from '$lib/components/AudienceSection.svelte';
 	import FeatureSection from '$lib/components/FeatureSection.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import HeroSection from '$lib/components/HeroSection.svelte';
+	import IntegrationsSection from '$lib/components/IntegrationsSection.svelte';
 	import Navigation from '$lib/components/Navigation.svelte';
 	import OpenSourceSection from '$lib/components/OpenSourceSection.svelte';
 	import ProblemSection from '$lib/components/ProblemSection.svelte';
 	import QuickStartSection from '$lib/components/QuickStartSection.svelte';
 
 	function animatePage() {
+		gsap.registerPlugin(ScrollTrigger);
 		return gsap.context(() => {
-			gsap.from('[data-reveal]', {
-				duration: 0.7,
-				y: 18,
-				autoAlpha: 0,
-				stagger: 0.08,
-				ease: 'power2.out'
+			const items = gsap.utils.toArray<HTMLElement>('[data-reveal]');
+			gsap.set(items, { y: 28, autoAlpha: 0 });
+			ScrollTrigger.batch(items, {
+				start: 'top 90%',
+				once: true,
+				onEnter: (batch) =>
+					gsap.to(batch, {
+						y: 0,
+						autoAlpha: 1,
+						duration: 0.8,
+						stagger: 0.09,
+						ease: 'power3.out'
+					})
 			});
 		});
 	}
@@ -48,20 +58,29 @@
 </script>
 
 <svelte:head>
-	<title>PulseWatch | Know before your users do</title>
+	<title>PulseWatch | Self-hosted uptime monitoring &amp; status pages</title>
 	<meta
 		name="description"
-		content="Open-source, self-hosted uptime monitoring for websites, APIs, and infrastructure."
+		content="PulseWatch is an open-source, self-hosted uptime monitor with incident management, alerts to Slack and Discord, and public status pages. Install with one command."
 	/>
+	<meta property="og:title" content="PulseWatch | Self-hosted uptime monitoring & status pages" />
+	<meta
+		property="og:description"
+		content="Open-source uptime monitoring, incident management, and public status pages you host yourself."
+	/>
+	<meta property="og:type" content="website" />
 </svelte:head>
 
-<Navigation />
-<main>
-	<HeroSection />
-	<ProblemSection />
-	<FeatureSection />
-	<AudienceSection />
-	<OpenSourceSection />
-	<QuickStartSection />
-</main>
-<Footer />
+<div class="landing">
+	<Navigation />
+	<main class="relative">
+		<HeroSection />
+		<ProblemSection />
+		<FeatureSection />
+		<IntegrationsSection />
+		<AudienceSection />
+		<OpenSourceSection />
+		<QuickStartSection />
+	</main>
+	<Footer />
+</div>

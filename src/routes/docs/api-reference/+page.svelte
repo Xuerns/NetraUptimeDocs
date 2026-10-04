@@ -73,7 +73,7 @@
 
 <ApiReferenceNav />
 
-<div class="flex w-full flex-grow">
+<div class="docs-fonts flex w-full flex-grow">
 	<ApiReferenceSidebar
 		groups={apiGroups}
 		{activeEndpointId}
