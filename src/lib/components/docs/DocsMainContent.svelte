@@ -6,6 +6,18 @@
 	import AlertRulesContent from './AlertRulesContent.svelte';
 	import StatusPageContent from './StatusPageContent.svelte';
 	import WebhookContent from './WebhookContent.svelte';
+	import ArchitectureOverviewContent from './architecture/ArchitectureOverviewContent.svelte';
+	import BootstrapContent from './architecture/BootstrapContent.svelte';
+	import RequestAuthContent from './architecture/RequestAuthContent.svelte';
+	import MonitoringEngineContent from './architecture/MonitoringEngineContent.svelte';
+	import AlertEvaluationContent from './architecture/AlertEvaluationContent.svelte';
+	import IncidentsNotificationsContent from './architecture/IncidentsNotificationsContent.svelte';
+	import RealtimeContent from './architecture/RealtimeContent.svelte';
+	import SslDomainRunnerContent from './architecture/SslDomainRunnerContent.svelte';
+	import CachingContent from './architecture/CachingContent.svelte';
+	import RetentionContent from './architecture/RetentionContent.svelte';
+	import StatusPageInternalsContent from './architecture/StatusPageInternalsContent.svelte';
+	import AuditLoggingContent from './architecture/AuditLoggingContent.svelte';
 	import { docSections } from '$lib/data/docs';
 
 	let { activeItemId }: { activeItemId: string } = $props();
@@ -22,7 +34,19 @@
 		'alert-rules',
 		'status-pages',
 		'discord',
-		'webhook'
+		'webhook',
+		'architecture',
+		'bootstrap-lifecycle',
+		'request-auth',
+		'monitoring-engine',
+		'alert-evaluation',
+		'incidents-notifications',
+		'realtime-websocket',
+		'ssl-domain-runner',
+		'caching-rate-limit',
+		'data-retention',
+		'status-pages-internals',
+		'audit-logging'
 	];
 
 	const hasRichContent = $derived(richContentSections.includes(activeItemId));
@@ -60,6 +84,30 @@
 				<StatusPageContent />
 			{:else if activeItemId === 'webhook'}
 				<WebhookContent />
+			{:else if activeItemId === 'architecture'}
+				<ArchitectureOverviewContent />
+			{:else if activeItemId === 'bootstrap-lifecycle'}
+				<BootstrapContent />
+			{:else if activeItemId === 'request-auth'}
+				<RequestAuthContent />
+			{:else if activeItemId === 'monitoring-engine'}
+				<MonitoringEngineContent />
+			{:else if activeItemId === 'alert-evaluation'}
+				<AlertEvaluationContent />
+			{:else if activeItemId === 'incidents-notifications'}
+				<IncidentsNotificationsContent />
+			{:else if activeItemId === 'realtime-websocket'}
+				<RealtimeContent />
+			{:else if activeItemId === 'ssl-domain-runner'}
+				<SslDomainRunnerContent />
+			{:else if activeItemId === 'caching-rate-limit'}
+				<CachingContent />
+			{:else if activeItemId === 'data-retention'}
+				<RetentionContent />
+			{:else if activeItemId === 'status-pages-internals'}
+				<StatusPageInternalsContent />
+			{:else if activeItemId === 'audit-logging'}
+				<AuditLoggingContent />
 			{/if}
 
 		{/if}

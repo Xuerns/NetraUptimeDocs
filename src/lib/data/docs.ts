@@ -48,7 +48,20 @@ export const docGroups: DocGroup[] = [
 	{
 		id: 'architecture-group',
 		label: 'Architecture & Internals',
-		items: [{ id: 'architecture', label: 'System Architecture' }]
+		items: [
+			{ id: 'architecture', label: 'System Architecture' },
+			{ id: 'bootstrap-lifecycle', label: 'Bootstrap & Startup' },
+			{ id: 'request-auth', label: 'Requests, Auth & Tenancy' },
+			{ id: 'monitoring-engine', label: 'Monitoring Engine' },
+			{ id: 'alert-evaluation', label: 'Alert Evaluation' },
+			{ id: 'incidents-notifications', label: 'Incidents & Dispatch' },
+			{ id: 'realtime-websocket', label: 'Real-time WebSocket' },
+			{ id: 'ssl-domain-runner', label: 'SSL & Domain Runner' },
+			{ id: 'caching-rate-limit', label: 'Caching & Rate Limiting' },
+			{ id: 'data-retention', label: 'Data Retention' },
+			{ id: 'status-pages-internals', label: 'Status Page Internals' },
+			{ id: 'audit-logging', label: 'Audit Logging' }
+		]
 	},
 	{
 		id: 'deployment-group',
@@ -189,17 +202,144 @@ export const docSections: DocSection[] = [
 	},
 	{
 		id: 'architecture',
-		title: 'Architecture & Internals',
+		title: 'System Architecture',
 		subtitle: 'Core · Concepts · Architecture',
 		description:
-			'PulseWatch is a single-container Go + Svelte application backed by PostgreSQL and Redis. This section covers the system architecture, worker pool design, caching strategy, and real-time WebSocket protocol.',
+			'PulseWatch is a single-container Go + Svelte application backed by PostgreSQL and Redis. This page covers the overall topology and the principles behind the design.',
 		headings: [
-			{ id: 'arch-overview', title: 'System Architecture Overview', level: 2 },
-			{ id: 'arch-single-container', title: 'Single Container Design', level: 3 },
-			{ id: 'arch-worker-pool', title: 'Worker Pool & Goroutine Concurrency', level: 2 },
-			{ id: 'arch-redis', title: 'Redis Caching & Rate Limiting', level: 2 },
-			{ id: 'arch-database', title: 'Database Schema & Migrations', level: 2 },
-			{ id: 'arch-websocket', title: 'Real-time WebSocket Protocol', level: 2 }
+			{ id: 'arch-topology', title: 'System Topology', level: 2 },
+			{ id: 'arch-characteristics', title: 'Key Characteristics', level: 2 }
+		]
+	},
+	{
+		id: 'bootstrap-lifecycle',
+		title: 'Bootstrap & Startup',
+		subtitle: 'Architecture · Lifecycle · Bootstrap',
+		description:
+			'How the PulseWatch server initializes configuration, database, workers, and schedulers in a deterministic order.',
+		headings: [
+			{ id: 'boot-sequence', title: 'Startup Sequence', level: 2 },
+			{ id: 'boot-pooling', title: 'Connection Pooling & Migration', level: 2 },
+			{ id: 'boot-schedulers', title: 'Background Schedulers', level: 2 }
+		]
+	},
+	{
+		id: 'request-auth',
+		title: 'Requests, Auth & Multi-Tenancy',
+		subtitle: 'Architecture · Security · Requests',
+		description:
+			'The request lifecycle: routing tiers, JWT authentication, tenant isolation, role-based access control, and the public API key gateway.',
+		headings: [
+			{ id: 'req-routing', title: 'Request Routing', level: 2 },
+			{ id: 'req-auth', title: 'Authentication', level: 2 },
+			{ id: 'req-tenant', title: 'Tenant Isolation', level: 2 },
+			{ id: 'req-rbac', title: 'Role-Based Access Control', level: 2 },
+			{ id: 'req-apikey', title: 'Public API Key Gateway', level: 2 },
+			{ id: 'req-xss', title: 'Input Sanitization', level: 2 }
+		]
+	},
+	{
+		id: 'monitoring-engine',
+		title: 'Monitoring Engine',
+		subtitle: 'Architecture · Workers · Concurrency',
+		description:
+			'The scheduler and worker pool that run checks continuously and in parallel, plus the concurrency model of the whole runtime.',
+		headings: [
+			{ id: 'eng-scheduler', title: 'Scheduler', level: 2 },
+			{ id: 'eng-pool', title: 'Worker Pool', level: 2 },
+			{ id: 'eng-checkers', title: 'Checkers', level: 2 },
+			{ id: 'eng-concurrency', title: 'Concurrency Matrix', level: 2 }
+		]
+	},
+	{
+		id: 'alert-evaluation',
+		title: 'Alert Evaluation',
+		subtitle: 'Architecture · Alerts · State Machine',
+		description:
+			'How check results are evaluated against alert rules to decide whether a monitor is up, degraded, or down.',
+		headings: [
+			{ id: 'ae-state', title: 'Status State Machine', level: 2 },
+			{ id: 'ae-priority', title: 'Custom Rule Priority', level: 2 },
+			{ id: 'ae-fallback', title: 'Default Fallback Rules', level: 2 },
+			{ id: 'ae-consecutive', title: 'Consecutive Breaches Threshold', level: 2 }
+		]
+	},
+	{
+		id: 'incidents-notifications',
+		title: 'Incidents & Notification Dispatch',
+		subtitle: 'Architecture · Incidents · Dispatcher',
+		description:
+			'The incident lifecycle, severity calculation, multi-channel delivery, and SSRF protection for custom webhooks.',
+		headings: [
+			{ id: 'inc-lifecycle', title: 'Incident Lifecycle & Dispatch', level: 2 },
+			{ id: 'inc-severity', title: 'Dynamic Severity Matrix', level: 2 },
+			{ id: 'inc-ssrf', title: 'SSRF Protection', level: 2 }
+		]
+	},
+	{
+		id: 'realtime-websocket',
+		title: 'Real-time WebSocket Protocol',
+		subtitle: 'Architecture · Real-time · WebSocket',
+		description:
+			'How the dashboard receives live monitor updates through room-based WebSocket broadcasting.',
+		headings: [
+			{ id: 'rt-handshake', title: 'Handshake & Broadcast', level: 2 },
+			{ id: 'rt-components', title: 'Technical Components', level: 2 }
+		]
+	},
+	{
+		id: 'ssl-domain-runner',
+		title: 'SSL & Domain Expiry Runner',
+		subtitle: 'Architecture · Workers · SSL',
+		description:
+			'The daily background runner that tracks SSL certificate and domain expiry with tiered reminders.',
+		headings: [
+			{ id: 'ssl-flow', title: 'Runner Flow', level: 2 },
+			{ id: 'ssl-design', title: 'Design Highlights', level: 2 }
+		]
+	},
+	{
+		id: 'caching-rate-limit',
+		title: 'Caching & Rate Limiting',
+		subtitle: 'Architecture · Redis · Performance',
+		description:
+			'The Redis tier: read-through caching, precise invalidation, and rate limiting for auth and public API endpoints.',
+		headings: [
+			{ id: 'cache-flow', title: 'Read-Through Cache & Invalidation', level: 2 },
+			{ id: 'cache-keys', title: 'Redis Key Matrix', level: 2 }
+		]
+	},
+	{
+		id: 'data-retention',
+		title: 'Data Retention & Rollup',
+		subtitle: 'Architecture · Database · Retention',
+		description:
+			'How hourly aggregation keeps PostgreSQL fast while preserving 90 days of uptime history.',
+		headings: [
+			{ id: 'ret-rollup', title: 'Hourly Rollup', level: 2 },
+			{ id: 'ret-impact', title: 'Why It Matters', level: 2 }
+		]
+	},
+	{
+		id: 'status-pages-internals',
+		title: 'Status Page Internals',
+		subtitle: 'Architecture · Status · Public',
+		description:
+			'How public status pages are served: subdomain routing, component groups, maintenance, and machine-readable feeds.',
+		headings: [
+			{ id: 'spi-flow', title: 'Request Flow', level: 2 },
+			{ id: 'spi-features', title: 'Main Features', level: 2 }
+		]
+	},
+	{
+		id: 'audit-logging',
+		title: 'Audit Logging',
+		subtitle: 'Architecture · Security · Audit',
+		description:
+			'How configuration changes are recorded for accountability and security compliance.',
+		headings: [
+			{ id: 'audit-flow', title: 'Audit Flow', level: 2 },
+			{ id: 'audit-fields', title: 'Recorded Fields', level: 2 }
 		]
 	},
 	{
