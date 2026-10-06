@@ -9,8 +9,8 @@
 <div class="flex flex-col gap-16">
 	<ArchSection id="ssl-flow" title="Runner Flow">
 		<ArchText>
-			Certificates and domain expiry are checked by a separate daily runner so they never load the main
-			uptime queue.
+			Certificates and domain expiry are checked by a separate daily runner so they never load the
+			main uptime queue.
 		</ArchText>
 		<MermaidDiagram definition={sslRunnerDiagram.definition} label={sslRunnerDiagram.label} />
 	</ArchSection>

@@ -9,7 +9,8 @@
 <div class="flex flex-col gap-16">
 	<ArchSection id="spi-flow" title="Request Flow">
 		<ArchText>
-			Public status pages require no authentication and are optimized for reliability and low latency.
+			Public status pages require no authentication and are optimized for reliability and low
+			latency.
 		</ArchText>
 		<MermaidDiagram definition={statusPageDiagram.definition} label={statusPageDiagram.label} />
 	</ArchSection>

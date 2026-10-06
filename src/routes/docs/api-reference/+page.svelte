@@ -8,7 +8,6 @@
 	import ApiReferenceMain from '$lib/components/api-reference/ApiReferenceMain.svelte';
 	import ApiReferenceCodePane from '$lib/components/api-reference/ApiReferenceCodePane.svelte';
 	import ApiReferenceFooter from '$lib/components/api-reference/ApiReferenceFooter.svelte';
-	import DocsSiteFooter from '$lib/components/docs/DocsSiteFooter.svelte';
 
 	let activeEndpointId = $state('auth-register');
 

@@ -61,7 +61,12 @@
 				<span>The diagram could not be rendered.</span>
 			</div>
 		{/if}
-		<div bind:this={container} class="flex min-w-max justify-center" role="img" aria-label={label}></div>
+		<div
+			bind:this={container}
+			class="flex min-w-max justify-center"
+			role="img"
+			aria-label={label}
+		></div>
 	</div>
 	<figcaption class="text-center font-mono text-xs text-[#bbcabf]/60">{label}</figcaption>
 </figure>

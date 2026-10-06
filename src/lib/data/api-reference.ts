@@ -1259,6 +1259,36 @@ export const apiGroups: ApiGroup[] = [
 				}
 			},
 			{
+				id: 'monitor-check',
+				method: 'POST',
+				path: '/organization/:orgId/monitors/:monitorId/check',
+				title: 'Trigger manual check',
+				description:
+					'Force the background worker pool to immediately check the monitor without waiting for the next scheduler interval.',
+				auth: 'Bearer token + TenantMiddleware (owner or admin)',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/monitors/monitor_uuid/check \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "message": "Manual check queued and processed successfully",
+  "data": {
+    "status": "up",
+    "latency_ms": 45,
+    "status_code": 200,
+    "checked_at": "2026-10-04T12:00:00Z"
+  }
+}`
+						}
+					]
+				}
+			},
+			{
 				id: 'monitor-global-list',
 				method: 'GET',
 				path: '/monitors',
@@ -1636,12 +1666,39 @@ export const apiGroups: ApiGroup[] = [
 				method: 'GET',
 				path: '/organization/:orgId/incident',
 				title: 'List all incidents',
-				description: 'List all incidents for the organization.',
+				description:
+					'List all incidents for the organization with optional status filtering and pagination.',
 				auth: 'Bearer token + TenantMiddleware',
+				queryParams: [
+					{
+						name: 'status',
+						type: 'string',
+						description: "Optional filter by status: 'ongoing' or 'resolved'.",
+						required: false
+					},
+					{
+						name: 'page',
+						type: 'number',
+						description: 'Optional page number (default 1).',
+						required: false
+					},
+					{
+						name: 'limit',
+						type: 'number',
+						description: 'Optional results limit per page (default 20, max 100).',
+						required: false
+					},
+					{
+						name: 'monitor_id',
+						type: 'string',
+						description: 'Optional filter by specific monitor UUID.',
+						required: false
+					}
+				],
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/incident \\
+					code: `curl -X GET "http://localhost:8080/api/v1/organization/org_uuid/incident?status=ongoing&page=1&limit=10" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -2953,6 +3010,18 @@ export const apiGroups: ApiGroup[] = [
 						type: 'number',
 						description: 'Optional. Default: 0.',
 						required: false
+					},
+					{
+						name: 'status',
+						type: 'string',
+						description: "Optional filter by delivery status: 'sent' or 'failed'.",
+						required: false
+					},
+					{
+						name: 'channel_id',
+						type: 'string',
+						description: 'Optional filter by notification channel UUID.',
+						required: false
 					}
 				],
 				codeExample: {
@@ -3384,6 +3453,36 @@ ws.onclose = () => {
 				}
 			},
 			{
+				id: 'public-monitors-check',
+				method: 'POST',
+				path: '/public/monitors/:id/check',
+				title: 'Trigger manual check (API Key)',
+				description:
+					'Force the background worker pool to immediately check the monitor using API Key authentication.',
+				auth: 'API Key (write permission)',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X POST http://localhost:8080/api/v1/public/monitors/monitor_uuid/check \\
+  -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx"`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "message": "Manual check queued and processed successfully",
+  "data": {
+    "status": "up",
+    "latency_ms": 48,
+    "status_code": 200,
+    "checked_at": "2026-10-04T12:00:00Z"
+  }
+}`
+						}
+					]
+				}
+			},
+			{
 				id: 'public-incidents-list',
 				method: 'GET',
 				path: '/public/incidents',
@@ -3467,6 +3566,65 @@ ws.onclose = () => {
 							code: `{
   "status": "success",
   "data": [ ... ]
+}`
+						}
+					]
+				}
+			}
+		]
+	},
+	{
+		id: 'health',
+		label: 'Health & System',
+		endpoints: [
+			{
+				id: 'health-liveness',
+				method: 'GET',
+				path: '/healthz',
+				title: 'Liveness & Readiness probe',
+				description:
+					'Check container health, database connectivity, and Redis ping. Suitable for Kubernetes or Docker container health checks.',
+				auth: 'None',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -s http://localhost:8080/healthz`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "healthy",
+  "database": "connected",
+  "redis": "connected",
+  "version": "1.0.0"
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'health-status',
+				method: 'GET',
+				path: '/api/v1/health',
+				title: 'API Health status',
+				description: 'Verify API engine uptime, memory usage, and background worker queue metrics.',
+				auth: 'None',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -s http://localhost:8080/api/v1/health`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "ok",
+  "uptime": "72h34m12s",
+  "worker_pool": {
+    "workers": 10,
+    "active_jobs": 0,
+    "queue_depth": 0
+  },
+  "timestamp": "2026-10-04T12:00:00Z"
 }`
 						}
 					]

@@ -9,7 +9,9 @@
 	];
 </script>
 
-<header class="fixed top-3 left-1/2 z-50 w-[min(90%,56rem)] -translate-x-1/2 rounded-3xl border border-white/10 bg-[#131314]/80 shadow-lg shadow-black/30 backdrop-blur-xl">
+<header
+	class="fixed top-3 left-1/2 z-50 w-[min(90%,56rem)] -translate-x-1/2 rounded-3xl border border-white/10 bg-[#131314]/80 shadow-lg shadow-black/30 backdrop-blur-xl"
+>
 	<nav
 		class="mx-auto flex h-15 max-w-360 items-center justify-between px-5"
 		aria-label="Main navigation"

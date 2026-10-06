@@ -33,14 +33,9 @@
 			class="flex min-w-0 flex-1 flex-col items-start rounded-lg border border-white/5 bg-[#1a1d1b] p-6"
 			onclick={() => onSelectEndpoint(prevEndpoint.id)}
 		>
-			<span class="eyebrow mb-2 text-[#bbcabf]/60">
-				Previous
-			</span>
+			<span class="eyebrow mb-2 text-[#bbcabf]/60"> Previous </span>
 			<div class="flex items-center gap-3 text-[#4edea3]/80">
-				<ArrowLeft
-					size={16}
-					class="flex-shrink-0"
-				/>
+				<ArrowLeft size={16} class="flex-shrink-0" />
 				<span class="min-w-0 truncate font-display text-lg font-semibold">{prevEndpoint.title}</span
 				>
 			</div>
@@ -56,16 +51,11 @@
 			class="flex min-w-0 flex-1 flex-col items-end rounded-lg border border-white/5 bg-[#1a1d1b] p-6"
 			onclick={() => onSelectEndpoint(nextEndpoint.id)}
 		>
-			<span class="eyebrow mb-2 text-[#bbcabf]/60">
-				Next
-			</span>
+			<span class="eyebrow mb-2 text-[#bbcabf]/60"> Next </span>
 			<div class="flex items-center gap-3 text-[#4edea3]/80">
 				<span class="min-w-0 truncate font-display text-lg font-semibold">{nextEndpoint.title}</span
 				>
-				<ArrowRight
-					size={16}
-					class="flex-shrink-0"
-				/>
+				<ArrowRight size={16} class="flex-shrink-0" />
 			</div>
 			<span class="mt-1 truncate font-mono text-xs text-[#bbcabf]/40">
 				<span class={methodColors[nextEndpoint.method]}>{nextEndpoint.method}</span>

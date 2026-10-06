@@ -13,9 +13,7 @@
 	let activeItemId = $state('getting-started');
 
 	// Get headings for the current section to pass to TOC
-	const currentSection = $derived(
-		docSections.find((s) => s.id === activeItemId) ?? docSections[0]
-	);
+	const currentSection = $derived(docSections.find((s) => s.id === activeItemId) ?? docSections[0]);
 	const currentHeadings = $derived(currentSection?.headings ?? []);
 
 	function handleSelectItem(id: string) {
@@ -76,24 +74,24 @@
 </svelte:head>
 
 <div class="docs-fonts">
-<DocsNav />
+	<DocsNav />
 
-<div class="flex w-full min-h-screen">
-	<!-- Column 1: Left Navigation Sidebar (w-72, sticky) -->
-	<DocsSidebar groups={docGroups} {activeItemId} onSelectItem={handleSelectItem} />
+	<div class="flex min-h-screen w-full">
+		<!-- Column 1: Left Navigation Sidebar (w-72, sticky) -->
+		<DocsSidebar groups={docGroups} {activeItemId} onSelectItem={handleSelectItem} />
 
-	<!-- Column 2: Main Content (flexible width) -->
-	<div class="flex min-w-0 flex-1 flex-col">
-		<div data-reveal class="min-w-0 flex-1">
-			<DocsMainContent {activeItemId} />
+		<!-- Column 2: Main Content (flexible width) -->
+		<div class="flex min-w-0 flex-1 flex-col">
+			<div data-reveal class="min-w-0 flex-1">
+				<DocsMainContent {activeItemId} />
+			</div>
+			<div data-reveal class="px-8 lg:px-16 xl:px-20">
+				<DocsFooter {activeItemId} onSelectItem={handleSelectItem} />
+			</div>
+			<DocsSiteFooter />
 		</div>
-		<div data-reveal class="px-8 lg:px-16 xl:px-20">
-			<DocsFooter {activeItemId} onSelectItem={handleSelectItem} />
-		</div>
-		<DocsSiteFooter />
+
+		<!-- Column 3: TOC Right "On this page" (w-64, sticky, visible on xl: >= 1280px) -->
+		<DocsToc headings={currentHeadings} />
 	</div>
-
-	<!-- Column 3: TOC Right "On this page" (w-64, sticky, visible on xl: >= 1280px) -->
-	<DocsToc headings={currentHeadings} />
-</div>
 </div>

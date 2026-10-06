@@ -1,11 +1,5 @@
 <script lang="ts">
-	import {
-		BadgeCheck,
-		CalendarClock,
-		Lock,
-		Network,
-		Sparkles
-	} from 'lucide-svelte';
+	import { BadgeCheck, CalendarClock, Lock, Network, Sparkles } from 'lucide-svelte';
 	import { spotlight } from '$lib/actions/spotlight';
 	import { images } from '$lib/data/landing';
 	import ShotImage from './ShotImage.svelte';
@@ -47,7 +41,11 @@
 
 	const small = [
 		{ title: 'Multi-protocol checks', copy: 'HTTP, TCP ports, and ICMP ping.', icon: Network },
-		{ title: 'SSL & domain expiry', copy: 'Know before a certificate or domain lapses.', icon: Lock },
+		{
+			title: 'SSL & domain expiry',
+			copy: 'Know before a certificate or domain lapses.',
+			icon: Lock
+		},
 		{
 			title: 'Scheduled maintenance',
 			copy: 'Planned windows with a public banner.',
@@ -83,7 +81,12 @@
 					<div
 						class="relative mx-7 mt-auto h-56 overflow-hidden rounded-t-xl border border-b-0 border-white/10 transition-transform duration-500 group-hover:-translate-y-1"
 					>
-						<ShotImage src={card.image} file={card.file} alt="{card.title} screenshot" ratio="16 / 9" />
+						<ShotImage
+							src={card.image}
+							file={card.file}
+							alt="{card.title} screenshot"
+							ratio="16 / 9"
+						/>
 					</div>
 				</article>
 			{/each}

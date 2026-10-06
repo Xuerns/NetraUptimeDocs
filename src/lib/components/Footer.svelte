@@ -87,14 +87,13 @@
 		class="mx-auto mt-10 flex max-w-360 flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 md:flex-row"
 	>
 		<p class="text-xs text-[#bbcabf]/60">
-			© 2026 PulseWatch. Open-source uptime monitoring — free forever.
-		</p>
+			© 2026 PulseWatch.
 		<div class="flex items-center gap-6 text-xs text-[#bbcabf]/60">
 			<span>Self-Hosted</span>
 			<span>•</span>
 			<span>No Vendor Lock-in</span>
 			<span>•</span>
-			<span>MIT License</span>
+			<span>AGPL-3.0</span>
 		</div>
 	</div>
 </footer>

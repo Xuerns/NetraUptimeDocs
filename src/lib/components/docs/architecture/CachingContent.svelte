@@ -10,8 +10,8 @@
 <div class="flex flex-col gap-16">
 	<ArchSection id="cache-flow" title="Read-Through Cache & Invalidation">
 		<ArchText>
-			Redis serves as a distributed cache and counter store. Reads use a cache-aside flow; any monitor
-			mutation writes to PostgreSQL first and then deletes the related keys.
+			Redis serves as a distributed cache and counter store. Reads use a cache-aside flow; any
+			monitor mutation writes to PostgreSQL first and then deletes the related keys.
 		</ArchText>
 		<MermaidDiagram definition={cacheDiagram.definition} label={cacheDiagram.label} />
 	</ArchSection>

@@ -18,38 +18,18 @@
 	import RetentionContent from './architecture/RetentionContent.svelte';
 	import StatusPageInternalsContent from './architecture/StatusPageInternalsContent.svelte';
 	import AuditLoggingContent from './architecture/AuditLoggingContent.svelte';
+	import DockerComposeContent from './DockerComposeContent.svelte';
+	import ReverseProxyContent from './ReverseProxyContent.svelte';
+	import NotificationChannelsContent from './NotificationChannelsContent.svelte';
+	import SlackDocContent from './SlackDocContent.svelte';
+	import EmailDocContent from './EmailDocContent.svelte';
+	import PermissionsContent from './PermissionsContent.svelte';
+	import CicdContent from './CicdContent.svelte';
 	import { docSections } from '$lib/data/docs';
 
 	let { activeItemId }: { activeItemId: string } = $props();
 
-	const activeSection = $derived(
-		docSections.find((s) => s.id === activeItemId) ?? docSections[0]
-	);
-
-	// Sections with dedicated rich content components
-	const richContentSections = [
-		'getting-started',
-		'monitors',
-		'environment-variables',
-		'alert-rules',
-		'status-pages',
-		'discord',
-		'webhook',
-		'architecture',
-		'bootstrap-lifecycle',
-		'request-auth',
-		'monitoring-engine',
-		'alert-evaluation',
-		'incidents-notifications',
-		'realtime-websocket',
-		'ssl-domain-runner',
-		'caching-rate-limit',
-		'data-retention',
-		'status-pages-internals',
-		'audit-logging'
-	];
-
-	const hasRichContent = $derived(richContentSections.includes(activeItemId));
+	const activeSection = $derived(docSections.find((s) => s.id === activeItemId) ?? docSections[0]);
 </script>
 
 <main class="flex-1 bg-transparent p-8 lg:p-16 xl:p-20">
@@ -69,7 +49,6 @@
 					{activeSection.description}
 				</p>
 			</section>
-
 
 			<!-- Rich Content Components -->
 			{#if activeItemId === 'getting-started'}
@@ -108,8 +87,21 @@
 				<StatusPageInternalsContent />
 			{:else if activeItemId === 'audit-logging'}
 				<AuditLoggingContent />
+			{:else if activeItemId === 'docker-compose'}
+				<DockerComposeContent />
+			{:else if activeItemId === 'reverse-proxy'}
+				<ReverseProxyContent />
+			{:else if activeItemId === 'notification-channels'}
+				<NotificationChannelsContent />
+			{:else if activeItemId === 'slack'}
+				<SlackDocContent />
+			{:else if activeItemId === 'email'}
+				<EmailDocContent />
+			{:else if activeItemId === 'permissions'}
+				<PermissionsContent />
+			{:else if activeItemId === 'cicd'}
+				<CicdContent />
 			{/if}
-
 		{/if}
 	</div>
 </main>

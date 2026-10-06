@@ -11,13 +11,10 @@
 <div class="flex flex-col gap-16">
 	<ArchSection id="ae-state" title="Status State Machine">
 		<ArchText>
-			After a check completes, evaluator.go decides the final monitor status from latency, status code, and
-			connection result.
+			After a check completes, evaluator.go decides the final monitor status from latency, status
+			code, and connection result.
 		</ArchText>
-		<MermaidDiagram
-			definition={stateMachineDiagram.definition}
-			label={stateMachineDiagram.label}
-		/>
+		<MermaidDiagram definition={stateMachineDiagram.definition} label={stateMachineDiagram.label} />
 	</ArchSection>
 
 	<ArchSection id="ae-priority" title="Custom Rule Priority">
@@ -38,9 +35,9 @@
 
 	<ArchSection id="ae-consecutive" title="Consecutive Breaches Threshold">
 		<ArchText>
-			A monitor is not marked DOWN on the first failure. FailureCount increases on each consecutive breach,
-			and the transition to DOWN happens only when FailureCount reaches RequiredBreaches (configurable from
-			1 to 20). This removes false positives caused by brief network glitches.
+			A monitor is not marked DOWN on the first failure. FailureCount increases on each consecutive
+			breach, and the transition to DOWN happens only when FailureCount reaches RequiredBreaches
+			(configurable from 1 to 20). This removes false positives caused by brief network glitches.
 		</ArchText>
 	</ArchSection>
 </div>

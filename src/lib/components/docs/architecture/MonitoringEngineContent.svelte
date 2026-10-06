@@ -11,21 +11,21 @@
 <div class="flex flex-col gap-16">
 	<ArchSection id="eng-scheduler" title="Scheduler">
 		<ArchText>
-			A ticker fires every 20 seconds, loads active monitors, and enqueues every monitor whose interval has
-			elapsed. A mutex protects the lastRun map.
+			A ticker fires every 20 seconds, loads active monitors, and enqueues every monitor whose
+			interval has elapsed. A mutex protects the lastRun map.
 		</ArchText>
 		<MermaidDiagram definition={schedulerDiagram.definition} label={schedulerDiagram.label} />
 	</ArchSection>
 
 	<ArchSection id="eng-pool" title="Worker Pool">
 		<ArchText>
-			Ten worker goroutines read from a buffered channel of 1000 jobs. Each worker applies the monitor
-			timeout (default 10 seconds), runs the matching checker, measures latency, evaluates alert rules, and
-			stores the result.
+			Ten worker goroutines read from a buffered channel of 1000 jobs. Each worker applies the
+			monitor timeout (default 10 seconds), runs the matching checker, measures latency, evaluates
+			alert rules, and stores the result.
 		</ArchText>
 		<Callout>
-			A manual Check Now calls ProcessImmediate(monitorID), which runs the checker directly without going
-			through the scheduler queue.
+			A manual Check Now calls ProcessImmediate(monitorID), which runs the checker directly without
+			going through the scheduler queue.
 		</Callout>
 	</ArchSection>
 

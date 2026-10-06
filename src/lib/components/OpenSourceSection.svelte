@@ -45,20 +45,5 @@
 				</article>
 			{/each}
 		</div>
-
-		<div data-reveal class="mt-10 rounded-3xl border border-white/8 bg-white/2 p-6">
-			<p class="text-center font-mono text-[11px] tracking-[0.18em] text-[#86948a] uppercase">
-				Built on boring, reliable technology
-			</p>
-			<ul class="mt-6 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5">
-				{#each stack as tech (tech.name)}
-					<li class="flex flex-col items-center gap-2 text-center">
-						<img src={tech.logo} alt="" class="h-8 w-8" />
-						<span class="text-sm font-medium text-[#e5e2e3]">{tech.name}</span>
-						<span class="text-xs text-[#86948a]">{tech.note}</span>
-					</li>
-				{/each}
-			</ul>
-		</div>
 	</div>
 </section>

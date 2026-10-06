@@ -9,8 +9,8 @@
 <div class="flex flex-col gap-16">
 	<ArchSection id="ret-rollup" title="Hourly Rollup">
 		<ArchText>
-			To keep the database fast with millions of checks, retention.go aggregates raw checks per day and then
-			purges the raw rows older than 24 hours.
+			To keep the database fast with millions of checks, retention.go aggregates raw checks per day
+			and then purges the raw rows older than 24 hours.
 		</ArchText>
 		<MermaidDiagram definition={retentionDiagram.definition} label={retentionDiagram.label} />
 	</ArchSection>

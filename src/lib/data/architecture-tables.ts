@@ -182,9 +182,15 @@ export const wsComponents: TableData = {
 	rows: [
 		['Gorilla upgrader', 'Read and write buffers of 1024 bytes.'],
 		['Rooms', 'Hub keeps Rooms map[string]map[*Client]bool keyed by OrganizationID.'],
-		['ReadPump', 'Reads messages (max 512 bytes), extends the deadline on every pong, unregisters on disconnect.'],
+		[
+			'ReadPump',
+			'Reads messages (max 512 bytes), extends the deadline on every pong, unregisters on disconnect.'
+		],
 		['WritePump', 'Sends a ping every 54 seconds, which is (pongWait * 9) / 10.'],
-		['Client backoff', 'ws.ts reconnects with exponential backoff: min(1000 * 2^attempt, 10000) ms.']
+		[
+			'Client backoff',
+			'ws.ts reconnects with exponential backoff: min(1000 * 2^attempt, 10000) ms.'
+		]
 	]
 };
 

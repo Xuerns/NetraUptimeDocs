@@ -11,8 +11,8 @@
 <div class="flex flex-col gap-16">
 	<ArchSection id="req-routing" title="Request Routing">
 		<ArchText>
-			Incoming HTTP traffic is split into four tiers of authorization and data isolation: static assets,
-			public API keys, unauthenticated auth endpoints, and organization-scoped JWT routes.
+			Incoming HTTP traffic is split into four tiers of authorization and data isolation: static
+			assets, public API keys, unauthenticated auth endpoints, and organization-scoped JWT routes.
 		</ArchText>
 		<MermaidDiagram
 			definition={requestRoutingDiagram.definition}
@@ -22,15 +22,16 @@
 
 	<ArchSection id="req-auth" title="Authentication">
 		<ArchText>
-			The JWT is stored in an httpOnly secure cookie named access_token. AuthMiddleware extracts the claims
-			and injects userID into the Gin context.
+			The JWT is stored in an httpOnly secure cookie named access_token. AuthMiddleware extracts the
+			claims and injects userID into the Gin context.
 		</ArchText>
 	</ArchSection>
 
 	<ArchSection id="req-tenant" title="Tenant Isolation">
 		<ArchText>
-			TenantMiddleware verifies that the authenticated user is a member of the requested :orgId through the
-			organization_members table. On success it injects organizationID and organizationRole.
+			TenantMiddleware verifies that the authenticated user is a member of the requested :orgId
+			through the organization_members table. On success it injects organizationID and
+			organizationRole.
 		</ArchText>
 	</ArchSection>
 
@@ -51,8 +52,8 @@
 
 	<ArchSection id="req-xss" title="Input Sanitization">
 		<ArchText>
-			The Gin validator registers a custom nohtml rule that is applied to user text input, blocking HTML
-			and script injection.
+			The Gin validator registers a custom nohtml rule that is applied to user text input, blocking
+			HTML and script injection.
 		</ArchText>
 	</ArchSection>
 </div>

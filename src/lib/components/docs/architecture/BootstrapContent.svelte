@@ -9,8 +9,8 @@
 <div class="flex flex-col gap-16">
 	<ArchSection id="boot-sequence" title="Startup Sequence">
 		<ArchText>
-			The server entry point is main.go. Initialization order is deterministic: configuration, database,
-			migrations, WebSocket hub, worker pool, schedulers, and finally the HTTP engine.
+			The server entry point is main.go. Initialization order is deterministic: configuration,
+			database, migrations, WebSocket hub, worker pool, schedulers, and finally the HTTP engine.
 		</ArchText>
 		<MermaidDiagram definition={bootstrapDiagram.definition} label={bootstrapDiagram.label} />
 	</ArchSection>

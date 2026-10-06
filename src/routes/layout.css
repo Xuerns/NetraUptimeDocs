@@ -40,9 +40,10 @@ a {
 
 /* Docs pages use the system font stack only */
 .docs-fonts {
-	--font-display: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-		'Noto Sans', Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
-		'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+	--font-display:
+		ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans',
+		Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+		'Segoe UI Symbol', 'Noto Color Emoji';
 	--font-sans: var(--font-display);
 	--font-mono: var(--font-display);
 	font-family: var(--font-display);
@@ -75,7 +76,9 @@ a {
 	border: 1px solid rgba(255, 255, 255, 0.08);
 	backdrop-filter: blur(14px);
 	-webkit-backdrop-filter: blur(14px);
-	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 20px 50px -24px rgba(0, 0, 0, 0.7);
+	box-shadow:
+		0 1px 0 rgba(255, 255, 255, 0.05) inset,
+		0 20px 50px -24px rgba(0, 0, 0, 0.7);
 	transition:
 		border-color 0.3s ease,
 		transform 0.3s ease;

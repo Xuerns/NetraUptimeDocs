@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ChevronDown, ChevronUp, ArrowUpRight, Code } from 'lucide-svelte';
+	import { ChevronDown, ChevronUp } from 'lucide-svelte';
 	import type { DocGroup } from '$lib/data/docs';
 
 	let {
@@ -54,38 +54,38 @@
 						{group.label}
 					</button>
 				{:else}
-				<button
-					class="mb-2 flex w-full items-center justify-between px-2 py-1 text-left text-sm transition-colors hover:text-[#e5e2e3] {expandedGroups[
-						group.id
-					]
-						? 'font-semibold text-[#e5e2e3]'
-						: 'text-[#bbcabf]'}"
-					onclick={() => toggleGroup(group.id)}
-				>
-					<span>{group.label}</span>
+					<button
+						class="mb-2 flex w-full items-center justify-between px-2 py-1 text-left text-sm transition-colors hover:text-[#e5e2e3] {expandedGroups[
+							group.id
+						]
+							? 'font-semibold text-[#e5e2e3]'
+							: 'text-[#bbcabf]'}"
+						onclick={() => toggleGroup(group.id)}
+					>
+						<span>{group.label}</span>
+						{#if expandedGroups[group.id]}
+							<ChevronUp size={14} />
+						{:else}
+							<ChevronDown size={14} />
+						{/if}
+					</button>
 					{#if expandedGroups[group.id]}
-						<ChevronUp size={14} />
-					{:else}
-						<ChevronDown size={14} />
+						<ul class="ml-4 flex flex-col gap-1 border-l border-[#3c4a42]/50 py-1 pl-4">
+							{#each group.items as item (item.id)}
+								<li>
+									<button
+										class="w-full rounded-md px-2 py-1 text-left text-sm transition-colors {activeItemId ===
+										item.id
+											? '-ml-2 bg-[#4edea3]/10 font-medium text-[#4edea3]'
+											: 'text-[#bbcabf] hover:text-[#e5e2e3]'}"
+										onclick={() => onSelectItem(item.id)}
+									>
+										{item.label}
+									</button>
+								</li>
+							{/each}
+						</ul>
 					{/if}
-				</button>
-				{#if expandedGroups[group.id]}
-					<ul class="ml-4 flex flex-col gap-1 border-l border-[#3c4a42]/50 py-1 pl-4">
-						{#each group.items as item (item.id)}
-							<li>
-								<button
-									class="w-full rounded-md px-2 py-1 text-left text-sm transition-colors {activeItemId ===
-									item.id
-										? '-ml-2 bg-[#4edea3]/10 font-medium text-[#4edea3]'
-										: 'text-[#bbcabf] hover:text-[#e5e2e3]'}"
-									onclick={() => onSelectItem(item.id)}
-								>
-									{item.label}
-								</button>
-							</li>
-						{/each}
-					</ul>
-				{/if}
 				{/if}
 			</div>
 		{/each}

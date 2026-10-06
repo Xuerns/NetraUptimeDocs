@@ -2,14 +2,13 @@
 	import type { Snippet } from 'svelte';
 	import { Info, TriangleAlert } from 'lucide-svelte';
 
-	let {
-		variant = 'info',
-		children
-	}: { variant?: 'info' | 'warning'; children: Snippet } = $props();
+	let { variant = 'info', children }: { variant?: 'info' | 'warning'; children: Snippet } =
+		$props();
 </script>
 
 <div
-	class="flex gap-3 rounded-lg border p-4 text-sm leading-relaxed text-[#bbcabf] {variant === 'warning'
+	class="flex gap-3 rounded-lg border p-4 text-sm leading-relaxed text-[#bbcabf] {variant ===
+	'warning'
 		? 'border-amber-300/30 bg-[#1f1c12]'
 		: 'border-[#4edea3]/30 bg-[#101a15]'}"
 	role="note"

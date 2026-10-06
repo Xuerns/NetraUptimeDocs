@@ -32,7 +32,7 @@
 			href="https://github.com/Xuerns/PulseWatch"
 			target="_blank"
 			rel="noopener noreferrer"
-			class="flex size-9 items-center justify-center  text-[#bbcabf] transition-all hover:text-white"
+			class="flex size-9 items-center justify-center text-[#bbcabf] transition-all hover:text-white"
 			aria-label="GitHub Repository"
 		>
 			<svg class="size-6.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">

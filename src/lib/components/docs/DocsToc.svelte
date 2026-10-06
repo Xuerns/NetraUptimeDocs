@@ -85,6 +85,35 @@
 					</button>
 				{/each}
 			</nav>
+
+			<!-- Action Links -->
+			<div class="mt-4 flex flex-col gap-2.5 border-t border-[#3c4a42]/40 pt-5 text-xs text-[#bbcabf]/70">
+				<a
+					href="https://github.com/Xuerns/PulseWatch"
+					target="_blank"
+					rel="noreferrer"
+					class="flex items-center gap-2 transition-colors hover:text-[#4edea3]"
+				>
+					<Edit3 size={13} />
+					<span>Edit this page on GitHub</span>
+				</a>
+				<a
+					href="https://github.com/Xuerns/PulseWatch/issues"
+					target="_blank"
+					rel="noreferrer"
+					class="flex items-center gap-2 transition-colors hover:text-[#4edea3]"
+				>
+					<ExternalLink size={13} />
+					<span>Report an issue</span>
+				</a>
+				<button
+					onclick={scrollToTop}
+					class="flex items-center gap-2 text-left transition-colors hover:text-[#e5e2e3]"
+				>
+					<ArrowUp size={13} />
+					<span>Back to top</span>
+				</button>
+			</div>
 		</div>
 	{/if}
 </aside>

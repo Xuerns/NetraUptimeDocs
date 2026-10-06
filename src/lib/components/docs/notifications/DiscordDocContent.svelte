@@ -60,7 +60,8 @@
 			Discord Webhook Configuration
 		</h1>
 		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			Create an incoming webhook in Discord and link it to PulseWatch to receive real-time status alerts.
+			Create an incoming webhook in Discord and link it to PulseWatch to receive real-time status
+			alerts.
 		</p>
 	</header>
 
@@ -68,13 +69,12 @@
 	<div class="flex flex-col gap-12">
 		{#each steps as step (step.title)}
 			<section class="relative flex flex-col gap-4">
-
 				<!-- Step Title and Instructions -->
 				<div class="flex flex-col gap-2">
 					<h2 class="font-display text-xl font-semibold text-[#e5e2e3]">
 						{step.title}
 					</h2>
-					<ul class="flex flex-col gap-1.5 text-sm font-light leading-relaxed text-[#bbcabf]">
+					<ul class="flex flex-col gap-1.5 text-sm leading-relaxed font-light text-[#bbcabf]">
 						{#each step.instructions as instruction}
 							<li class="flex items-start gap-2">
 								<span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-sm bg-[#4edea3]"></span>
