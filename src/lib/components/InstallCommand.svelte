@@ -6,7 +6,9 @@
 
 	const tabs = [
 		{ key: 'npx', label: 'npx', logo: logos.npm, cmd: installCommands.npx },
-		{ key: 'docker', label: 'Docker', logo: logos.docker, cmd: installCommands.docker }
+		{ key: 'pnpm', label: 'pnpm', logo: logos.pnpm, cmd: installCommands.pnpm },
+		{ key: 'yarn', label: 'yarn', logo: logos.yarn, cmd: installCommands.yarn },
+		{ key: 'bun', label: 'bun', logo: logos.bun, cmd: installCommands.bun }
 	] as const;
 
 	let active = $state<(typeof tabs)[number]['key']>('npx');
@@ -39,7 +41,7 @@
 						? 'bg-white/10 text-white'
 						: 'text-[#86948a] hover:text-[#e5e2e3]'}"
 				>
-					<img src={tab.logo} alt="" class="h-3.5 w-3.5" />
+					<img src={tab.logo} alt="" class="h-3.5 w-3.5 object-contain" />
 					{tab.label}
 				</button>
 			{/each}

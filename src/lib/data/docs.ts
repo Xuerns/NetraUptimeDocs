@@ -195,7 +195,7 @@ export const docSections: DocSection[] = [
 		headings: [
 			{ id: 'gs-overview', title: 'Overview', level: 2 },
 			{ id: 'gs-requirements', title: 'System Requirements', level: 2 },
-			{ id: 'gs-docker-deploy', title: 'Docker Deployment', level: 2 },
+			{ id: 'gs-docker-deploy', title: 'Quick Start via CLI', level: 2 },
 			{ id: 'gs-verify', title: 'Verifying Services & Healthcheck', level: 2 },
 			{ id: 'gs-next-steps', title: 'Next Steps', level: 2 }
 		]

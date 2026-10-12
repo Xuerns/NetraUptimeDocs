@@ -7,14 +7,19 @@ import redis from '$lib/assets/landing/logos/redis.svg';
 import go from '$lib/assets/landing/logos/go.svg';
 import svelte from '$lib/assets/landing/logos/svelte.svg';
 import npm from '$lib/assets/landing/logos/npm.svg';
+import pnpm from '$lib/assets/landing/logos/pnpm.svg';
+import bun from '$lib/assets/landing/logos/bun.svg';
+import yarn from '$lib/assets/landing/logos/yarn.svg';
 
 /**
  * Install commands shown in the hero and the final CTA.
- * Change them here when the npm package is published.
+ * Uses the PulseWatch CLI package runners.
  */
 export const installCommands = {
-	npx: 'npx pulsewatch init',
-	docker: 'docker compose up -d'
+	npx: 'npx pulsewatch start',
+	pnpm: 'pnpm dlx pulsewatch start',
+	yarn: 'yarn dlx pulsewatch start',
+	bun: 'bunx pulsewatch start'
 };
 
 export const links = {
@@ -22,7 +27,7 @@ export const links = {
 	docs: '/docs'
 };
 
-export const logos = { slack, discord, github, docker, postgresql, redis, go, svelte, npm };
+export const logos = { slack, discord, github, docker, postgresql, redis, go, svelte, npm, pnpm, bun, yarn };
 
 /**
  * Screenshots live in src/lib/assets/landing/. Drop a .webp or .png file with
