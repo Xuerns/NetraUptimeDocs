@@ -1,6 +1,6 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "pulsewatch-landingpage",
+	"name": "pulsewatch-dev",
 	"compatibility_date": "2026-08-28",
 	"assets": {
 		"directory": "./build",

@@ -88,6 +88,7 @@
 	>
 		<p class="text-xs text-[#bbcabf]/60">
 			© 2026 PulseWatch.
+		</p>
 		<div class="flex items-center gap-6 text-xs text-[#bbcabf]/60">
 			<span>Self-Hosted</span>
 			<span>•</span>
