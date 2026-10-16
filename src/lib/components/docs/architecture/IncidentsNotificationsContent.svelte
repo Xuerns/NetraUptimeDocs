@@ -10,7 +10,7 @@
 <div class="flex flex-col gap-16">
 	<ArchSection id="inc-lifecycle" title="Incident Lifecycle & Dispatch">
 		<ArchText>
-			On a status transition, PulseWatch opens or resolves an incident, emails the person in charge,
+			On a status transition, Netra Uptime opens or resolves an incident, emails the person in charge,
 			and dispatches the event to every active notification channel of the organization in parallel.
 		</ArchText>
 		<MermaidDiagram definition={incidentDiagram.definition} label={incidentDiagram.label} />

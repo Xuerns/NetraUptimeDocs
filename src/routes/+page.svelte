@@ -58,12 +58,12 @@
 </script>
 
 <svelte:head>
-	<title>PulseWatch | Self-hosted uptime monitoring &amp; status pages</title>
+	<title>Netra Uptime | Self-hosted uptime monitoring &amp; status pages</title>
 	<meta
 		name="description"
-		content="PulseWatch is an open-source, self-hosted uptime monitor with incident management, alerts to Slack and Discord, and public status pages. Install with one command."
+		content="Netra Uptime is an open-source, self-hosted uptime monitor with incident management, alerts to Slack and Discord, and public status pages. Install with one command."
 	/>
-	<meta property="og:title" content="PulseWatch | Self-hosted uptime monitoring & status pages" />
+	<meta property="og:title" content="Netra Uptime | Self-hosted uptime monitoring & status pages" />
 	<meta
 		property="og:description"
 		content="Open-source uptime monitoring, incident management, and public status pages you host yourself."

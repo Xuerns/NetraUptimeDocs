@@ -28,7 +28,7 @@
 			Overview & Check Lifecycle
 		</h2>
 		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			PulseWatch monitors work on a simple lifecycle: the <strong class="text-[#e5e2e3]"
+			Netra Uptime monitors work on a simple lifecycle: the <strong class="text-[#e5e2e3]"
 				>worker pool</strong
 			> dispatches goroutines at configurable intervals to check each target. Results are evaluated, stored
 			in PostgreSQL, and broadcast via WebSocket to all connected dashboards in real-time.
@@ -53,7 +53,7 @@
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
 			HTTP monitors send requests to your endpoints at configurable intervals. They support custom
 			headers, authentication tokens, expected status codes, and response time thresholds.
-			PulseWatch evaluates the response against your rules and triggers incidents when conditions
+			Netra Uptime evaluates the response against your rules and triggers incidents when conditions
 			are met.
 		</p>
 
@@ -146,7 +146,7 @@
 			Status Codes & Payloads
 		</h3>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Configure expected status codes for your monitors. PulseWatch will mark the check as failed if
+			Configure expected status codes for your monitors. Netra Uptime will mark the check as failed if
 			the response status doesn't match your expectation. You can also send a request body for
 			POST/PUT monitors.
 		</p>
@@ -210,7 +210,7 @@ Timeout:  <span class="text-[#4edea3]">10</span> seconds</pre>
 			SSL / TLS Certificate Expiry
 		</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			SSL monitors check the validity and expiration date of your SSL/TLS certificates. PulseWatch
+			SSL monitors check the validity and expiration date of your SSL/TLS certificates. Netra Uptime
 			will alert you before certificates expire, preventing outages caused by expired certificates.
 		</p>
 		<div class="overflow-hidden rounded-lg border border-white/5">
@@ -263,7 +263,7 @@ Timeout:  <span class="text-[#4edea3]">10</span> seconds</pre>
 		</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
 			Domain expiry monitors track WHOIS expiration dates and notify you well in advance to prevent
-			accidental domain loss. PulseWatch queries WHOIS records to determine the exact expiry date of
+			accidental domain loss. Netra Uptime queries WHOIS records to determine the exact expiry date of
 			your domains.
 		</p>
 		<div class="rounded-lg border border-[#4edea3]/20 bg-[#4edea3]/5 p-4">
@@ -280,7 +280,7 @@ Timeout:  <span class="text-[#4edea3]">10</span> seconds</pre>
 			Smart Incident Detection (3×/1×)
 		</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			PulseWatch uses a state machine evaluation algorithm to prevent transient network blips and
+			Netra Uptime uses a state machine evaluation algorithm to prevent transient network blips and
 			false alarms:
 		</p>
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -316,7 +316,7 @@ Timeout:  <span class="text-[#4edea3]">10</span> seconds</pre>
 			On-Demand Manual Checks
 		</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			After fixing a server issue, you don't have to wait for the next scheduled check. PulseWatch
+			After fixing a server issue, you don't have to wait for the next scheduled check. Netra Uptime
 			provides a manual trigger to force an immediate health check.
 		</p>
 		<div class="relative overflow-hidden rounded-lg border border-white/5 bg-[#0e0e0f]">

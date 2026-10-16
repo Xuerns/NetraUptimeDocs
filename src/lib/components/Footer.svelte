@@ -10,7 +10,7 @@
 	];
 
 	const companyLinks = [
-		{ label: 'About PulseWatch', href: '#top' },
+		{ label: 'About Netra Uptime', href: '#top' },
 		{ label: 'Open Source', href: '#open-source' },
 		{ label: 'Self-Hosting', href: '#quick-start' }
 	];
@@ -28,8 +28,8 @@
 		<!-- Brand Column -->
 		<div class="col-span-1">
 			<div class="mb-4 flex items-center gap-2">
-				<img src={logo} alt="PulseWatch Logo" class="h-9 w-auto" />
-				<div class="font-display text-xl font-bold tracking-tight text-white">PulseWatch</div>
+				<img src={logo} alt="Netra Uptime Logo" class="h-9 w-auto" />
+				<div class="font-display text-xl font-bold tracking-tight text-white">Netra Uptime</div>
 			</div>
 			<p class="text-sm leading-relaxed text-[#bbcabf]">
 				Modern open-source uptime monitoring platform for businesses and developers who prioritize
@@ -87,7 +87,7 @@
 		class="mx-auto mt-10 flex max-w-360 flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 md:flex-row"
 	>
 		<p class="text-xs text-[#bbcabf]/60">
-			© 2026 PulseWatch.
+			© 2026 Netra Uptime.
 		</p>
 		<div class="flex items-center gap-6 text-xs text-[#bbcabf]/60">
 			<span>Self-Hosted</span>

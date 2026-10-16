@@ -18,8 +18,8 @@
 			href="/"
 			class="flex items-center gap-2.5 text-[#e5e2e3] transition-opacity hover:opacity-90"
 		>
-			<img src={logo} alt="PulseWatch Logo" class="h-8 w-auto" />
-			<span class="font-display text-xl font-bold tracking-tight text-white">PulseWatch</span>
+			<img src={logo} alt="Netra Uptime Logo" class="h-8 w-auto" />
+			<span class="font-display text-xl font-bold tracking-tight text-white">Netra Uptime</span>
 		</a>
 		<span
 			class="mt-2.5 -ml-3 font-mono text-[11px] font-bold tracking-wider text-[#4edea3] uppercase"

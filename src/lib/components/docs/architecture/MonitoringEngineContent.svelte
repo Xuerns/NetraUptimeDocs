@@ -34,7 +34,7 @@
 	</ArchSection>
 
 	<ArchSection id="eng-concurrency" title="Concurrency Matrix">
-		<ArchText>All goroutines that run concurrently inside the PulseWatch runtime.</ArchText>
+		<ArchText>All goroutines that run concurrently inside the Netra Uptime runtime.</ArchText>
 		<DataTable table={concurrencyMatrix} />
 	</ArchSection>
 </div>

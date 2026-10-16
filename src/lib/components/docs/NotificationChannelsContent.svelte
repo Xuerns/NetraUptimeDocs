@@ -23,7 +23,7 @@
 	<section id="nc-overview" class="flex scroll-mt-24 flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Channels Overview</h2>
 		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			PulseWatch provides a multi-channel alerting dispatcher. When a monitor transitions to <strong
+			Netra Uptime provides a multi-channel alerting dispatcher. When a monitor transitions to <strong
 				class="text-rose-400">DOWN</strong
 			>
 			or restores back to <strong class="text-[#4edea3]">UP</strong>, the worker pool simultaneously
@@ -108,7 +108,7 @@
 	<section id="nc-webhook" class="flex scroll-mt-24 flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Custom Webhooks</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			When an alert fires, PulseWatch executes an HTTP POST request to your specified endpoint
+			When an alert fires, Netra Uptime executes an HTTP POST request to your specified endpoint
 			containing a structured JSON body:
 		</p>
 		<CodeBlock code={sampleWebhookPayload} language="json" id="webhook-sample" />
@@ -118,7 +118,7 @@
 	<section id="nc-ssrf" class="flex scroll-mt-24 flex-col gap-6">
 		<h3 class="font-display text-2xl font-semibold tracking-tight text-[#e5e2e3]">SSRF Security</h3>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			To prevent Server-Side Request Forgery (SSRF) attacks, PulseWatch validates all webhook URLs
+			To prevent Server-Side Request Forgery (SSRF) attacks, Netra Uptime validates all webhook URLs
 			during both creation and execution. The dispatcher rejects requests targeting internal
 			infrastructure:
 		</p>

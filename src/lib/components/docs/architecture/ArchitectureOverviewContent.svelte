@@ -9,7 +9,7 @@
 <div class="flex flex-col gap-16">
 	<ArchSection id="arch-topology" title="System Topology">
 		<ArchText>
-			PulseWatch is a self-hosted uptime monitoring and public status page platform. A single
+			Netra Uptime is a self-hosted uptime monitoring and public status page platform. A single
 			container runs a Go backend (Gin, GORM, goroutines) that serves the SvelteKit 5 SPA embedded
 			with go:embed. PostgreSQL 16 is the persistent store; Redis 7 provides caching, rate limiting,
 			and counters.

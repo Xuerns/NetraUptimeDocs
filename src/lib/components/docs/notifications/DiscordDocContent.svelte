@@ -38,16 +38,16 @@
 		},
 		{
 			number: '4',
-			title: 'Add Notification Channel in PulseWatch',
+			title: 'Add Notification Channel in Netra Uptime',
 			instructions: [
-				'Open the <strong>Add Notification Channel</strong> dialog in your PulseWatch dashboard.',
+				'Open the <strong>Add Notification Channel</strong> dialog in your Netra Uptime dashboard.',
 				'Enter a <strong>Channel Name (1)</strong>.',
 				'Select <strong>Discord</strong> as the channel type.',
 				'Paste the copied URL into <strong>Discord Webhook URL (2)</strong>.',
 				'Click <strong>Create Channel</strong> to save.'
 			],
 			image: step4,
-			caption: 'Configure and save the Discord channel in PulseWatch'
+			caption: 'Configure and save the Discord channel in Netra Uptime'
 		}
 	];
 </script>
@@ -60,7 +60,7 @@
 			Discord Webhook Configuration
 		</h1>
 		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			Create an incoming webhook in Discord and link it to PulseWatch to receive real-time status
+			Create an incoming webhook in Discord and link it to Netra Uptime to receive real-time status
 			alerts.
 		</p>
 	</header>

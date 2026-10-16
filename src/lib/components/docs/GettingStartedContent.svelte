@@ -26,7 +26,7 @@
 	<section id="gs-overview" class="flex flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Overview</h2>
 		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			PulseWatch is an open-source, self-hosted uptime monitoring platform built with <strong
+			Netra Uptime is an open-source, self-hosted uptime monitoring platform built with <strong
 				class="text-[#e5e2e3]">Go</strong
 			>
 			and <strong class="text-[#e5e2e3]">Svelte</strong>. It monitors your websites, APIs, and
@@ -62,7 +62,7 @@
 	<section id="gs-docker-deploy" class="flex flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Quick Start via CLI</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Run PulseWatch instantly with a single command using the official CLI runner. It automatically initializes your <code class="rounded bg-[#1a1d1b] px-1.5 py-0.5 font-mono text-xs text-[#4edea3]">.env</code> and <code class="rounded bg-[#1a1d1b] px-1.5 py-0.5 font-mono text-xs text-[#4edea3]">docker-compose.yml</code> configurations with cryptographically secure random credentials and starts the containers.
+			Run Netra Uptime instantly with a single command using the official CLI runner. It automatically initializes your <code class="rounded bg-[#1a1d1b] px-1.5 py-0.5 font-mono text-xs text-[#4edea3]">.env</code> and <code class="rounded bg-[#1a1d1b] px-1.5 py-0.5 font-mono text-xs text-[#4edea3]">docker-compose.yml</code> configurations with cryptographically secure random credentials and starts the containers.
 		</p>
 
 		<!-- Instant Run -->
@@ -167,7 +167,7 @@
 			Verifying Services & Healthcheck
 		</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Once PulseWatch is running, the web dashboard is accessible at <span class="font-mono text-[#e5e2e3]">http://localhost:8080</span>. You can verify service health and container status with the following commands:
+			Once Netra Uptime is running, the web dashboard is accessible at <span class="font-mono text-[#e5e2e3]">http://localhost:8080</span>. You can verify service health and container status with the following commands:
 		</p>
 		<div class="relative overflow-hidden rounded-lg border border-white/5 bg-[#0e0e0f]">
 			<div class="flex items-center justify-between border-b border-white/5 px-5 py-2.5">

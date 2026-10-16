@@ -11,7 +11,7 @@
 	<section id="perm-overview" class="flex scroll-mt-24 flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Permission Model</h2>
 		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			PulseWatch provides scoped API keys for programmatic interactions without exposing session
+			Netra Uptime provides scoped API keys for programmatic interactions without exposing session
 			cookies. API keys are authenticated against <code class="font-mono text-xs text-[#4edea3]"
 				>/api/v1/public/*</code
 			> endpoints and hashed using SHA-256 before persisting to PostgreSQL.
@@ -138,7 +138,7 @@
 					>1</span
 				>
 				<span
-					>Open your PulseWatch organization and navigate to <strong class="text-[#e5e2e3]"
+					>Open your Netra Uptime organization and navigate to <strong class="text-[#e5e2e3]"
 						>Settings</strong
 					>
 					&rarr; <strong class="text-[#e5e2e3]">API Keys</strong>.</span

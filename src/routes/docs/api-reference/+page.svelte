@@ -63,10 +63,10 @@
 </script>
 
 <svelte:head>
-	<title>PulseWatch | API Reference</title>
+	<title>Netra Uptime | API Reference</title>
 	<meta
 		name="description"
-		content="REST API reference for PulseWatch uptime monitoring platform. Integrate monitors, incidents, and status pages programmatically."
+		content="REST API reference for Netra Uptime uptime monitoring platform. Integrate monitors, incidents, and status pages programmatically."
 	/>
 </svelte:head>
 

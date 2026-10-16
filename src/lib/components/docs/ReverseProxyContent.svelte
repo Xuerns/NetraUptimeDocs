@@ -4,16 +4,16 @@
 
 	const nginxConfig = `server {
     listen 80;
-    server_name pulsewatch.yourdomain.com;
+    server_name uptime.yourdomain.com;
     return 301 https://$host$request_uri;
 }
 
 server {
     listen 443 ssl http2;
-    server_name pulsewatch.yourdomain.com;
+    server_name uptime.yourdomain.com;
 
-    ssl_certificate /etc/letsencrypt/live/pulsewatch.yourdomain.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/pulsewatch.yourdomain.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/uptime.yourdomain.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/uptime.yourdomain.com/privkey.pem;
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers HIGH:!aNULL:!MD5;
 
@@ -43,7 +43,7 @@ map $http_upgrade $connection_upgrade {
     '' close;
 }`;
 
-	const caddyConfig = `pulsewatch.yourdomain.com {
+	const caddyConfig = `uptime.yourdomain.com {
     reverse_proxy 127.0.0.1:8080 {
         # Caddy automatically handles WebSocket upgrade headers
         # and issues managed Let's Encrypt certificates
@@ -52,8 +52,8 @@ map $http_upgrade $connection_upgrade {
     }
 }`;
 
-	const envExample = `ALLOWED_ORIGIN=https://pulsewatch.yourdomain.com
-PUBLIC_API_URL=https://pulsewatch.yourdomain.com/api/v1`;
+	const envExample = `ALLOWED_ORIGIN=https://uptime.yourdomain.com
+PUBLIC_API_URL=https://uptime.yourdomain.com/api/v1`;
 </script>
 
 <div class="flex flex-col gap-16">
@@ -63,7 +63,7 @@ PUBLIC_API_URL=https://pulsewatch.yourdomain.com/api/v1`;
 			Why a Reverse Proxy?
 		</h2>
 		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			While PulseWatch serves HTTP directly on port 8080, deploying a production reverse proxy such
+			While Netra Uptime serves HTTP directly on port 8080, deploying a production reverse proxy such
 			as Nginx, Caddy, or Traefik provides vital security and operational capabilities:
 		</p>
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -100,7 +100,7 @@ PUBLIC_API_URL=https://pulsewatch.yourdomain.com/api/v1`;
 			Nginx Configuration
 		</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			The following configuration proxies requests to the PulseWatch container while properly
+			The following configuration proxies requests to the Netra Uptime container while properly
 			mapping WebSocket connection upgrade headers:
 		</p>
 		<CodeBlock code={nginxConfig} language="nginx" id="nginx-config" />
@@ -122,7 +122,7 @@ PUBLIC_API_URL=https://pulsewatch.yourdomain.com/api/v1`;
 	<section id="rp-websocket" class="flex scroll-mt-24 flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">WebSocket Headers</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			PulseWatch uses a bidirectional Gorilla WebSocket connection at <code
+			Netra Uptime uses a bidirectional Gorilla WebSocket connection at <code
 				class="rounded bg-[#1a1d1b] px-1.5 py-0.5 font-mono text-xs text-[#4edea3]">/api/v1/ws</code
 			> for real-time dashboard updates. Ensure your proxy forwards these required HTTP/1.1 headers:
 		</p>

@@ -25,7 +25,7 @@
 		<div class="mb-6 flex items-center gap-3">
 			<HttpMethodBadge method={endpoint.method} />
 			<span class="font-mono text-lg text-[#e5e2e3]">
-				https://api.pulsewatch.com/v1{endpoint.path}
+				https://api.netrauptime.com/v1{endpoint.path}
 			</span>
 		</div>
 

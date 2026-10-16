@@ -66,10 +66,10 @@
 </script>
 
 <svelte:head>
-	<title>PulseWatch | Documentation</title>
+	<title>Netra Uptime | Documentation</title>
 	<meta
 		name="description"
-		content="Documentation for PulseWatch uptime monitoring platform. Learn how to deploy, configure, and manage your monitoring setup."
+		content="Documentation for Netra Uptime uptime monitoring platform. Learn how to deploy, configure, and manage your monitoring setup."
 	/>
 </svelte:head>
 

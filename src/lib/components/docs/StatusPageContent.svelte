@@ -216,7 +216,7 @@
 	<section id="sp-json-feeds" class="flex flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">JSON Status Feeds</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			PulseWatch provides public JSON endpoints for integration with third-party tools and custom
+			Netra Uptime provides public JSON endpoints for integration with third-party tools and custom
 			dashboards:
 		</p>
 		<div class="overflow-hidden rounded-lg border border-white/5">

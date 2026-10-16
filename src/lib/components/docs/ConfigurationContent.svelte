@@ -334,7 +334,7 @@
 			Database (PostgreSQL)
 		</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			PulseWatch uses PostgreSQL 16 as its primary database. The schema is automatically migrated on
+			Netra Uptime uses PostgreSQL 16 as its primary database. The schema is automatically migrated on
 			startup using GORM's AutoMigrate.
 		</p>
 		<div class="overflow-x-auto rounded-lg border border-white/5">

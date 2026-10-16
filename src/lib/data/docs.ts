@@ -121,7 +121,7 @@ export const quickLinks: QuickLink[] = [
 		id: 'docker-deployment',
 		icon: 'terminal',
 		title: 'Docker Deployment',
-		description: 'The fastest way to get PulseWatch running using Docker and Docker Compose.',
+		description: 'The fastest way to get Netra Uptime running using Docker and Docker Compose.',
 		href: '#docker-compose'
 	},
 	{
@@ -153,7 +153,7 @@ export const checklistSteps: ChecklistStep[] = [
 		number: '',
 		title: 'Clone the Repository',
 		description:
-			'Start by cloning the official PulseWatch repository from GitHub to your server. We recommend placing it in /opt/pulsewatch.',
+			'Start by cloning the official Netra Uptime repository from GitHub to your server. We recommend placing it in /opt/pulsewatch.',
 		commands: [
 			'git clone https://github.com/Xuerns/PulseWatch.git /opt/pulsewatch',
 			'cd /opt/pulsewatch'
@@ -191,7 +191,7 @@ export const docSections: DocSection[] = [
 		title: 'Getting Started',
 		subtitle: 'Documentation · Getting Started · Overview',
 		description:
-			'Welcome to PulseWatch. This guide will walk you through the process of setting up your own instance, configuring your first monitor, and setting up notification channels so you can know about downtime before your users do.',
+			'Welcome to Netra Uptime. This guide will walk you through the process of setting up your own instance, configuring your first monitor, and setting up notification channels so you can know about downtime before your users do.',
 		headings: [
 			{ id: 'gs-overview', title: 'Overview', level: 2 },
 			{ id: 'gs-requirements', title: 'System Requirements', level: 2 },
@@ -205,7 +205,7 @@ export const docSections: DocSection[] = [
 		title: 'System Architecture',
 		subtitle: 'Core · Concepts · Architecture',
 		description:
-			'PulseWatch is a single-container Go + Svelte application backed by PostgreSQL and Redis. This page covers the overall topology and the principles behind the design.',
+			'Netra Uptime is a single-container Go + Svelte application backed by PostgreSQL and Redis. This page covers the overall topology and the principles behind the design.',
 		headings: [
 			{ id: 'arch-topology', title: 'System Topology', level: 2 },
 			{ id: 'arch-characteristics', title: 'Key Characteristics', level: 2 }
@@ -216,7 +216,7 @@ export const docSections: DocSection[] = [
 		title: 'Bootstrap & Startup',
 		subtitle: 'Architecture · Lifecycle · Bootstrap',
 		description:
-			'How the PulseWatch server initializes configuration, database, workers, and schedulers in a deterministic order.',
+			'How the Netra Uptime server initializes configuration, database, workers, and schedulers in a deterministic order.',
 		headings: [
 			{ id: 'boot-sequence', title: 'Startup Sequence', level: 2 },
 			{ id: 'boot-pooling', title: 'Connection Pooling & Migration', level: 2 },
@@ -347,7 +347,7 @@ export const docSections: DocSection[] = [
 		title: 'Docker Compose Guide',
 		subtitle: 'Deployment · Setup · Docker',
 		description:
-			'Docker Compose is the recommended deployment method. It manages all PulseWatch services including the web application, background workers, PostgreSQL database, and Redis cache.',
+			'Docker Compose is the recommended deployment method. It manages all Netra Uptime services including the web application, background workers, PostgreSQL database, and Redis cache.',
 		headings: [
 			{ id: 'dc-prerequisites', title: 'Prerequisites', level: 2 },
 			{ id: 'dc-compose-file', title: 'Docker Compose File', level: 2 },
@@ -362,7 +362,7 @@ export const docSections: DocSection[] = [
 		title: 'Environment Variables',
 		subtitle: 'Configuration · Setup · Environment',
 		description:
-			'PulseWatch is configured through environment variables defined in a .env file. There are 26 crucial variables covering application core, security, database, Redis, operational quotas, SMTP, and OAuth settings.',
+			'Netra Uptime is configured through environment variables defined in a .env file. There are 26 crucial variables covering application core, security, database, Redis, operational quotas, SMTP, and OAuth settings.',
 		headings: [
 			{ id: 'env-app-core', title: 'Application Core', level: 2 },
 			{ id: 'env-security', title: 'Security & JWT', level: 2 },
@@ -378,7 +378,7 @@ export const docSections: DocSection[] = [
 		title: 'Reverse Proxy Setup',
 		subtitle: 'Deployment · Configuration · Proxy',
 		description:
-			'Configure Nginx, Caddy, or Cloudflare as a reverse proxy in front of PulseWatch. Includes SSL termination, WebSocket header forwarding, and security best practices.',
+			'Configure Nginx, Caddy, or Cloudflare as a reverse proxy in front of Netra Uptime. Includes SSL termination, WebSocket header forwarding, and security best practices.',
 		headings: [
 			{ id: 'rp-overview', title: 'Why a Reverse Proxy?', level: 2 },
 			{ id: 'rp-nginx', title: 'Nginx Configuration', level: 2 },
@@ -392,7 +392,7 @@ export const docSections: DocSection[] = [
 		title: 'Monitors & Health Checks',
 		subtitle: 'Core · Detection · Multi-Protocol',
 		description:
-			'PulseWatch supports HTTP, TCP, ICMP Ping, SSL certificate, and Domain expiry checks. Each monitor type has unique configuration parameters and detection logic. This page covers all five protocols, smart incident detection, and on-demand manual checks.',
+			'Netra Uptime supports HTTP, TCP, ICMP Ping, SSL certificate, and Domain expiry checks. Each monitor type has unique configuration parameters and detection logic. This page covers all five protocols, smart incident detection, and on-demand manual checks.',
 		headings: [
 			{ id: 'mon-overview', title: 'Overview & Check Lifecycle', level: 2 },
 			{ id: 'mon-http', title: 'HTTP / HTTPS Monitoring', level: 2 },
@@ -427,7 +427,7 @@ export const docSections: DocSection[] = [
 		title: 'Notification Channels',
 		subtitle: 'Notifications · Integrations · Overview',
 		description:
-			'PulseWatch supports multiple notification channels including Email (SMTP), Slack, Discord webhooks, and custom REST webhooks. Route alerts to the right team members with Person-in-Charge assignments.',
+			'Netra Uptime supports multiple notification channels including Email (SMTP), Slack, Discord webhooks, and custom REST webhooks. Route alerts to the right team members with Person-in-Charge assignments.',
 		headings: [
 			{ id: 'nc-overview', title: 'Channels Overview', level: 2 },
 			{ id: 'nc-discord', title: 'Discord Webhook', level: 2 },
@@ -442,12 +442,12 @@ export const docSections: DocSection[] = [
 		title: 'Discord Webhook Configuration',
 		subtitle: 'Notification · Integrations · Discord',
 		description:
-			'Create an incoming webhook in Discord and link it to PulseWatch to receive real-time status alerts.',
+			'Create an incoming webhook in Discord and link it to Netra Uptime to receive real-time status alerts.',
 		headings: [
 			{ id: 'discord-step1', title: 'Open Server Settings', level: 2 },
 			{ id: 'discord-step2', title: 'Create a New Webhook', level: 2 },
 			{ id: 'discord-step3', title: 'Configure & Copy URL', level: 2 },
-			{ id: 'discord-step4', title: 'Add Channel in PulseWatch', level: 2 }
+			{ id: 'discord-step4', title: 'Add Channel in Netra Uptime', level: 2 }
 		]
 	},
 	{
@@ -459,7 +459,7 @@ export const docSections: DocSection[] = [
 		headings: [
 			{ id: 'slack-setup', title: 'Slack App Setup', level: 2 },
 			{ id: 'slack-webhook', title: 'Incoming Webhook URL', level: 2 },
-			{ id: 'slack-pulsewatch', title: 'Configure in PulseWatch', level: 2 }
+			{ id: 'slack-pulsewatch', title: 'Configure in Netra Uptime', level: 2 }
 		]
 	},
 	{
@@ -479,7 +479,7 @@ export const docSections: DocSection[] = [
 		title: 'Custom Webhooks',
 		subtitle: 'Notification · Custom · Webhook',
 		description:
-			'Integrate PulseWatch alerts with your custom REST API endpoints, internal tools, or bots. Includes JSON payload schema and SSRF security details.',
+			'Integrate Netra Uptime alerts with your custom REST API endpoints, internal tools, or bots. Includes JSON payload schema and SSRF security details.',
 		headings: [
 			{ id: 'wh-setup', title: 'Webhook Setup', level: 2 },
 			{ id: 'wh-payload', title: 'JSON Payload Schema', level: 2 },
@@ -520,7 +520,7 @@ export const docSections: DocSection[] = [
 		title: 'CI/CD Integration',
 		subtitle: 'API Keys · Automation · CI/CD',
 		description:
-			'Use PulseWatch API keys in your CI/CD pipelines to automate monitor creation, status checks, and deployment verification.',
+			'Use Netra Uptime API keys in your CI/CD pipelines to automate monitor creation, status checks, and deployment verification.',
 		headings: [
 			{ id: 'cicd-github', title: 'GitHub Actions', level: 2 },
 			{ id: 'cicd-gitlab', title: 'GitLab CI', level: 2 },

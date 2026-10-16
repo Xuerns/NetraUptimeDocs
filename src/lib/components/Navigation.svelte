@@ -4,7 +4,7 @@
 
 	const navigationItems = [
 		{ label: 'Features', href: '#features' },
-		{ label: 'Why PulseWatch', href: '#audience' },
+		{ label: 'Why Netra Uptime', href: '#audience' },
 		{ label: 'Documentation', href: '/docs' }
 	];
 </script>
@@ -20,10 +20,10 @@
 		<a
 			href="#top"
 			class="flex items-center gap-2 text-[#e5e2e3] transition-opacity hover:opacity-90"
-			aria-label="PulseWatch home"
+			aria-label="Netra Uptime home"
 		>
-			<img src={logo} alt="PulseWatch Logo" class="h-6 w-auto" />
-			<span class="font-display text-base font-bold tracking-tight text-white">PulseWatch</span>
+			<img src={logo} alt="Netra Uptime Logo" class="h-6 w-auto" />
+			<span class="font-display text-base font-bold tracking-tight text-white">Netra Uptime</span>
 		</a>
 
 		<!-- Center Navigation Links -->

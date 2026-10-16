@@ -18,7 +18,7 @@
 				Start monitoring <span class="text-gradient italic">today.</span>
 			</h2>
 			<p class="mx-auto mt-5 max-w-xl text-[#bbcabf]">
-				Run one command and PulseWatch is up at <span class="font-mono text-[#e5e2e3]"
+				Run one command and Netra Uptime is up at <span class="font-mono text-[#e5e2e3]"
 					>localhost:8080</span
 				>.
 			</p>

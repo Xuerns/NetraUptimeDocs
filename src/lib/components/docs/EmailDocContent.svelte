@@ -14,7 +14,7 @@ SMTP_PASSWORD=your_16_character_app_password`;
 			SMTP Configuration
 		</h2>
 		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			PulseWatch sends email notifications directly through your SMTP provider. Set your credentials
+			Netra Uptime sends email notifications directly through your SMTP provider. Set your credentials
 			in the <code class="rounded bg-[#1a1d1b] px-1.5 py-0.5 font-mono text-xs text-[#4edea3]"
 				>.env</code
 			> file:
@@ -106,7 +106,7 @@ SMTP_PASSWORD=your_16_character_app_password`;
 					>
 					<span
 						>Enter an app name (such as <code class="font-mono text-xs text-[#4edea3]"
-							>PulseWatch</code
+							>Netra Uptime</code
 						>) and click <strong class="text-[#e5e2e3]">Create</strong>.</span
 					>
 				</li>
@@ -129,7 +129,7 @@ SMTP_PASSWORD=your_16_character_app_password`;
 	<section id="email-templates" class="flex scroll-mt-24 flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Email Templates</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			PulseWatch sends responsive, clean HTML email templates styled with high-contrast status
+			Netra Uptime sends responsive, clean HTML email templates styled with high-contrast status
 			badges:
 		</p>
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2">

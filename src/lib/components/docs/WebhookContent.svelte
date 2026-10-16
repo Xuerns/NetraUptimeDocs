@@ -15,8 +15,8 @@
 	<section id="wh-setup" class="flex flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Webhook Setup</h2>
 		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			Custom webhooks let you integrate PulseWatch alerts with any REST endpoint. Configure a
-			webhook URL in your notification channels, and PulseWatch will send a JSON POST request
+			Custom webhooks let you integrate Netra Uptime alerts with any REST endpoint. Configure a
+			webhook URL in your notification channels, and Netra Uptime will send a JSON POST request
 			whenever an incident occurs or resolves.
 		</p>
 	</section>
@@ -27,7 +27,7 @@
 			JSON Payload Schema
 		</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			PulseWatch sends the following JSON payload to your webhook URL:
+			Netra Uptime sends the following JSON payload to your webhook URL:
 		</p>
 		<div class="relative overflow-hidden rounded-lg border border-white/5 bg-[#0e0e0f]">
 			<div class="flex items-center justify-between border-b border-white/5 px-5 py-2.5">
@@ -107,7 +107,7 @@
 		<div class="rounded-lg border border-red-500/20 bg-red-500/5 p-4">
 			<p class="flex items-center gap-2 text-sm text-red-400">
 				<ShieldAlert size={16} />
-				<strong>Security:</strong> PulseWatch validates all webhook URLs to prevent Server-Side Request
+				<strong>Security:</strong> Netra Uptime validates all webhook URLs to prevent Server-Side Request
 				Forgery (SSRF) attacks.
 			</p>
 		</div>

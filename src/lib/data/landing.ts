@@ -13,7 +13,7 @@ import yarn from '$lib/assets/landing/logos/yarn.svg';
 
 /**
  * Install commands shown in the hero and the final CTA.
- * Uses the PulseWatch CLI package runners.
+ * Uses the Netra Uptime CLI package runners.
  */
 export const installCommands = {
 	npx: 'npx pulsewatch start',

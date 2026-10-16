@@ -1,5 +1,5 @@
 ---
-name: Pulsewatch Design System
+name: Netra Uptime Design System
 colors:
   surface: '#131314'
   surface-dim: '#131314'
@@ -134,7 +134,7 @@ spacing:
 
 ## Brand & Style
 
-The design system is engineered for a high-performance uptime and status monitoring platform. The brand personality is **vigilant, technical, and premium** — but the expression is **editorial**, not cockpit-glass. Pulsewatch reads like a well-typeset engineering journal: hairline-bordered panels, generous margins, a serif display face for authored moments, and monospace for anything measured.
+The design system is engineered for a high-performance uptime and status monitoring platform. The brand personality is **vigilant, technical, and premium** — but the expression is **editorial**, not cockpit-glass. Netra Uptime reads like a well-typeset engineering journal: hairline-bordered panels, generous margins, a serif display face for authored moments, and monospace for anything measured.
 
 The visual style is **Structured Editorial**. Depth comes from thin 1px borders and tonal steps between surfaces, not from blur or glow. Every panel is a defined rectangle you could trace with a pencil. Numerals do real work: section index digits, big stat figures, and per-card tags (`T-01`, `01`, `02`…) give the page a sense of catalogued, versioned precision — this is a system that counts things.
 

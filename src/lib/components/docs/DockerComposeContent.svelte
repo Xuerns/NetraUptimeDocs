@@ -73,7 +73,7 @@ volumes:
 	<section id="dc-prerequisites" class="flex scroll-mt-24 flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Prerequisites</h2>
 		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			Before deploying PulseWatch with Docker Compose, ensure your host environment satisfies the
+			Before deploying Netra Uptime with Docker Compose, ensure your host environment satisfies the
 			minimum hardware and software requirements.
 		</p>
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -122,7 +122,7 @@ volumes:
 			Service Configuration
 		</h3>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			The PulseWatch Compose stack consists of three coordinated services:
+			The Netra Uptime Compose stack consists of three coordinated services:
 		</p>
 		<ul class="flex max-w-3xl flex-col gap-3">
 			<li class="flex gap-3 text-sm leading-relaxed text-[#bbcabf]">
@@ -203,7 +203,7 @@ volumes:
 	<section id="dc-commands" class="flex scroll-mt-24 flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Useful Commands</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Common Docker Compose operations for managing your PulseWatch instance:
+			Common Docker Compose operations for managing your Netra Uptime instance:
 		</p>
 		<div class="flex flex-col gap-4">
 			<div>

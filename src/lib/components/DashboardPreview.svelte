@@ -15,7 +15,7 @@
 			<span class="h-2.5 w-2.5 rounded-full bg-[#febc2e]/80"></span>
 			<span class="h-2.5 w-2.5 rounded-full bg-[#28c840]/80"></span>
 			<div class="mx-auto rounded-md bg-white/5 px-10 py-1 font-mono text-[11px] text-[#86948a]">
-				pulsewatch.local / dashboard
+				netra-uptime.local / dashboard
 			</div>
 		</div>
 		<div class="aspect-16/10">

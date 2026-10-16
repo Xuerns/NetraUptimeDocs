@@ -12,7 +12,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Instant PulseWatch Health Check
+      - name: Trigger Instant Netra Uptime Health Check
         env:
           PULSEWATCH_URL: \${{ secrets.PULSEWATCH_BASE_URL }}
           PULSEWATCH_KEY: \${{ secrets.PULSEWATCH_API_KEY }}
@@ -45,7 +45,7 @@ verify_deployment:
     - apk add --no-cache curl jq
   script:
     - |
-      echo "Triggering PulseWatch on-demand check..."
+      echo "Triggering Netra Uptime on-demand check..."
       curl -f -s -X POST \\
         "$PULSEWATCH_BASE_URL/api/v1/public/monitors/$PULSEWATCH_MONITOR_ID/check" \\
         -H "Authorization: Bearer $PULSEWATCH_API_KEY"
@@ -68,7 +68,7 @@ curl -s -X GET "$PULSEWATCH_URL/api/v1/public/monitors" \\
 	<section id="cicd-github" class="flex scroll-mt-24 flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">GitHub Actions</h2>
 		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			Integrate PulseWatch into your GitHub Actions release workflows to trigger immediate on-demand
+			Integrate Netra Uptime into your GitHub Actions release workflows to trigger immediate on-demand
 			health verification as soon as your deployment completes.
 		</p>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">

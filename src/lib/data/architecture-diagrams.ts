@@ -6,7 +6,7 @@ export interface ArchitectureDiagram {
 
 export const topologyDiagram: ArchitectureDiagram = {
 	id: 'topology',
-	label: 'PulseWatch system topology',
+	label: 'Netra Uptime system topology',
 	definition: `graph TB
     subgraph Client["Frontend (SvelteKit SPA)"]
         Browser["Web Browser"]

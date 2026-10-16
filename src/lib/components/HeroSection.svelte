@@ -37,7 +37,7 @@
 			Self-hosted uptime monitoring <span class="text-gradient italic">&amp; status pages.</span>
 		</h1>
 		<p data-reveal class="mx-auto mt-7 max-w-2xl text-lg leading-8 text-[#bbcabf]">
-			PulseWatch watches your websites, APIs, and servers around the clock, opens an incident the
+			Netra Uptime watches your websites, APIs, and servers around the clock, opens an incident the
 			moment something breaks, and alerts the right person on Slack, Discord, email, or webhook. One
 			command to install. Your data never leaves your infrastructure.
 		</p>

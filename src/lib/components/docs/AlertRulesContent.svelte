@@ -248,7 +248,7 @@
 			<div>
 				<h4 class="font-display text-base font-semibold text-[#e5e2e3]">Team Routing</h4>
 				<p class="mt-1 text-sm text-[#bbcabf]">
-					PulseWatch routes alerts to the right team members based on monitor ownership, ensuring
+					Netra Uptime routes alerts to the right team members based on monitor ownership, ensuring
 					fast response times.
 				</p>
 			</div>

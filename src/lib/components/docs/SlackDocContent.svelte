@@ -11,7 +11,7 @@
 	<section id="slack-setup" class="flex scroll-mt-24 flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Slack App Setup</h2>
 		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			PulseWatch sends real-time status alerts directly into your Slack workspace using Slack's
+			Netra Uptime sends real-time status alerts directly into your Slack workspace using Slack's
 			Incoming Webhooks feature.
 		</p>
 		<div class="flex max-w-3xl flex-col gap-4 rounded-lg border border-white/5 bg-[#1a1d1b] p-6">
@@ -45,7 +45,7 @@
 					>
 					<span
 						>Select <strong class="text-[#e5e2e3]">From scratch</strong>, name your app
-						<strong class="text-[#e5e2e3]">PulseWatch</strong>, and pick your target workspace.</span
+						<strong class="text-[#e5e2e3]">Netra Uptime</strong>, and pick your target workspace.</span
 					>
 				</li>
 			</ul>
@@ -110,18 +110,18 @@
 		<CodeBlock code={sampleSlackUrl} language="text" id="slack-url" />
 	</section>
 
-	<!-- Configure in PulseWatch -->
+	<!-- Configure in Netra Uptime -->
 	<section id="slack-pulsewatch" class="flex scroll-mt-24 flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">
-			Configure in PulseWatch
+			Configure in Netra Uptime
 		</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Connect the Webhook URL to your PulseWatch organization:
+			Connect the Webhook URL to your Netra Uptime organization:
 		</p>
 		<ul class="flex max-w-3xl flex-col gap-3">
 			<li class="flex gap-3 text-sm leading-relaxed text-[#bbcabf]">
 				<Check size={16} class="mt-0.5 shrink-0 text-[#4edea3]" />
-				<span>Log in to your PulseWatch dashboard and open your target organization.</span>
+				<span>Log in to your Netra Uptime dashboard and open your target organization.</span>
 			</li>
 			<li class="flex gap-3 text-sm leading-relaxed text-[#bbcabf]">
 				<Check size={16} class="mt-0.5 shrink-0 text-[#4edea3]" />
