@@ -140,14 +140,18 @@ export const stateMachineDiagram: ArchitectureDiagram = {
 	label: 'Monitor status state machine',
 	definition: `stateDiagram-v2
     [*] --> UP: New monitor
-    UP --> UP: Rules passed
-    UP --> DEGRADED: Warning rule breached
+    UP --> UP: Rules passed (FailureCount = 0)
+    UP --> DEGRADED: Warning rule breached (e.g. latency > threshold)
+    UP --> UNRESPONSIVE: Consecutive Timeouts >= 3 (Amber Warning)
     UP --> UP: Critical breach below threshold
-    UP --> DOWN: FailureCount >= RequiredBreaches
+    UP --> DOWN: FailureCount >= RequiredBreaches / Hard Failure
     DEGRADED --> UP: Healthy again
+    DEGRADED --> UNRESPONSIVE: Consecutive Timeouts >= 3
     DEGRADED --> DOWN: Critical breach at threshold
+    UNRESPONSIVE --> UP: Healthy check (Auto-resolved)
+    UNRESPONSIVE --> DOWN: Hard crash / Connection refused
     DOWN --> DOWN: Still breached
-    DOWN --> UP: All rules passed (auto-resolve)`
+    DOWN --> UP: All rules passed (Auto-resolve)`
 };
 
 export const incidentDiagram: ArchitectureDiagram = {
@@ -162,8 +166,11 @@ export const incidentDiagram: ArchitectureDiagram = {
     participant Slack as Slack
     participant Discord as Discord
     participant WH as Custom webhook
-    alt Status becomes DOWN
-        WP->>DB: Create incident (ongoing)
+    alt Status becomes UNRESPONSIVE (3x Timeout)
+        WP->>DB: Create medium severity incident
+        WP->>D: Dispatch monitor.unresponsive (Calm warning)
+    else Status becomes DOWN (Critical failure / breach)
+        WP->>DB: Create critical incident (ongoing)
         WP->>SMTP: Email the monitor PIC
         WP->>D: Dispatch monitor.down
         D->>DB: Load active channels

@@ -86,9 +86,7 @@
 	<div
 		class="mx-auto mt-10 flex max-w-360 flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 md:flex-row"
 	>
-		<p class="text-xs text-[#bbcabf]/60">
-			© 2026 Netra Uptime.
-		</p>
+		<p class="text-xs text-[#bbcabf]/60">© 2026 Netra Uptime.</p>
 		<div class="flex items-center gap-6 text-xs text-[#bbcabf]/60">
 			<span>Self-Hosted</span>
 			<span>•</span>

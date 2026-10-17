@@ -16,10 +16,10 @@ import yarn from '$lib/assets/landing/logos/yarn.svg';
  * Uses the Netra Uptime CLI package runners.
  */
 export const installCommands = {
-	npx: 'npx pulsewatch start',
-	pnpm: 'pnpm dlx pulsewatch start',
-	yarn: 'yarn dlx pulsewatch start',
-	bun: 'bunx pulsewatch start'
+	npx: 'npx netra-uptime start',
+	pnpm: 'pnpm dlx netra-uptime start',
+	yarn: 'yarn dlx netra-uptime start',
+	bun: 'bunx netra-uptime start'
 };
 
 export const links = {
@@ -27,7 +27,20 @@ export const links = {
 	docs: '/docs'
 };
 
-export const logos = { slack, discord, github, docker, postgresql, redis, go, svelte, npm, pnpm, bun, yarn };
+export const logos = {
+	slack,
+	discord,
+	github,
+	docker,
+	postgresql,
+	redis,
+	go,
+	svelte,
+	npm,
+	pnpm,
+	bun,
+	yarn
+};
 
 /**
  * Screenshots live in src/lib/assets/landing/. Drop a .webp or .png file with

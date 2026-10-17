@@ -63,8 +63,8 @@ PUBLIC_API_URL=https://uptime.yourdomain.com/api/v1`;
 			Why a Reverse Proxy?
 		</h2>
 		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			While Netra Uptime serves HTTP directly on port 8080, deploying a production reverse proxy such
-			as Nginx, Caddy, or Traefik provides vital security and operational capabilities:
+			While Netra Uptime serves HTTP directly on port 8080, deploying a production reverse proxy
+			such as Nginx, Caddy, or Traefik provides vital security and operational capabilities:
 		</p>
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
 			<div class="rounded-lg border border-white/5 bg-[#1a1d1b] p-5">

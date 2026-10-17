@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Copy, Check, AlertTriangle, ShieldAlert } from 'lucide-svelte';
+	import { Copy, Check, ShieldAlert } from 'lucide-svelte';
 
 	let copied = $state('');
 

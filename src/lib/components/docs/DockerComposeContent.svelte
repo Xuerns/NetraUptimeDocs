@@ -6,8 +6,8 @@
 
 services:
   app:
-    image: ghcr.io/xuerns/pulsewatch:latest
-    container_name: pulsewatch_app
+    image: ghcr.io/xuerns/netra-uptime:latest
+    container_name: netra_uptime_app
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -17,9 +17,9 @@ services:
       - PORT=8080
       - DB_HOST=postgres
       - DB_PORT=5432
-      - DB_USER=pulsewatch
-      - DB_PASSWORD=pulsewatch_secret
-      - DB_NAME=pulsewatch
+      - DB_USER=netra
+      - DB_PASSWORD=netra_secret
+      - DB_NAME=netra_uptime
       - DB_SSLMODE=disable
       - REDIS_HOST=redis
       - REDIS_PORT=6379
@@ -34,23 +34,23 @@ services:
 
   postgres:
     image: postgres:16-alpine
-    container_name: pulsewatch_postgres
+    container_name: netra_uptime_postgres
     restart: unless-stopped
     environment:
-      - POSTGRES_USER=pulsewatch
-      - POSTGRES_PASSWORD=pulsewatch_secret
-      - POSTGRES_DB=pulsewatch
+      - POSTGRES_USER=netra
+      - POSTGRES_PASSWORD=netra_secret
+      - POSTGRES_DB=netra_uptime
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U pulsewatch -d pulsewatch"]
+      test: ["CMD-SHELL", "pg_isready -U netra -d netra_uptime"]
       interval: 5s
       timeout: 5s
       retries: 5
 
   redis:
     image: redis:7-alpine
-    container_name: pulsewatch_redis
+    container_name: netra_uptime_redis
     restart: unless-stopped
     volumes:
       - redis_data:/data
@@ -64,8 +64,8 @@ volumes:
   postgres_data:
   redis_data:`;
 
-	const backupCommand = `docker compose exec -T postgres pg_dump -U pulsewatch -d pulsewatch > backup_$(date +%Y%m%d_%H%M%S).sql`;
-	const restoreCommand = `cat backup.sql | docker compose exec -T postgres psql -U pulsewatch -d pulsewatch`;
+	const backupCommand = `docker compose exec -T postgres pg_dump -U netra -d netra_uptime > backup_$(date +%Y%m%d_%H%M%S).sql`;
+	const restoreCommand = `cat backup.sql | docker compose exec -T postgres psql -U netra -d netra_uptime`;
 </script>
 
 <div class="flex flex-col gap-16">

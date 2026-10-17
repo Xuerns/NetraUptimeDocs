@@ -92,7 +92,7 @@
 		{
 			name: 'POSTGRES_DB',
 			type: 'string',
-			defaultVal: 'pulsewatch',
+			defaultVal: 'netra_uptime',
 			description: 'Database name.'
 		},
 		{
@@ -105,7 +105,7 @@
 		{
 			name: 'DB_NAME',
 			type: 'string',
-			defaultVal: 'pulsewatch',
+			defaultVal: 'netra_uptime',
 			description: 'GORM database name connection.'
 		},
 		{
@@ -334,8 +334,8 @@
 			Database (PostgreSQL)
 		</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Netra Uptime uses PostgreSQL 16 as its primary database. The schema is automatically migrated on
-			startup using GORM's AutoMigrate.
+			Netra Uptime uses PostgreSQL 16 as its primary database. The schema is automatically migrated
+			on startup using GORM's AutoMigrate.
 		</p>
 		<div class="overflow-x-auto rounded-lg border border-white/5">
 			<table class="w-full text-sm">

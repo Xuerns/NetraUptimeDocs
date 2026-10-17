@@ -87,7 +87,9 @@
 			</nav>
 
 			<!-- Action Links -->
-			<div class="mt-4 flex flex-col gap-2.5 border-t border-[#3c4a42]/40 pt-5 text-xs text-[#bbcabf]/70">
+			<div
+				class="mt-4 flex flex-col gap-2.5 border-t border-[#3c4a42]/40 pt-5 text-xs text-[#bbcabf]/70"
+			>
 				<a
 					href="https://github.com/Xuerns/PulseWatch"
 					target="_blank"

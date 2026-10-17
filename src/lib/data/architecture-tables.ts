@@ -150,10 +150,19 @@ export const checkerMatrix: TableData = {
 };
 
 export const defaultRulesMatrix: TableData = {
-	columns: ['Condition', 'Severity', 'Required breaches'],
+	columns: ['Condition', 'Severity', 'State Transition & Ambang Batas'],
 	rows: [
-		['Network or connection failure', 'critical', '3'],
-		['statusCode != monitor.expectedStatusCode', 'critical', '3']
+		[
+			'Network or connection failure (ECONNREFUSED, DNS error, 5xx)',
+			'critical',
+			'DOWN after 3 consecutive failures'
+		],
+		[
+			'Request timeout streak (ErrTimeout / Deadline exceeded)',
+			'warning',
+			'UNRESPONSIVE (Amber) after 3 consecutive timeouts'
+		],
+		['statusCode != monitor.expectedStatusCode', 'critical', 'DOWN after 3 consecutive breaches']
 	]
 };
 
@@ -171,9 +180,18 @@ export const ssrfBlocklist: TableData = {
 export const rbacMatrix: TableData = {
 	columns: ['Role', 'Allowed operations'],
 	rows: [
-		['owner', 'Transfer ownership, disband organization, kick members, plus all admin operations'],
-		['admin', 'Monitors, alert rules, notification channels, maintenance'],
-		['member', 'Read-only dashboard and incident investigation']
+		[
+			'owner',
+			'Transfer ownership, disband organization, kick members, invite new members as Admin or Member, promote members to Admin, demote Admins to Member, plus all Admin capabilities'
+		],
+		[
+			'admin',
+			'Manage monitors, alert templates & rules, notification channels, status pages & maintenance, invite new users as Member only (cannot invite Admin or promote members)'
+		],
+		[
+			'member',
+			'Read-only access to dashboard, monitors, status pages, and active incident response timelines'
+		]
 	]
 };
 

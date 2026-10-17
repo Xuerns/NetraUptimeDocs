@@ -708,9 +708,10 @@ export const apiGroups: ApiGroup[] = [
 				id: 'org-invite-member',
 				method: 'POST',
 				path: '/organization/:orgId/invite',
-				title: 'Invite a member',
-				description: 'Invite a new member to the organization.',
-				auth: 'Bearer token + TenantMiddleware + RequireRole("owner")',
+				title: 'Invite members',
+				description:
+					'Invite new members to the organization. Owners can invite members as admin or member. Admins can invite new members as member only (inviting as admin returns 403 Forbidden).',
+				auth: 'Bearer token + TenantMiddleware + RequireRole("owner", "admin")',
 				requestBody: [
 					{
 						name: 'invitations',
@@ -909,9 +910,10 @@ export const apiGroups: ApiGroup[] = [
 				id: 'org-promote',
 				method: 'PUT',
 				path: '/organization/:orgId/promote',
-				title: 'Promote member',
-				description: 'Promote a member to a higher role.',
-				auth: 'Bearer token + TenantMiddleware + RequireRole("owner", "admin")',
+				title: 'Promote member to admin',
+				description:
+					'Promote a member to the admin role. Strictly restricted to organization owners only.',
+				auth: 'Bearer token + TenantMiddleware + RequireRole("owner")',
 				requestBody: [
 					{
 						name: 'user_id',
@@ -1315,8 +1317,323 @@ export const apiGroups: ApiGroup[] = [
 	},
 	{
 		id: 'alertrules',
-		label: 'Alert Rules',
+		label: 'Alert Templates & Rules',
 		endpoints: [
+			{
+				id: 'alerttemplate-list',
+				method: 'GET',
+				path: '/organization/:orgId/alert-templates',
+				title: 'List alert templates',
+				description:
+					'Retrieve all alert templates configured for the organization, including rule counts and assigned monitor counts.',
+				auth: 'Bearer token + TenantMiddleware',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/alert-templates \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "data": [
+    {
+      "id": "e4b1a2c3-d4e5-6f7a-8b9c-0d1e2f3a4b5c",
+      "organization_id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+      "name": "Standard Web Service",
+      "description": "Standard alert rules for production web apps",
+      "is_default": true,
+      "rules": [
+        {
+          "id": "7b83d1c4-6e21-487a-b519-7e3e0c0d1234",
+          "name": "Slow Response Latency",
+          "metric": "response_time_ms",
+          "operator": ">",
+          "target_value": "1500",
+          "consecutive": 3,
+          "severity": "warning",
+          "is_active": true
+        }
+      ],
+      "monitors_count": 4,
+      "created_at": "2026-09-22T08:00:00Z",
+      "updated_at": "2026-09-22T08:00:00Z"
+    }
+  ]
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'alerttemplate-create',
+				method: 'POST',
+				path: '/organization/:orgId/alert-templates',
+				title: 'Create alert template',
+				description: 'Create a new reusable alert template with optional initial rules.',
+				auth: 'Bearer token + TenantMiddleware + RequireRole("owner", "admin")',
+				requestBody: [
+					{
+						name: 'name',
+						type: 'string',
+						description: 'Required, min 2, max 100 chars, no HTML.',
+						required: true
+					},
+					{
+						name: 'description',
+						type: 'string',
+						description: 'Optional description, max 255 chars, no HTML.',
+						required: false
+					},
+					{
+						name: 'is_default',
+						type: 'boolean',
+						description: 'Set as the default template for new monitors in this organization.',
+						required: false
+					},
+					{
+						name: 'rules',
+						type: 'array',
+						description: 'Optional initial list of alert rules for the template.',
+						required: false
+					}
+				],
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/alert-templates \\
+  -H "Content-Type: application/json" \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
+  -d '{
+    "name": "Critical Microservices",
+    "description": "Aggressive alerts for internal RPC microservices",
+    "is_default": false,
+    "rules": [
+      {
+        "name": "Immediate 5xx Alert",
+        "metric": "status_code",
+        "operator": "in",
+        "target_value": "500,502,503",
+        "consecutive": 1,
+        "severity": "critical",
+        "is_active": true
+      }
+    ]
+  }'`,
+					responses: [
+						{
+							status: '201 Created',
+							code: `{
+  "status": "success",
+  "data": {
+    "id": "f5c2b3d4-e6f7-8a9b-0c1d-2e3f4a5b6c7d",
+    "organization_id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+    "name": "Critical Microservices",
+    "description": "Aggressive alerts for internal RPC microservices",
+    "is_default": false,
+    "rules": [],
+    "monitors_count": 0,
+    "created_at": "2026-10-17T12:00:00Z",
+    "updated_at": "2026-10-17T12:00:00Z"
+  }
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'alerttemplate-get',
+				method: 'GET',
+				path: '/organization/:orgId/alert-templates/:templateId',
+				title: 'Get alert template detail',
+				description: 'Retrieve details of an alert template including all its rules.',
+				auth: 'Bearer token + TenantMiddleware',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/alert-templates/template_uuid \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "data": {
+    "id": "e4b1a2c3-d4e5-6f7a-8b9c-0d1e2f3a4b5c",
+    "organization_id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+    "name": "Standard Web Service",
+    "is_default": true,
+    "rules": [],
+    "monitors_count": 3
+  }
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'alerttemplate-update',
+				method: 'PUT',
+				path: '/organization/:orgId/alert-templates/:templateId',
+				title: 'Update alert template',
+				description: 'Update template metadata such as name, description, or default flag.',
+				auth: 'Bearer token + TenantMiddleware + RequireRole("owner", "admin")',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/alert-templates/template_uuid \\
+  -H "Content-Type: application/json" \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
+  -d '{ "name": "Updated Template Name", "is_default": true }'`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{ "status": "success", "data": { "id": "uuid", "name": "Updated Template Name" } }`
+						}
+					]
+				}
+			},
+			{
+				id: 'alerttemplate-delete',
+				method: 'DELETE',
+				path: '/organization/:orgId/alert-templates/:templateId',
+				title: 'Delete alert template',
+				description: 'Permanently remove an alert template and its nested rules.',
+				auth: 'Bearer token + TenantMiddleware + RequireRole("owner", "admin")',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/alert-templates/template_uuid \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{ "status": "success", "message": "Alert template deleted successfully" }`
+						}
+					]
+				}
+			},
+			{
+				id: 'alerttemplate-create-rule',
+				method: 'POST',
+				path: '/organization/:orgId/alert-templates/:templateId/rules',
+				title: 'Create rule in template',
+				description: 'Add a new evaluation rule to an existing alert template.',
+				auth: 'Bearer token + TenantMiddleware + RequireRole("owner", "admin")',
+				requestBody: [
+					{
+						name: 'name',
+						type: 'string',
+						description: 'Rule label, min 2, max 100 chars, no HTML.',
+						required: true
+					},
+					{
+						name: 'metric',
+						type: 'string',
+						description: "Metric type: 'status_code' | 'response_time_ms' | 'timeout'.",
+						required: true
+					},
+					{
+						name: 'operator',
+						type: 'string',
+						description: "Operator: '==' | '!=' | '>' | '>=' | '<' | '<=' | 'in' | 'not_in'.",
+						required: true
+					},
+					{
+						name: 'target_value',
+						type: 'string',
+						description: 'Target threshold value or comma-separated list.',
+						required: true
+					},
+					{
+						name: 'consecutive',
+						type: 'number',
+						description: 'Consecutive breach count before triggering alert.',
+						required: true
+					},
+					{
+						name: 'severity',
+						type: 'string',
+						description: "'critical' or 'warning'.",
+						required: true
+					}
+				],
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/alert-templates/template_uuid/rules \\
+  -H "Content-Type: application/json" \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
+  -d '{
+    "name": "High Response Latency",
+    "metric": "response_time_ms",
+    "operator": ">",
+    "target_value": "2000",
+    "consecutive": 3,
+    "severity": "warning",
+    "is_active": true
+  }'`,
+					responses: [
+						{
+							status: '201 Created',
+							code: `{ "status": "success", "data": { "id": "rule_uuid", "name": "High Response Latency" } }`
+						}
+					]
+				}
+			},
+			{
+				id: 'alerttemplate-delete-rule',
+				method: 'DELETE',
+				path: '/organization/:orgId/alert-templates/:templateId/rules/:ruleId',
+				title: 'Delete rule from template',
+				description: 'Remove a specific rule from an alert template.',
+				auth: 'Bearer token + TenantMiddleware + RequireRole("owner", "admin")',
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/alert-templates/template_uuid/rules/rule_uuid \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{ "status": "success", "message": "Alert rule deleted from template" }`
+						}
+					]
+				}
+			},
+			{
+				id: 'alerttemplate-assign-monitor',
+				method: 'POST',
+				path: '/organization/:orgId/monitors/:monitorId/template',
+				title: 'Assign template to monitor',
+				description:
+					'Subscribe a monitor to an alert template, or pass null to use system defaults.',
+				auth: 'Bearer token + TenantMiddleware + RequireRole("owner", "admin")',
+				requestBody: [
+					{
+						name: 'template_id',
+						type: 'string | null',
+						description: 'UUID of the alert template, or null to detach.',
+						required: true
+					}
+				],
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/monitors/monitor_uuid/template \\
+  -H "Content-Type: application/json" \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
+  -d '{ "template_id": "e4b1a2c3-d4e5-6f7a-8b9c-0d1e2f3a4b5c" }'`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{ "status": "success", "message": "Monitor template updated successfully" }`
+						}
+					]
+				}
+			},
+
 			{
 				id: 'alertrule-list-monitor',
 				method: 'GET',

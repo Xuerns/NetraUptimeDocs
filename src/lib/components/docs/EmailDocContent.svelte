@@ -14,9 +14,9 @@ SMTP_PASSWORD=your_16_character_app_password`;
 			SMTP Configuration
 		</h2>
 		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			Netra Uptime sends email notifications directly through your SMTP provider. Set your credentials
-			in the <code class="rounded bg-[#1a1d1b] px-1.5 py-0.5 font-mono text-xs text-[#4edea3]"
-				>.env</code
+			Netra Uptime sends email notifications directly through your SMTP provider. Set your
+			credentials in the <code
+				class="rounded bg-[#1a1d1b] px-1.5 py-0.5 font-mono text-xs text-[#4edea3]">.env</code
 			> file:
 		</p>
 		<CodeBlock code={smtpConfig} language="env" id="smtp-env" />

@@ -16,7 +16,7 @@
 	}
 </script>
 
-<div id={id} class="relative overflow-hidden rounded-lg border border-white/5 bg-[#0e0e0f]">
+<div {id} class="relative overflow-hidden rounded-lg border border-white/5 bg-[#0e0e0f]">
 	<div class="flex items-center justify-between border-b border-white/5 px-5 py-2.5">
 		<div class="flex items-center gap-2 font-mono text-xs text-[#bbcabf]">
 			<Terminal size={13} class="text-[#4edea3]" />

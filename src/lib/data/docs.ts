@@ -80,7 +80,7 @@ export const docGroups: DocGroup[] = [
 	{
 		id: 'alert-rules-group',
 		label: 'Alert Rules & Incidents',
-		items: [{ id: 'alert-rules', label: 'Alert Rules & Incidents' }]
+		items: [{ id: 'alert-rules', label: 'Alert Templates & Rules' }]
 	},
 	{
 		id: 'notification-group',
@@ -102,7 +102,7 @@ export const docGroups: DocGroup[] = [
 		id: 'api-keys-group',
 		label: 'API Keys & CI/CD',
 		items: [
-			{ id: 'permissions', label: 'Permission Scopes' },
+			{ id: 'permissions', label: 'Roles & Permissions' },
 			{ id: 'cicd', label: 'CI/CD Integration' }
 		]
 	}
@@ -153,10 +153,10 @@ export const checklistSteps: ChecklistStep[] = [
 		number: '',
 		title: 'Clone the Repository',
 		description:
-			'Start by cloning the official Netra Uptime repository from GitHub to your server. We recommend placing it in /opt/pulsewatch.',
+			'Start by cloning the official Netra Uptime repository from GitHub to your server. We recommend placing it in /opt/netra-uptime.',
 		commands: [
-			'git clone https://github.com/Xuerns/PulseWatch.git /opt/pulsewatch',
-			'cd /opt/pulsewatch'
+			'git clone https://github.com/Xuerns/PulseWatch.git /opt/netra-uptime',
+			'cd /opt/netra-uptime'
 		]
 	},
 	{
@@ -233,7 +233,7 @@ export const docSections: DocSection[] = [
 			{ id: 'req-routing', title: 'Request Routing', level: 2 },
 			{ id: 'req-auth', title: 'Authentication', level: 2 },
 			{ id: 'req-tenant', title: 'Tenant Isolation', level: 2 },
-			{ id: 'req-rbac', title: 'Role-Based Access Control', level: 2 },
+			{ id: 'req-rbac', title: 'Role-Based Access Control (Strict RBAC)', level: 2 },
 			{ id: 'req-apikey', title: 'Public API Key Gateway', level: 2 },
 			{ id: 'req-xss', title: 'Input Sanitization', level: 2 }
 		]
@@ -408,18 +408,20 @@ export const docSections: DocSection[] = [
 	},
 	{
 		id: 'alert-rules',
-		title: 'Alert Rules & Incident Management',
-		subtitle: 'Alerts · Rules · Incidents',
+		title: 'Alert Templates & Incident Management',
+		subtitle: 'Alerts · Templates · Rules · Incidents',
 		description:
-			'Define custom alert rules based on response time, status codes, and timeouts. Configure severity levels, consecutive failure thresholds, and Person-in-Charge (PIC) assignments for efficient incident management.',
+			'Netra Uptime uses a Template-First alert system. Define reusable Alert Templates at the organization level, attach monitors, and configure thresholds for latency, status codes, and timeouts. Differentiate timeouts from hard crashes with Amber Unresponsive states.',
 		headings: [
-			{ id: 'ar-overview', title: 'Alert Rules Overview', level: 2 },
+			{ id: 'ar-overview', title: 'Template-First Alert Architecture', level: 2 },
+			{ id: 'ar-templates', title: 'Alert Templates & Auto-Seeding', level: 2 },
 			{ id: 'ar-metrics', title: 'Metrics & Operators', level: 2 },
-			{ id: 'ar-threshold', title: 'Threshold Configuration', level: 3 },
-			{ id: 'ar-consecutive', title: 'Consecutive Failures', level: 3 },
+			{ id: 'ar-threshold', title: 'Threshold & Pattern Configuration', level: 3 },
+			{ id: 'ar-timeout', title: 'Timeout vs Hard Crash (Amber State)', level: 2 },
+			{ id: 'ar-consecutive', title: 'Consecutive Breaches Threshold', level: 3 },
 			{ id: 'ar-severity', title: 'Severity Levels', level: 2 },
 			{ id: 'ar-pic', title: 'Person-in-Charge (PIC)', level: 2 },
-			{ id: 'ar-incident-timeline', title: 'Incident Timeline & Notes', level: 2 }
+			{ id: 'ar-incident-timeline', title: 'Incident Timeline & Auto-Recovery', level: 2 }
 		]
 	},
 	{
@@ -459,7 +461,7 @@ export const docSections: DocSection[] = [
 		headings: [
 			{ id: 'slack-setup', title: 'Slack App Setup', level: 2 },
 			{ id: 'slack-webhook', title: 'Incoming Webhook URL', level: 2 },
-			{ id: 'slack-pulsewatch', title: 'Configure in Netra Uptime', level: 2 }
+			{ id: 'slack-configure', title: 'Configure in Netra Uptime', level: 2 }
 		]
 	},
 	{
@@ -504,14 +506,15 @@ export const docSections: DocSection[] = [
 	},
 	{
 		id: 'permissions',
-		title: 'Permission Scopes',
-		subtitle: 'API Keys · Security · Permissions',
+		title: 'Roles & Permission Scopes',
+		subtitle: 'RBAC · Security · API Keys · Permissions',
 		description:
-			'Configure granular permissions for API keys to limit access to specific resources and actions. Understand read vs write scopes.',
+			'Understand organization member roles (Owner, Admin, Member) with strict RBAC rules, and configure granular permissions (Read vs Write) for external API keys.',
 		headings: [
-			{ id: 'perm-overview', title: 'Permission Model', level: 2 },
-			{ id: 'perm-read', title: 'Read Scope', level: 2 },
-			{ id: 'perm-write', title: 'Write Scope', level: 2 },
+			{ id: 'perm-roles', title: 'Organization Roles & Strict RBAC', level: 2 },
+			{ id: 'perm-overview', title: 'API Key Permission Model', level: 2 },
+			{ id: 'perm-read', title: 'API Key Read Scope', level: 2 },
+			{ id: 'perm-write', title: 'API Key Write Scope', level: 2 },
 			{ id: 'perm-create', title: 'Creating API Keys', level: 2 }
 		]
 	},

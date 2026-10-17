@@ -111,7 +111,7 @@
 	</section>
 
 	<!-- Configure in Netra Uptime -->
-	<section id="slack-pulsewatch" class="flex scroll-mt-24 flex-col gap-6">
+	<section id="slack-configure" class="flex scroll-mt-24 flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">
 			Configure in Netra Uptime
 		</h2>

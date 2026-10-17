@@ -1,14 +1,5 @@
 <script lang="ts">
-	import {
-		Copy,
-		Check,
-		Terminal,
-		Globe,
-		Layers,
-		CalendarClock,
-		BadgeCheck,
-		FileJson
-	} from 'lucide-svelte';
+	import { Copy, Check, Globe, Layers, CalendarClock, BadgeCheck, FileJson } from 'lucide-svelte';
 
 	let copied = $state('');
 

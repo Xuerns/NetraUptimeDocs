@@ -52,9 +52,9 @@
 		</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
 			HTTP monitors send requests to your endpoints at configurable intervals. They support custom
-			headers, authentication tokens, expected status codes, and response time thresholds.
-			Netra Uptime evaluates the response against your rules and triggers incidents when conditions
-			are met.
+			headers, authentication tokens, expected status codes, and response time thresholds. Netra
+			Uptime evaluates the response against your rules and triggers incidents when conditions are
+			met.
 		</p>
 
 		<div class="overflow-hidden rounded-lg border border-white/5">
@@ -146,8 +146,8 @@
 			Status Codes & Payloads
 		</h3>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Configure expected status codes for your monitors. Netra Uptime will mark the check as failed if
-			the response status doesn't match your expectation. You can also send a request body for
+			Configure expected status codes for your monitors. Netra Uptime will mark the check as failed
+			if the response status doesn't match your expectation. You can also send a request body for
 			POST/PUT monitors.
 		</p>
 	</section>
@@ -263,8 +263,8 @@ Timeout:  <span class="text-[#4edea3]">10</span> seconds</pre>
 		</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
 			Domain expiry monitors track WHOIS expiration dates and notify you well in advance to prevent
-			accidental domain loss. Netra Uptime queries WHOIS records to determine the exact expiry date of
-			your domains.
+			accidental domain loss. Netra Uptime queries WHOIS records to determine the exact expiry date
+			of your domains.
 		</p>
 		<div class="rounded-lg border border-[#4edea3]/20 bg-[#4edea3]/5 p-4">
 			<p class="text-sm text-[#4edea3]">
@@ -274,37 +274,85 @@ Timeout:  <span class="text-[#4edea3]">10</span> seconds</pre>
 		</div>
 	</section>
 
-	<!-- Smart Incident Detection -->
+	<!-- Smart Incident Detection & 4-State Lifecycle -->
 	<section id="mon-smart-detection" class="flex flex-col gap-6">
 		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">
-			Smart Incident Detection (3×/1×)
+			Smart Incident Detection & 4 Operational States
 		</h2>
 		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Netra Uptime uses a state machine evaluation algorithm to prevent transient network blips and
-			false alarms:
+			Netra Uptime monitors inherit rules from an assigned <strong class="text-[#e5e2e3]"
+				>Alert Template</strong
+			>
+			and evaluate targets through a 4-state finite state machine:
 		</p>
-		<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-			<div class="rounded-lg border border-red-500/20 bg-red-500/5 p-6">
-				<div class="mb-3 font-mono text-xs font-bold tracking-wider text-red-400 uppercase">
-					Down Detection
+
+		<!-- 4 States Grid -->
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+			<div class="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-5">
+				<div class="flex items-center gap-2">
+					<span class="h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
+					<span class="font-mono text-xs font-bold text-emerald-400 uppercase">UP</span>
 				</div>
-				<p class="text-2xl font-bold text-[#e5e2e3]">3× Consecutive (Default)</p>
-				<p class="mt-2 text-sm text-[#bbcabf]">
-					A monitor must fail <strong class="text-[#e5e2e3]">consecutive checks</strong> (default
-					<code class="rounded bg-[#0e0e0f] px-1.5 py-0.5 font-mono text-xs text-red-400"
-						>RequiredBreaches = 3</code
-					>, configurable from 1 to 20) before transitioning from UP to DOWN and dispatching
-					incident notifications.
+				<p class="mt-2 text-xs leading-relaxed text-[#bbcabf]">
+					All checks succeeded, latency within normal thresholds, and HTTP status code matches
+					expectation.
 				</p>
 			</div>
-			<div class="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-6">
-				<div class="mb-3 font-mono text-xs font-bold tracking-wider text-emerald-400 uppercase">
-					Up Recovery
+
+			<div class="rounded-lg border border-yellow-500/20 bg-yellow-500/5 p-5">
+				<div class="flex items-center gap-2">
+					<span class="h-2.5 w-2.5 rounded-full bg-yellow-400"></span>
+					<span class="font-mono text-xs font-bold text-yellow-300 uppercase">DEGRADED</span>
 				</div>
-				<p class="text-2xl font-bold text-[#e5e2e3]">1× Success</p>
-				<p class="mt-2 text-sm text-[#bbcabf]">
-					A single successful check immediately resolves the incident, resets the consecutive breach
-					counter, and sends recovery notifications across all channels.
+				<p class="mt-2 text-xs leading-relaxed text-[#bbcabf]">
+					Target responded, but breached warning thresholds (e.g. latency exceeds warning limit for
+					consecutive checks).
+				</p>
+			</div>
+
+			<div class="rounded-lg border border-amber-500/20 bg-amber-500/5 p-5">
+				<div class="flex items-center gap-2">
+					<span class="h-2.5 w-2.5 rounded-full bg-amber-400"></span>
+					<span class="font-mono text-xs font-bold text-amber-300 uppercase">UNRESPONSIVE</span>
+				</div>
+				<p class="mt-2 text-xs leading-relaxed text-[#bbcabf]">
+					Request timed out 3 consecutive times (<code class="font-mono text-amber-300"
+						>ErrTimeout</code
+					>). Generates medium severity incident with calm messaging.
+				</p>
+			</div>
+
+			<div class="rounded-lg border border-red-500/20 bg-red-500/5 p-5">
+				<div class="flex items-center gap-2">
+					<span class="h-2.5 w-2.5 rounded-full bg-red-400"></span>
+					<span class="font-mono text-xs font-bold text-red-400 uppercase">DOWN</span>
+				</div>
+				<p class="mt-2 text-xs leading-relaxed text-[#bbcabf]">
+					Hard crash (<code class="font-mono text-red-400">ECONNREFUSED</code>, DNS failure, 5xx
+					server error), or consecutive critical breaches reached threshold.
+				</p>
+			</div>
+		</div>
+
+		<!-- Consecutive vs Fast Recovery -->
+		<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+			<div class="rounded-lg border border-white/5 bg-[#1a1d1b] p-6">
+				<div class="mb-2 font-mono text-xs font-bold tracking-wider text-[#4edea3] uppercase">
+					Consecutive Breaches Threshold
+				</div>
+				<p class="text-sm leading-relaxed text-[#bbcabf]">
+					A monitor requires <strong class="text-[#e5e2e3]">3 consecutive failures</strong> (configurable
+					from 1 to 20) before escalating to DOWN or UNRESPONSIVE. Transient network blips never trigger
+					false alarm panics.
+				</p>
+			</div>
+			<div class="rounded-lg border border-white/5 bg-[#1a1d1b] p-6">
+				<div class="mb-2 font-mono text-xs font-bold tracking-wider text-[#4edea3] uppercase">
+					Instant Auto-Recovery (1× Success)
+				</div>
+				<p class="text-sm leading-relaxed text-[#bbcabf]">
+					A single successful check immediately resolves the incident, resets failure counters, and
+					dispatches service restoration notices across all channels.
 				</p>
 			</div>
 		</div>
