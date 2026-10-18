@@ -10,6 +10,7 @@
 	import IntegrationsSection from '$lib/components/IntegrationsSection.svelte';
 	import Navigation from '$lib/components/Navigation.svelte';
 	import OpenSourceSection from '$lib/components/OpenSourceSection.svelte';
+	import FaqSection from '$lib/components/FaqSection.svelte';
 	import ProblemSection from '$lib/components/ProblemSection.svelte';
 	import QuickStartSection from '$lib/components/QuickStartSection.svelte';
 
@@ -80,6 +81,7 @@
 		<IntegrationsSection />
 		<AudienceSection />
 		<OpenSourceSection />
+		<FaqSection />
 		<QuickStartSection />
 	</main>
 	<Footer />

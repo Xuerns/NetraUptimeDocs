@@ -89,3 +89,41 @@ export const stack = [
 	{ name: 'Svelte', logo: svelte, note: 'Embedded dashboard UI' },
 	{ name: 'Docker', logo: docker, note: 'One-command deploy' }
 ];
+
+export interface FaqItem {
+	question: string;
+	answer: string;
+}
+
+export const faqs: FaqItem[] = [
+	{
+		question: 'Is Netra Uptime free and open source?',
+		answer:
+			'Yes, Netra Uptime is 100% free and open-source under the AGPL-3.0 license. There are no paywalled features, artificial monitor limits, or recurring subscription fees. You own your infrastructure and retain complete control over your data.'
+	},
+	{
+		question: 'How do I deploy Netra Uptime on my own servers?',
+		answer:
+			'You can launch Netra Uptime in less than a minute. For instant local testing, run "npx netra-uptime start" (or use pnpm dlx, yarn dlx, or bunx). For production environments, deploy with our official Docker Compose setup featuring PostgreSQL and Redis.'
+	},
+	{
+		question: 'What monitoring protocols and checks are supported?',
+		answer:
+			'Netra Uptime supports multi-protocol checks including HTTP/HTTPS status, latency, and response assertion, TCP port connectivity, and ICMP Ping. It also includes proactive monitoring for SSL/TLS certificate validity and WHOIS/RDAP domain expiration.'
+	},
+	{
+		question: 'Where can Netra Uptime send incident alerts?',
+		answer:
+			'Alerts can be delivered across multiple notification channels including Email (SMTP), Slack, Discord, and custom Webhooks. You can configure granular alert rules with consecutive failure thresholds and latency limits to prevent false alarms.'
+	},
+	{
+		question: 'Can I create branded public status pages for my users?',
+		answer:
+			'Yes. You can publish branded public or private status pages on custom subdomains with custom logos, themes, 90-day uptime history bars, service component grouping, scheduled maintenance announcements, and embeddable SVG status badges.'
+	},
+	{
+		question: 'Does Netra Uptime send any telemetry or data to third parties?',
+		answer:
+			'No. Netra Uptime is strictly self-hosted and privacy-first. All monitoring metrics, incident timelines, and user credentials remain entirely within your own database and servers. Nothing is ever sent to a third-party cloud.'
+	}
+];

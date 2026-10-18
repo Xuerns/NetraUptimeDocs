@@ -12,7 +12,8 @@
 	const companyLinks = [
 		{ label: 'About Netra Uptime', href: '#top' },
 		{ label: 'Open Source', href: '#open-source' },
-		{ label: 'Self-Hosting', href: '#quick-start' }
+		{ label: 'Self-Hosting', href: '#quick-start' },
+		{ label: 'FAQ', href: '#faq' }
 	];
 
 	const supportLinks = [

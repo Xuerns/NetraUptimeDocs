@@ -30,7 +30,7 @@
 	];
 </script>
 
-<section class="relative" aria-labelledby="audience-heading">
+<section id="audience" class="relative" aria-labelledby="audience-heading">
 	<div class="mx-auto max-w-6xl px-6 py-24 lg:px-10 lg:py-32">
 		<div data-reveal class="mx-auto max-w-3xl text-center">
 			<h2

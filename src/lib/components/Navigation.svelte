@@ -5,6 +5,7 @@
 	const navigationItems = [
 		{ label: 'Features', href: '#features' },
 		{ label: 'Why Netra Uptime', href: '#audience' },
+		{ label: 'FAQ', href: '#faq' },
 		{ label: 'Documentation', href: '/docs' }
 	];
 </script>
