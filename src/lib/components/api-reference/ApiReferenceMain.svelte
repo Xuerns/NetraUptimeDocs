@@ -6,40 +6,34 @@
 	let { endpoint }: { endpoint: EndpointSection } = $props();
 </script>
 
-<main class="min-w-0 flex-1 p-6 md:p-8 xl:border-r xl:border-[#3c4a42]">
-	<header class="mb-10 pb-6">
-		<span
-			class="mb-3 block font-mono text-[11px] font-medium tracking-widest text-[#bbcabf] uppercase"
-		>
-			API Reference
-		</span>
-		<h1 class="mb-2 font-display text-[36px] leading-tight font-medium text-[#e5e2e3]">
+<main class="min-w-0 flex-1 px-4 py-10 sm:px-8">
+	<header class="mb-8 border-b border-zinc-800/80 pb-6">
+		<h1 class="text-3xl font-semibold tracking-tight text-zinc-100 sm:text-4xl">
 			{endpoint.title}
 		</h1>
-		<p class="font-sans text-sm text-[#bbcabf]">
+		<p class="mt-3 text-base leading-7 text-zinc-400">
 			{endpoint.description}
 		</p>
 	</header>
 
-	<section class="mb-10">
-		<div class="mb-6 flex items-center gap-3">
-			<HttpMethodBadge method={endpoint.method} />
-			<span class="font-mono text-lg text-[#e5e2e3]">
-				https://api.netrauptime.com/v1{endpoint.path}
-			</span>
-		</div>
-
-		<div class="mb-6 flex flex-wrap gap-4 text-xs">
-			<div class="rounded border border-[#3c4a42] bg-[#1a1a1c] px-3 py-1.5">
-				<span class="font-mono text-[#bbcabf]">Auth: </span>
-				<span class="font-mono text-[#e5e2e3]">{endpoint.auth}</span>
+	<section class="flex flex-col gap-8">
+		<div class="flex flex-col gap-3">
+			<div class="flex flex-wrap items-center gap-2.5">
+				<HttpMethodBadge method={endpoint.method} />
+				<code class="font-mono text-sm text-zinc-200">
+					https://api.netrauptime.com/v1{endpoint.path}
+				</code>
 			</div>
-			{#if endpoint.rateLimit}
-				<div class="rounded border border-[#3c4a42] bg-[#1a1a1c] px-3 py-1.5">
-					<span class="font-mono text-[#bbcabf]">Rate Limit: </span>
-					<span class="font-mono text-[#e5e2e3]">{endpoint.rateLimit}</span>
-				</div>
-			{/if}
+
+			<p class="text-xs text-zinc-400">
+				<strong class="font-medium text-zinc-300">Authentication:</strong>
+				{endpoint.auth}
+				{#if endpoint.rateLimit}
+					<span class="mx-2 text-zinc-600">·</span>
+					<strong class="font-medium text-zinc-300">Rate Limit:</strong>
+					{endpoint.rateLimit}
+				{/if}
+			</p>
 		</div>
 
 		{#if endpoint.requestBody && endpoint.requestBody.length > 0}
@@ -51,10 +45,10 @@
 		{/if}
 
 		{#if endpoint.notes && endpoint.notes.length > 0}
-			<div class="mb-8">
-				<h3 class="mb-3 text-sm font-semibold text-[#e5e2e3]">Notes</h3>
-				<ul class="list-inside list-disc space-y-1 text-sm text-[#bbcabf]">
-					{#each endpoint.notes as note}
+			<div class="flex flex-col gap-2">
+				<h2 class="text-lg font-semibold text-zinc-100">Notes</h2>
+				<ul class="list-disc space-y-1.5 pl-5 text-sm leading-7 text-zinc-400">
+					{#each endpoint.notes as note (note)}
 						<li>{note}</li>
 					{/each}
 				</ul>

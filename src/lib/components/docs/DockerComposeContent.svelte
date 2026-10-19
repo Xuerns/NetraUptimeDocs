@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Server, Terminal, Shield, Check } from 'lucide-svelte';
 	import CodeBlock from './CodeBlock.svelte';
 
 	const composeFile = `version: '3.8'
@@ -68,129 +67,94 @@ volumes:
 	const restoreCommand = `cat backup.sql | docker compose exec -T postgres psql -U netra -d netra_uptime`;
 </script>
 
-<div class="flex flex-col gap-16">
+<div class="flex flex-col gap-12">
 	<!-- Prerequisites -->
-	<section id="dc-prerequisites" class="flex scroll-mt-24 flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Prerequisites</h2>
-		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
-			Before deploying Netra Uptime with Docker Compose, ensure your host environment satisfies the
-			minimum hardware and software requirements.
+	<section id="dc-prerequisites" class="flex scroll-mt-24 flex-col gap-4">
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Prerequisites</h2>
+		<p class="text-sm leading-7 text-zinc-400">
+			Before deploying Netra Uptime with Docker Compose, ensure your host environment meets the
+			following requirements:
 		</p>
-		<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-			<div class="rounded-lg border border-white/5 bg-[#1a1d1b] p-5">
-				<Server size={20} class="mb-3 text-[#4edea3]" />
-				<h3 class="font-display text-sm font-semibold text-[#e5e2e3]">Hardware</h3>
-				<p class="mt-2 text-xs leading-relaxed text-[#bbcabf]">
-					1 vCPU and 512 MB RAM are sufficient for up to 100 monitors checking at 60-second
-					intervals.
-				</p>
-			</div>
-			<div class="rounded-lg border border-white/5 bg-[#1a1d1b] p-5">
-				<Terminal size={20} class="mb-3 text-[#4edea3]" />
-				<h3 class="font-display text-sm font-semibold text-[#e5e2e3]">Docker Engine</h3>
-				<p class="mt-2 text-xs leading-relaxed text-[#bbcabf]">
-					Docker Engine 24.0+ and Docker Compose v2.20+ with compose plugin installed.
-				</p>
-			</div>
-			<div class="rounded-lg border border-white/5 bg-[#1a1d1b] p-5">
-				<Shield size={20} class="mb-3 text-[#4edea3]" />
-				<h3 class="font-display text-sm font-semibold text-[#e5e2e3]">Network & Ports</h3>
-				<p class="mt-2 text-xs leading-relaxed text-[#bbcabf]">
-					Port 8080 exposed for HTTP/WebSocket traffic, or proxied behind Nginx/Caddy.
-				</p>
-			</div>
-		</div>
+		<ul class="ml-5 flex list-disc flex-col gap-2 text-sm leading-7 text-zinc-400">
+			<li>
+				<strong class="font-medium text-zinc-200">Hardware</strong> — 1 vCPU and 512 MB RAM are sufficient
+				for up to 100 monitors checking at 60-second intervals.
+			</li>
+			<li>
+				<strong class="font-medium text-zinc-200">Docker Engine</strong> — Docker Engine 24.0+ and Docker
+				Compose v2.20+ with the compose plugin installed.
+			</li>
+			<li>
+				<strong class="font-medium text-zinc-200">Network & Ports</strong> — Port 8080 exposed for HTTP
+				and WebSocket traffic, or proxied behind Nginx or Caddy.
+			</li>
+		</ul>
 	</section>
 
 	<!-- Docker Compose File -->
-	<section id="dc-compose-file" class="flex scroll-mt-24 flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">
-			Docker Compose File
-		</h2>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Save the following stack definition as <code
-				class="rounded bg-[#1a1d1b] px-1.5 py-0.5 font-mono text-xs text-[#4edea3]"
+	<section id="dc-compose-file" class="flex scroll-mt-24 flex-col gap-4">
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Docker Compose File</h2>
+		<p class="text-sm leading-7 text-zinc-400">
+			Save the following stack definition as
+			<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-[#4edea3]"
 				>docker-compose.yml</code
-			> in your deployment directory.
+			> in your deployment directory:
 		</p>
 		<CodeBlock code={composeFile} language="yaml" id="docker-compose-file" />
 	</section>
 
 	<!-- Service Configuration -->
-	<section id="dc-services" class="flex scroll-mt-24 flex-col gap-6">
-		<h3 class="font-display text-2xl font-semibold tracking-tight text-[#e5e2e3]">
-			Service Configuration
-		</h3>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
+	<section id="dc-services" class="flex scroll-mt-24 flex-col gap-4">
+		<h3 class="text-lg font-semibold tracking-tight text-zinc-200">Service Configuration</h3>
+		<p class="text-sm leading-7 text-zinc-400">
 			The Netra Uptime Compose stack consists of three coordinated services:
 		</p>
-		<ul class="flex max-w-3xl flex-col gap-3">
-			<li class="flex gap-3 text-sm leading-relaxed text-[#bbcabf]">
-				<Check size={16} class="mt-0.5 shrink-0 text-[#4edea3]" />
-				<span
-					><strong class="text-[#e5e2e3]">app</strong>: Single-container binary executing the Gin
-					HTTP engine, Gorilla WebSocket hub, 10-goroutine worker pool, and serving the embedded
-					SvelteKit frontend.</span
-				>
+		<ul class="ml-5 flex list-disc flex-col gap-2 text-sm leading-7 text-zinc-400">
+			<li>
+				<strong class="font-medium text-zinc-200">app</strong> — Single-container binary executing the
+				Gin HTTP engine, Gorilla WebSocket hub, 10-goroutine worker pool, and serving the embedded SvelteKit
+				frontend.
 			</li>
-			<li class="flex gap-3 text-sm leading-relaxed text-[#bbcabf]">
-				<Check size={16} class="mt-0.5 shrink-0 text-[#4edea3]" />
-				<span
-					><strong class="text-[#e5e2e3]">postgres</strong>: PostgreSQL 16 engine storing
-					organizations, monitors, incidents, status pages, and aggregated stats with automatic
-					schema migrations.</span
-				>
+			<li>
+				<strong class="font-medium text-zinc-200">postgres</strong> — PostgreSQL 16 engine storing organizations,
+				monitors, incidents, status pages, and aggregated stats with automatic schema migrations.
 			</li>
-			<li class="flex gap-3 text-sm leading-relaxed text-[#bbcabf]">
-				<Check size={16} class="mt-0.5 shrink-0 text-[#4edea3]" />
-				<span
-					><strong class="text-[#e5e2e3]">redis</strong>: In-memory store providing token-bucket
-					rate limiting for authentication and API keys, plus read-through caching for status pages
-					and monitor lists.</span
-				>
+			<li>
+				<strong class="font-medium text-zinc-200">redis</strong> — In-memory store providing token-bucket
+				rate limiting for authentication and API keys, plus read-through caching for status pages and
+				monitor lists.
 			</li>
 		</ul>
 	</section>
 
 	<!-- Volumes & Persistence -->
-	<section id="dc-volumes" class="flex scroll-mt-24 flex-col gap-6">
-		<h3 class="font-display text-2xl font-semibold tracking-tight text-[#e5e2e3]">
-			Volumes & Persistence
-		</h3>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			State is strictly isolated into named Docker volumes to ensure zero data loss across container
-			recreations and image updates:
+	<section id="dc-volumes" class="flex scroll-mt-24 flex-col gap-4">
+		<h3 class="text-lg font-semibold tracking-tight text-zinc-200">Volumes & Persistence</h3>
+		<p class="text-sm leading-7 text-zinc-400">
+			State is isolated into named Docker volumes to prevent data loss across container recreations
+			and image updates:
 		</p>
-		<div class="overflow-x-auto rounded-lg border border-white/5">
-			<table class="w-full text-sm">
+		<div class="overflow-x-auto rounded-lg border border-zinc-800">
+			<table class="w-full text-left text-sm">
 				<thead>
-					<tr class="border-b border-white/5 bg-[#1a1d1b]">
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Volume Name</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Mount Path</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Data Preserved</th
-						>
+					<tr class="border-b border-zinc-800 bg-[#141416]">
+						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Volume Name</th>
+						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Mount Path</th>
+						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Data Preserved</th>
 					</tr>
 				</thead>
-				<tbody class="divide-y divide-white/5 bg-[#0e0e0f]">
+				<tbody class="divide-y divide-zinc-800/60 bg-transparent">
 					<tr>
-						<td class="px-5 py-3 font-mono text-xs text-[#e5e2e3]">postgres_data</td>
-						<td class="px-5 py-3 font-mono text-xs text-[#bbcabf]">/var/lib/postgresql/data</td>
-						<td class="px-5 py-3 text-[#bbcabf]"
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">postgres_data</td>
+						<td class="px-4 py-3 font-mono text-xs text-zinc-300">/var/lib/postgresql/data</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
 							>All tables, users, monitor configs, metrics, and incident history</td
 						>
 					</tr>
 					<tr>
-						<td class="px-5 py-3 font-mono text-xs text-[#e5e2e3]">redis_data</td>
-						<td class="px-5 py-3 font-mono text-xs text-[#bbcabf]">/data</td>
-						<td class="px-5 py-3 text-[#bbcabf]"
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">redis_data</td>
+						<td class="px-4 py-3 font-mono text-xs text-zinc-300">/data</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
 							>Redis dump snapshots and sliding window rate limiter states</td
 						>
 					</tr>
@@ -200,30 +164,26 @@ volumes:
 	</section>
 
 	<!-- Useful Commands -->
-	<section id="dc-commands" class="flex scroll-mt-24 flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Useful Commands</h2>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
+	<section id="dc-commands" class="flex scroll-mt-24 flex-col gap-4">
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Useful Commands</h2>
+		<p class="text-sm leading-7 text-zinc-400">
 			Common Docker Compose operations for managing your Netra Uptime instance:
 		</p>
 		<div class="flex flex-col gap-4">
-			<div>
-				<span class="mb-1 block font-mono text-xs text-[#bbcabf]"
-					>Start all services in detached mode</span
-				>
+			<div class="flex flex-col gap-1.5">
+				<span class="text-xs text-zinc-400">Start all services in detached mode:</span>
 				<CodeBlock code="docker compose up -d" language="bash" id="cmd-up" />
 			</div>
-			<div>
-				<span class="mb-1 block font-mono text-xs text-[#bbcabf]"
-					>Stream logs from the application container</span
-				>
+			<div class="flex flex-col gap-1.5">
+				<span class="text-xs text-zinc-400">Stream logs from the application container:</span>
 				<CodeBlock code="docker compose logs -f app" language="bash" id="cmd-logs" />
 			</div>
-			<div>
-				<span class="mb-1 block font-mono text-xs text-[#bbcabf]">Restart services cleanly</span>
+			<div class="flex flex-col gap-1.5">
+				<span class="text-xs text-zinc-400">Restart services cleanly:</span>
 				<CodeBlock code="docker compose restart" language="bash" id="cmd-restart" />
 			</div>
-			<div>
-				<span class="mb-1 block font-mono text-xs text-[#bbcabf]">Pull new images and rebuild</span>
+			<div class="flex flex-col gap-1.5">
+				<span class="text-xs text-zinc-400">Pull new images and rebuild:</span>
 				<CodeBlock
 					code="docker compose pull && docker compose up -d"
 					language="bash"
@@ -234,22 +194,18 @@ volumes:
 	</section>
 
 	<!-- Database Backup & Recovery -->
-	<section id="dc-backup" class="flex scroll-mt-24 flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">
-			Database Backup & Recovery
-		</h2>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
+	<section id="dc-backup" class="flex scroll-mt-24 flex-col gap-4">
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Database Backup & Recovery</h2>
+		<p class="text-sm leading-7 text-zinc-400">
 			Perform periodic dumps of your PostgreSQL database to maintain disaster recovery readiness:
 		</p>
 		<div class="flex flex-col gap-4">
-			<div>
-				<span class="mb-1 block font-mono text-xs text-[#bbcabf]">Create atomic SQL backup</span>
+			<div class="flex flex-col gap-1.5">
+				<span class="text-xs text-zinc-400">Create atomic SQL backup:</span>
 				<CodeBlock code={backupCommand} language="bash" id="cmd-backup" />
 			</div>
-			<div>
-				<span class="mb-1 block font-mono text-xs text-[#bbcabf]"
-					>Restore database from SQL dump</span
-				>
+			<div class="flex flex-col gap-1.5">
+				<span class="text-xs text-zinc-400">Restore database from SQL dump:</span>
 				<CodeBlock code={restoreCommand} language="bash" id="cmd-restore" />
 			</div>
 		</div>

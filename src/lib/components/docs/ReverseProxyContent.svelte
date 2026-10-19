@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Shield, Globe, Check, Lock } from 'lucide-svelte';
 	import CodeBlock from './CodeBlock.svelte';
 
 	const nginxConfig = `server {
@@ -56,62 +55,44 @@ map $http_upgrade $connection_upgrade {
 PUBLIC_API_URL=https://uptime.yourdomain.com/api/v1`;
 </script>
 
-<div class="flex flex-col gap-16">
+<div class="flex flex-col gap-12">
 	<!-- Why a Reverse Proxy? -->
-	<section id="rp-overview" class="flex scroll-mt-24 flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">
-			Why a Reverse Proxy?
-		</h2>
-		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
+	<section id="rp-overview" class="flex scroll-mt-24 flex-col gap-4">
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Why a Reverse Proxy?</h2>
+		<p class="text-sm leading-7 text-zinc-400">
 			While Netra Uptime serves HTTP directly on port 8080, deploying a production reverse proxy
-			such as Nginx, Caddy, or Traefik provides vital security and operational capabilities:
+			such as Nginx, Caddy, or Traefik provides essential security and operational capabilities:
 		</p>
-		<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-			<div class="rounded-lg border border-white/5 bg-[#1a1d1b] p-5">
-				<Lock size={20} class="mb-3 text-[#4edea3]" />
-				<h3 class="font-display text-sm font-semibold text-[#e5e2e3]">TLS / SSL Termination</h3>
-				<p class="mt-2 text-xs leading-relaxed text-[#bbcabf]">
-					Offload cryptographic handshakes and automate certificate renewal using ACME Let's
-					Encrypt.
-				</p>
-			</div>
-			<div class="rounded-lg border border-white/5 bg-[#1a1d1b] p-5">
-				<Globe size={20} class="mb-3 text-[#4edea3]" />
-				<h3 class="font-display text-sm font-semibold text-[#e5e2e3]">Custom Domains & Ports</h3>
-				<p class="mt-2 text-xs leading-relaxed text-[#bbcabf]">
-					Expose your instance on standard ports 80/443 without binding privileged ports directly to
-					the container.
-				</p>
-			</div>
-			<div class="rounded-lg border border-white/5 bg-[#1a1d1b] p-5">
-				<Shield size={20} class="mb-3 text-[#4edea3]" />
-				<h3 class="font-display text-sm font-semibold text-[#e5e2e3]">DDoS & Header Control</h3>
-				<p class="mt-2 text-xs leading-relaxed text-[#bbcabf]">
-					Add edge protection, enforce HTTP Strict Transport Security (HSTS), and protect client IP
-					fidelity.
-				</p>
-			</div>
-		</div>
+		<ul class="ml-5 flex list-disc flex-col gap-2 text-sm leading-7 text-zinc-400">
+			<li>
+				<strong class="font-medium text-zinc-200">TLS / SSL Termination</strong> — Offload cryptographic
+				handshakes and automate certificate renewal using ACME / Let's Encrypt.
+			</li>
+			<li>
+				<strong class="font-medium text-zinc-200">Custom Domains & Ports</strong> — Expose your instance
+				on standard ports 80 and 443 without binding privileged ports directly to the container.
+			</li>
+			<li>
+				<strong class="font-medium text-zinc-200">Header & Client IP Fidelity</strong> — Enforce HTTP
+				Strict Transport Security (HSTS) and forward client IP headers accurately for rate limiting.
+			</li>
+		</ul>
 	</section>
 
 	<!-- Nginx Configuration -->
-	<section id="rp-nginx" class="flex scroll-mt-24 flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">
-			Nginx Configuration
-		</h2>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			The following configuration proxies requests to the Netra Uptime container while properly
-			mapping WebSocket connection upgrade headers:
+	<section id="rp-nginx" class="flex scroll-mt-24 flex-col gap-4">
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Nginx Configuration</h2>
+		<p class="text-sm leading-7 text-zinc-400">
+			The following configuration proxies requests to the Netra Uptime container while mapping
+			WebSocket connection upgrade headers:
 		</p>
 		<CodeBlock code={nginxConfig} language="nginx" id="nginx-config" />
 	</section>
 
 	<!-- Caddy Configuration -->
-	<section id="rp-caddy" class="flex scroll-mt-24 flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">
-			Caddy Configuration
-		</h2>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
+	<section id="rp-caddy" class="flex scroll-mt-24 flex-col gap-4">
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Caddy Configuration</h2>
+		<p class="text-sm leading-7 text-zinc-400">
 			Caddy provides automatic HTTPS certification and native WebSocket proxying with minimal
 			configuration:
 		</p>
@@ -119,50 +100,42 @@ PUBLIC_API_URL=https://uptime.yourdomain.com/api/v1`;
 	</section>
 
 	<!-- WebSocket Headers -->
-	<section id="rp-websocket" class="flex scroll-mt-24 flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">WebSocket Headers</h2>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Netra Uptime uses a bidirectional Gorilla WebSocket connection at <code
-				class="rounded bg-[#1a1d1b] px-1.5 py-0.5 font-mono text-xs text-[#4edea3]">/api/v1/ws</code
-			> for real-time dashboard updates. Ensure your proxy forwards these required HTTP/1.1 headers:
+	<section id="rp-websocket" class="flex scroll-mt-24 flex-col gap-4">
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">WebSocket Headers</h2>
+		<p class="text-sm leading-7 text-zinc-400">
+			Netra Uptime uses a bidirectional Gorilla WebSocket connection at
+			<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-[#4edea3]"
+				>/api/v1/ws</code
+			> for real-time dashboard updates. Ensure your proxy forwards these HTTP/1.1 headers:
 		</p>
-		<div class="overflow-x-auto rounded-lg border border-white/5">
-			<table class="w-full text-sm">
+		<div class="overflow-x-auto rounded-lg border border-zinc-800">
+			<table class="w-full text-left text-sm">
 				<thead>
-					<tr class="border-b border-white/5 bg-[#1a1d1b]">
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Header</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Required Value</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Purpose</th
-						>
+					<tr class="border-b border-zinc-800 bg-[#141416]">
+						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Header</th>
+						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Required Value</th>
+						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Purpose</th>
 					</tr>
 				</thead>
-				<tbody class="divide-y divide-white/5 bg-[#0e0e0f]">
+				<tbody class="divide-y divide-zinc-800/60 bg-transparent">
 					<tr>
-						<td class="px-5 py-3 font-mono text-xs text-[#e5e2e3]">Upgrade</td>
-						<td class="px-5 py-3 font-mono text-xs text-[#bbcabf]">$http_upgrade (websocket)</td>
-						<td class="px-5 py-3 text-[#bbcabf]"
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">Upgrade</td>
+						<td class="px-4 py-3 font-mono text-xs text-zinc-300">$http_upgrade (websocket)</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
 							>Instructs backend to switch from HTTP/1.1 to WebSocket protocol</td
 						>
 					</tr>
 					<tr>
-						<td class="px-5 py-3 font-mono text-xs text-[#e5e2e3]">Connection</td>
-						<td class="px-5 py-3 font-mono text-xs text-[#bbcabf]">upgrade</td>
-						<td class="px-5 py-3 text-[#bbcabf]"
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">Connection</td>
+						<td class="px-4 py-3 font-mono text-xs text-zinc-300">upgrade</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
 							>Specifies connection hop-by-hop upgrade requirement</td
 						>
 					</tr>
 					<tr>
-						<td class="px-5 py-3 font-mono text-xs text-[#e5e2e3]">X-Forwarded-For</td>
-						<td class="px-5 py-3 font-mono text-xs text-[#bbcabf]">$remote_addr</td>
-						<td class="px-5 py-3 text-[#bbcabf]"
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">X-Forwarded-For</td>
+						<td class="px-4 py-3 font-mono text-xs text-zinc-300">$remote_addr</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
 							>Preserves true client IP for Redis auth rate limiters</td
 						>
 					</tr>
@@ -172,39 +145,28 @@ PUBLIC_API_URL=https://uptime.yourdomain.com/api/v1`;
 	</section>
 
 	<!-- Cloudflare SSL & Proxy -->
-	<section id="rp-cloudflare" class="flex scroll-mt-24 flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">
-			Cloudflare SSL & Proxy
-		</h2>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
+	<section id="rp-cloudflare" class="flex scroll-mt-24 flex-col gap-4">
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Cloudflare SSL & Proxy</h2>
+		<p class="text-sm leading-7 text-zinc-400">
 			If using Cloudflare proxy (orange cloud), configure the following settings in your Cloudflare
 			dashboard:
 		</p>
-		<ul class="flex max-w-3xl flex-col gap-3">
-			<li class="flex gap-3 text-sm leading-relaxed text-[#bbcabf]">
-				<Check size={16} class="mt-0.5 shrink-0 text-[#4edea3]" />
-				<span
-					><strong class="text-[#e5e2e3]">SSL/TLS Encryption Mode</strong>: Set to
-					<strong class="text-[#e5e2e3]">Full (Strict)</strong>. Avoid "Flexible" mode to prevent
-					redirect loops.</span
-				>
+		<ul class="ml-5 flex list-disc flex-col gap-2 text-sm leading-7 text-zinc-400">
+			<li>
+				<strong class="font-medium text-zinc-200">SSL/TLS Encryption Mode</strong> — Set to
+				<strong class="font-medium text-zinc-200">Full (Strict)</strong>. Avoid Flexible mode to
+				prevent redirect loops.
 			</li>
-			<li class="flex gap-3 text-sm leading-relaxed text-[#bbcabf]">
-				<Check size={16} class="mt-0.5 shrink-0 text-[#4edea3]" />
-				<span
-					><strong class="text-[#e5e2e3]">WebSockets</strong>: Navigate to
-					<strong class="text-[#e5e2e3]">Network</strong>
-					settings and verify that WebSockets are toggled
-					<strong class="text-[#e5e2e3]">On</strong>.</span
-				>
+			<li>
+				<strong class="font-medium text-zinc-200">WebSockets</strong> — Navigate to
+				<strong class="font-medium text-zinc-200">Network</strong> settings and verify that
+				WebSockets are toggled <strong class="font-medium text-zinc-200">On</strong>.
 			</li>
-			<li class="flex gap-3 text-sm leading-relaxed text-[#bbcabf]">
-				<Check size={16} class="mt-0.5 shrink-0 text-[#4edea3]" />
-				<span
-					><strong class="text-[#e5e2e3]">Update .env</strong>: Ensure
-					<code class="font-mono text-xs text-[#4edea3]">ALLOWED_ORIGIN</code> matches your public HTTPS
-					domain to prevent CORS rejections.</span
-				>
+			<li>
+				<strong class="font-medium text-zinc-200">Update .env</strong> — Ensure
+				<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-[#4edea3]"
+					>ALLOWED_ORIGIN</code
+				> matches your public HTTPS domain to prevent CORS rejections:
 			</li>
 		</ul>
 		<CodeBlock code={envExample} language="env" id="cloudflare-env" />

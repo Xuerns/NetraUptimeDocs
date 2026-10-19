@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { ChevronDown, ChevronUp } from 'lucide-svelte';
-	import type { ApiGroup } from '$lib/data/api-reference';
+	import type { ApiGroup, HttpMethod } from '$lib/data/api-reference';
 
 	let {
 		groups,
@@ -12,80 +11,49 @@
 		onSelectEndpoint: (id: string) => void;
 	} = $props();
 
-	let expandedGroups = $state<Record<string, boolean>>({
-		auth: true
-	});
-
-	$effect(() => {
-		const currentGroup = groups.find((g) => g.endpoints.some((e) => e.id === activeEndpointId));
-		if (currentGroup && !expandedGroups[currentGroup.id]) {
-			expandedGroups[currentGroup.id] = true;
-		}
-	});
-
-	function toggleGroup(groupId: string) {
-		expandedGroups[groupId] = !expandedGroups[groupId];
-	}
-
-	const methodColors: Record<string, string> = {
-		GET: 'text-[#adc6ff]',
+	const methodColors: Record<HttpMethod, string> = {
+		GET: 'text-sky-400',
 		POST: 'text-[#4edea3]',
-		PUT: 'text-[#ffd699]',
-		DELETE: 'text-[#ff99ad]',
-		PATCH: 'text-[#adc6ff]'
+		PUT: 'text-amber-400',
+		PATCH: 'text-violet-400',
+		DELETE: 'text-rose-400'
 	};
 </script>
 
 <aside
 	data-lenis-prevent
-	class="sticky top-14 hidden h-[calc(100vh-56px)] w-80 flex-shrink-0 overflow-x-hidden overflow-y-auto border-r border-[#3c4a42] bg-[#131314] lg:block"
+	class="custom-scrollbar sticky top-14 hidden h-[calc(100vh-56px)] w-64 flex-shrink-0 overflow-x-hidden overflow-y-auto border-r border-zinc-800/80 py-8 pr-4 lg:block"
 >
-	<div class="flex flex-col gap-6 p-6">
-		<div>
-			<h4 class="mb-4 font-mono text-[11px] font-medium tracking-widest text-[#bbcabf] uppercase">
-				API Reference
-			</h4>
-			<ul class="flex flex-col gap-4 font-mono text-sm">
-				{#each groups as group (group.id)}
-					<li>
-						<button
-							class="mb-2 flex w-full items-center justify-between text-left transition-colors hover:text-[#e5e2e3] {expandedGroups[
-								group.id
-							]
-								? 'font-semibold text-[#e5e2e3]'
-								: 'text-[#bbcabf]'}"
-							onclick={() => toggleGroup(group.id)}
-						>
-							{group.label}
-							{#if expandedGroups[group.id]}
-								<ChevronUp size={14} />
-							{:else}
-								<ChevronDown size={14} />
-							{/if}
-						</button>
-						{#if expandedGroups[group.id]}
-							<ul class="ml-4 flex flex-col gap-2 border-l border-[#3c4a42] py-1 pl-4">
-								{#each group.endpoints as endpoint (endpoint.id)}
-									<li>
-										<button
-											class="flex w-full items-center gap-2 pr-2 text-left text-xs transition-colors {activeEndpointId ===
-											endpoint.id
-												? '-ml-2 rounded bg-[#201f20] px-2 py-1 font-semibold text-[#4edea3]'
-												: 'text-[#bbcabf] hover:text-[#e5e2e3]'}"
-											onclick={() => onSelectEndpoint(endpoint.id)}
-										>
-											<span class="text-[10px] font-bold {methodColors[endpoint.method]}">
-												{endpoint.method}
-											</span>
-											{endpoint.path}
-										</button>
-									</li>
-								{/each}
-							</ul>
-						{/if}
-					</li>
-				{/each}
-			</ul>
-		</div>
+	<div class="flex flex-col gap-6">
+		{#each groups as group (group.id)}
+			<div>
+				<div class="mb-2 px-2.5 text-xs font-medium text-zinc-500">
+					{group.label}
+				</div>
+				<ul class="flex flex-col gap-0.5 font-mono text-xs">
+					{#each group.endpoints as endpoint (endpoint.id)}
+						{@const isActive = activeEndpointId === endpoint.id}
+						<li>
+							<button
+								type="button"
+								class="flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-left transition-colors {isActive
+									? 'border border-[#4edea3]/40 bg-[#4edea3]/5 font-medium text-zinc-100'
+									: 'text-zinc-400 hover:bg-zinc-800/40 hover:text-zinc-100'}"
+								onclick={() => onSelectEndpoint(endpoint.id)}
+							>
+								<span
+									class="w-11 flex-shrink-0 text-[10px] font-semibold {methodColors[
+										endpoint.method
+									]}"
+								>
+									{endpoint.method}
+								</span>
+								<span class="truncate">{endpoint.path}</span>
+							</button>
+						</li>
+					{/each}
+				</ul>
+			</div>
+		{/each}
 	</div>
 </aside>

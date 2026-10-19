@@ -4,26 +4,25 @@
 	let { table }: { table: TableData } = $props();
 </script>
 
-<div class="overflow-x-auto rounded-lg border border-white/5">
+<div class="overflow-x-auto rounded-lg border border-zinc-800">
 	<table class="w-full min-w-[32rem] text-sm">
 		<thead>
-			<tr class="border-b border-white/5 bg-[#1a1d1b]">
+			<tr class="border-b border-zinc-800 bg-[#141416]">
 				{#each table.columns as column (column)}
-					<th
-						class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-						>{column}</th
-					>
+					<th class="px-4 py-2.5 text-left font-mono text-xs font-medium text-zinc-300">
+						{column}
+					</th>
 				{/each}
 			</tr>
 		</thead>
-		<tbody class="divide-y divide-white/5 bg-[#0e0e0f]">
+		<tbody class="divide-y divide-zinc-800/80">
 			{#each table.rows as row, rowIndex (rowIndex)}
 				<tr>
 					{#each row as cell, cellIndex (cellIndex)}
 						<td
-							class="px-5 py-3 align-top {table.mono?.includes(cellIndex)
-								? 'font-mono text-xs text-[#e5e2e3]'
-								: 'text-[#bbcabf]'}">{cell}</td
+							class="px-4 py-2.5 align-top {table.mono?.includes(cellIndex)
+								? 'font-mono text-xs text-zinc-200'
+								: 'text-zinc-400'}">{cell}</td
 						>
 					{/each}
 				</tr>

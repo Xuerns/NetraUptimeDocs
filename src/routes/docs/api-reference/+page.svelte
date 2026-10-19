@@ -8,6 +8,7 @@
 	import ApiReferenceMain from '$lib/components/api-reference/ApiReferenceMain.svelte';
 	import ApiReferenceCodePane from '$lib/components/api-reference/ApiReferenceCodePane.svelte';
 	import ApiReferenceFooter from '$lib/components/api-reference/ApiReferenceFooter.svelte';
+	import DocsSiteFooter from '$lib/components/docs/DocsSiteFooter.svelte';
 
 	let activeEndpointId = $state('auth-register');
 
@@ -19,6 +20,7 @@
 	function handleSelectEndpoint(id: string) {
 		activeEndpointId = id;
 		if (typeof window !== 'undefined') {
+			window.scrollTo({ top: 0, behavior: 'instant' });
 			window.history.replaceState(null, '', `#${id}`);
 		}
 	}
@@ -46,10 +48,10 @@
 
 		const context = gsap.context(() => {
 			gsap.from('[data-reveal]', {
-				duration: 0.7,
-				y: 18,
+				duration: 0.5,
+				y: 12,
 				autoAlpha: 0,
-				stagger: 0.08,
+				stagger: 0.06,
 				ease: 'power2.out'
 			});
 		});
@@ -70,24 +72,28 @@
 	/>
 </svelte:head>
 
-<ApiReferenceNav />
+<div class="docs-fonts min-h-screen bg-[#0d0d0e] text-zinc-300">
+	<ApiReferenceNav />
 
-<div class="docs-fonts flex w-full flex-grow">
-	<ApiReferenceSidebar
-		groups={apiGroups}
-		{activeEndpointId}
-		onSelectEndpoint={handleSelectEndpoint}
-	/>
+	<div class="mx-auto flex min-h-[calc(100vh-56px)] w-full max-w-[1380px] px-4 sm:px-6 lg:px-8">
+		<ApiReferenceSidebar
+			groups={apiGroups}
+			{activeEndpointId}
+			onSelectEndpoint={handleSelectEndpoint}
+		/>
 
-	<div class="flex min-w-0 flex-grow flex-col xl:flex-row">
-		<div data-reveal class="min-w-0 flex-1">
-			<ApiReferenceMain endpoint={activeEndpoint} />
-			<div data-reveal class="px-6 md:px-8 xl:px-10">
-				<ApiReferenceFooter {activeEndpointId} onSelectEndpoint={handleSelectEndpoint} />
+		<div class="flex min-w-0 flex-1 flex-col xl:flex-row xl:gap-8">
+			<div data-reveal class="min-w-0 flex-1">
+				<ApiReferenceMain endpoint={activeEndpoint} />
+				<div data-reveal class="px-4 sm:px-8">
+					<ApiReferenceFooter {activeEndpointId} onSelectEndpoint={handleSelectEndpoint} />
+				</div>
+			</div>
+			<div data-reveal class="min-w-0 flex-shrink-0 xl:w-[380px] 2xl:w-[420px]">
+				<ApiReferenceCodePane codeExample={activeEndpoint.codeExample} />
 			</div>
 		</div>
-		<div data-reveal class="min-w-0 flex-shrink-0 xl:w-[440px] 2xl:w-[520px]">
-			<ApiReferenceCodePane codeExample={activeEndpoint.codeExample} />
-		</div>
 	</div>
+
+	<DocsSiteFooter />
 </div>

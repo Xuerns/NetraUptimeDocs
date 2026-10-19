@@ -4,4 +4,6 @@
 	let { children }: { children: Snippet } = $props();
 </script>
 
-<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">{@render children()}</p>
+<p class="text-sm leading-7 text-zinc-400">
+	{@render children()}
+</p>

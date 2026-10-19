@@ -63,27 +63,30 @@ curl -s -X GET "$NETRA_UPTIME_URL/api/v1/public/monitors" \\
   -H "Authorization: Bearer $API_KEY" | jq '.data[] | {name: .name, status: .status, latency: .last_latency_ms}'`;
 </script>
 
-<div class="flex flex-col gap-16">
+<div class="flex flex-col gap-12">
 	<!-- GitHub Actions -->
-	<section id="cicd-github" class="flex scroll-mt-24 flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">GitHub Actions</h2>
-		<p class="max-w-3xl text-base leading-relaxed font-light text-[#bbcabf]">
+	<section id="cicd-github" class="flex scroll-mt-24 flex-col gap-4">
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">GitHub Actions</h2>
+		<p class="text-sm leading-7 text-zinc-400">
 			Integrate Netra Uptime into your GitHub Actions release workflows to trigger immediate
-			on-demand health verification as soon as your deployment completes.
-		</p>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Store your API key in repository secrets (<code class="font-mono text-xs text-[#4edea3]"
+			on-demand health verification as soon as your deployment completes. Store your API key in
+			repository secrets (<code
+				class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-200"
 				>Settings &rarr; Secrets and variables &rarr; Actions</code
-			>) as <code class="font-mono text-xs text-[#4edea3]">NETRA_UPTIME_API_KEY</code>:
+			>) as
+			<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-[#4edea3]"
+				>NETRA_UPTIME_API_KEY</code
+			>:
 		</p>
 		<CodeBlock code={githubActionsYaml} language="yaml" id="github-actions" />
 	</section>
 
 	<!-- GitLab CI -->
-	<section id="cicd-gitlab" class="flex scroll-mt-24 flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">GitLab CI</h2>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Add a verification job into your <code class="font-mono text-xs text-[#4edea3]"
+	<section id="cicd-gitlab" class="flex scroll-mt-24 flex-col gap-4">
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">GitLab CI</h2>
+		<p class="text-sm leading-7 text-zinc-400">
+			Add a verification job into your
+			<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-[#4edea3]"
 				>.gitlab-ci.yml</code
 			> pipeline to ensure new releases pass health checks:
 		</p>
@@ -91,18 +94,13 @@ curl -s -X GET "$NETRA_UPTIME_URL/api/v1/public/monitors" \\
 	</section>
 
 	<!-- Example Workflows -->
-	<section id="cicd-examples" class="flex scroll-mt-24 flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Example Workflows</h2>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Automate fleet-wide sanity audits and smoke test pipelines across your microservices:
+	<section id="cicd-examples" class="flex scroll-mt-24 flex-col gap-4">
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Example Workflows</h2>
+		<p class="text-sm leading-7 text-zinc-400">
+			Query all monitors for status and latency with <code
+				class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-200">jq</code
+			> in post-deployment smoke test scripts:
 		</p>
-		<div class="flex flex-col gap-4">
-			<div>
-				<span class="mb-1 block font-mono text-xs text-[#bbcabf]"
-					>Query all monitors status and latency with jq</span
-				>
-				<CodeBlock code={smokeTestBash} language="bash" id="smoke-test" />
-			</div>
-		</div>
+		<CodeBlock code={smokeTestBash} language="bash" id="smoke-test" />
 	</section>
 </div>

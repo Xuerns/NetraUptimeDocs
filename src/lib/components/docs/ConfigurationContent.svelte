@@ -1,14 +1,4 @@
 <script lang="ts">
-	import { Copy, Check, AlertTriangle } from 'lucide-svelte';
-
-	let copied = $state('');
-
-	async function copyText(text: string, id: string) {
-		await navigator.clipboard.writeText(text);
-		copied = id;
-		setTimeout(() => (copied = ''), 2000);
-	}
-
 	interface EnvVar {
 		name: string;
 		type: string;
@@ -60,7 +50,7 @@
 			name: 'JWT_SECRET',
 			type: 'string',
 			defaultVal: '(required)',
-			description: 'Secret key for signing JWT access tokens. Must be changed from default!'
+			description: 'Secret key for signing JWT access tokens. Must be changed from default.'
 		},
 		{
 			name: 'JWT_ACCESS_EXPIRY',
@@ -224,373 +214,89 @@
 			description: 'Google OAuth redirect URL.'
 		}
 	];
+
+	const sections = [
+		{
+			id: 'env-app-core',
+			title: 'Application Core',
+			description:
+				'Core application settings that control runtime behavior, ports, and CORS configuration.',
+			vars: appCoreVars
+		},
+		{
+			id: 'env-security',
+			title: 'Security & JWT',
+			description: 'Secret keys and expiration durations for JWT session authentication.',
+			vars: securityVars
+		},
+		{
+			id: 'env-database',
+			title: 'Database (PostgreSQL)',
+			description:
+				'Netra Uptime uses PostgreSQL 16 as its primary database. The schema is automatically migrated on startup using GORM AutoMigrate.',
+			vars: databaseVars
+		},
+		{
+			id: 'env-redis',
+			title: 'Redis Cache',
+			description: 'Connection settings for Redis caching and sliding-window rate limiting.',
+			vars: redisVars
+		},
+		{
+			id: 'env-quotas',
+			title: 'Operational Quotas (Self-Hosted)',
+			description:
+				'Resource limits for your self-hosted deployment. Set 0 for unlimited on most quota fields.',
+			vars: quotaVars
+		},
+		{
+			id: 'env-smtp',
+			title: 'Email (SMTP)',
+			description:
+				'Configure SMTP for sending email notifications. Supports both TLS/STARTTLS (port 587) and SSL (port 465).',
+			vars: smtpVars
+		},
+		{
+			id: 'env-oauth',
+			title: 'Google OAuth',
+			description:
+				'Optional Google OAuth 2.0 integration for user login. If not configured, email/password authentication remains available.',
+			vars: oauthVars
+		}
+	];
 </script>
 
-<div class="flex flex-col gap-16">
-	<!-- App Core -->
-	<section id="env-app-core" class="flex flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Application Core</h2>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Core application settings that control the runtime behavior, ports, and CORS configuration.
-		</p>
-		<div class="overflow-x-auto rounded-lg border border-white/5">
-			<table class="w-full text-sm">
-				<thead>
-					<tr class="border-b border-white/5 bg-[#1a1d1b]">
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Variable</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Default</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Description</th
-						>
-					</tr>
-				</thead>
-				<tbody class="divide-y divide-white/5 bg-[#0e0e0f]">
-					{#each appCoreVars as v}
-						<tr>
-							<td class="px-5 py-3 whitespace-nowrap">
-								<button
-									onclick={() => copyText(v.name, v.name)}
-									class="group flex items-center gap-1.5 font-mono text-xs text-[#e5e2e3] transition-colors hover:text-[#4edea3]"
-								>
-									{v.name}
-									{#if copied === v.name}<Check size={10} class="text-[#4edea3]" />{:else}<Copy
-											size={10}
-											class="opacity-0 group-hover:opacity-100"
-										/>{/if}
-								</button>
-							</td>
-							<td class="px-5 py-3 whitespace-nowrap"
-								><code class="rounded bg-[#1a1d1b] px-1.5 py-0.5 text-xs text-[#bbcabf]"
-									>{v.defaultVal}</code
-								></td
-							>
-							<td class="px-5 py-3 text-[#bbcabf]">{v.description}</td>
+<div class="flex flex-col gap-12">
+	{#each sections as section (section.id)}
+		<section id={section.id} class="flex scroll-mt-24 flex-col gap-4">
+			<h2 class="text-xl font-semibold tracking-tight text-zinc-100">{section.title}</h2>
+			<p class="text-sm leading-7 text-zinc-400">{section.description}</p>
+			<div class="overflow-x-auto rounded-lg border border-zinc-800">
+				<table class="w-full text-left text-sm">
+					<thead>
+						<tr class="border-b border-zinc-800 bg-[#141416]">
+							<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Variable</th>
+							<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Default</th>
+							<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Description</th>
 						</tr>
-					{/each}
-				</tbody>
-			</table>
-		</div>
-	</section>
-
-	<!-- Security & JWT -->
-	<section id="env-security" class="flex flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Security & JWT</h2>
-		<div class="overflow-x-auto rounded-lg border border-white/5">
-			<table class="w-full text-sm">
-				<thead>
-					<tr class="border-b border-white/5 bg-[#1a1d1b]">
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Variable</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Default</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Description</th
-						>
-					</tr>
-				</thead>
-				<tbody class="divide-y divide-white/5 bg-[#0e0e0f]">
-					{#each securityVars as v}
-						<tr>
-							<td class="px-5 py-3 whitespace-nowrap">
-								<button
-									onclick={() => copyText(v.name, v.name)}
-									class="group flex items-center gap-1.5 font-mono text-xs text-[#e5e2e3] transition-colors hover:text-[#4edea3]"
-								>
+					</thead>
+					<tbody class="divide-y divide-zinc-800/60 bg-transparent">
+						{#each section.vars as v (v.name)}
+							<tr>
+								<td class="px-4 py-3 font-mono text-xs whitespace-nowrap text-[#4edea3]">
 									{v.name}
-									{#if copied === v.name}<Check size={10} class="text-[#4edea3]" />{:else}<Copy
-											size={10}
-											class="opacity-0 group-hover:opacity-100"
-										/>{/if}
-								</button>
-							</td>
-							<td class="px-5 py-3 whitespace-nowrap"
-								><code class="rounded bg-[#1a1d1b] px-1.5 py-0.5 text-xs text-[#bbcabf]"
-									>{v.defaultVal}</code
-								></td
-							>
-							<td class="px-5 py-3 text-[#bbcabf]">{v.description}</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-		</div>
-	</section>
-
-	<!-- Database -->
-	<section id="env-database" class="flex flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">
-			Database (PostgreSQL)
-		</h2>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Netra Uptime uses PostgreSQL 16 as its primary database. The schema is automatically migrated
-			on startup using GORM's AutoMigrate.
-		</p>
-		<div class="overflow-x-auto rounded-lg border border-white/5">
-			<table class="w-full text-sm">
-				<thead>
-					<tr class="border-b border-white/5 bg-[#1a1d1b]">
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Variable</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Default</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Description</th
-						>
-					</tr>
-				</thead>
-				<tbody class="divide-y divide-white/5 bg-[#0e0e0f]">
-					{#each databaseVars as v}
-						<tr>
-							<td class="px-5 py-3 whitespace-nowrap">
-								<button
-									onclick={() => copyText(v.name, v.name)}
-									class="group flex items-center gap-1.5 font-mono text-xs text-[#e5e2e3] transition-colors hover:text-[#4edea3]"
-								>
-									{v.name}
-									{#if copied === v.name}<Check size={10} class="text-[#4edea3]" />{:else}<Copy
-											size={10}
-											class="opacity-0 group-hover:opacity-100"
-										/>{/if}
-								</button>
-							</td>
-							<td class="px-5 py-3 whitespace-nowrap"
-								><code class="rounded bg-[#1a1d1b] px-1.5 py-0.5 text-xs text-[#bbcabf]"
-									>{v.defaultVal}</code
-								></td
-							>
-							<td class="px-5 py-3 text-[#bbcabf]">{v.description}</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-		</div>
-	</section>
-
-	<!-- Redis -->
-	<section id="env-redis" class="flex flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Redis Cache</h2>
-		<div class="overflow-x-auto rounded-lg border border-white/5">
-			<table class="w-full text-sm">
-				<thead>
-					<tr class="border-b border-white/5 bg-[#1a1d1b]">
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Variable</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Default</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Description</th
-						>
-					</tr>
-				</thead>
-				<tbody class="divide-y divide-white/5 bg-[#0e0e0f]">
-					{#each redisVars as v}
-						<tr>
-							<td class="px-5 py-3 whitespace-nowrap">
-								<button
-									onclick={() => copyText(v.name, v.name)}
-									class="group flex items-center gap-1.5 font-mono text-xs text-[#e5e2e3] transition-colors hover:text-[#4edea3]"
-								>
-									{v.name}
-									{#if copied === v.name}<Check size={10} class="text-[#4edea3]" />{:else}<Copy
-											size={10}
-											class="opacity-0 group-hover:opacity-100"
-										/>{/if}
-								</button>
-							</td>
-							<td class="px-5 py-3 whitespace-nowrap"
-								><code class="rounded bg-[#1a1d1b] px-1.5 py-0.5 text-xs text-[#bbcabf]"
-									>{v.defaultVal}</code
-								></td
-							>
-							<td class="px-5 py-3 text-[#bbcabf]">{v.description}</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-		</div>
-	</section>
-
-	<!-- Operational Quotas -->
-	<section id="env-quotas" class="flex flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">
-			Operational Quotas (Self-Hosted)
-		</h2>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Fine-tune resource limits for your self-hosted deployment. Set <code
-				class="rounded bg-[#1a1d1b] px-1.5 py-0.5 font-mono text-xs text-[#4edea3]">0</code
-			> for unlimited on most quota fields.
-		</p>
-		<div class="overflow-x-auto rounded-lg border border-white/5">
-			<table class="w-full text-sm">
-				<thead>
-					<tr class="border-b border-white/5 bg-[#1a1d1b]">
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Variable</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Default</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Description</th
-						>
-					</tr>
-				</thead>
-				<tbody class="divide-y divide-white/5 bg-[#0e0e0f]">
-					{#each quotaVars as v}
-						<tr>
-							<td class="px-5 py-3 whitespace-nowrap">
-								<button
-									onclick={() => copyText(v.name, v.name)}
-									class="group flex items-center gap-1.5 font-mono text-xs text-[#e5e2e3] transition-colors hover:text-[#4edea3]"
-								>
-									{v.name}
-									{#if copied === v.name}<Check size={10} class="text-[#4edea3]" />{:else}<Copy
-											size={10}
-											class="opacity-0 group-hover:opacity-100"
-										/>{/if}
-								</button>
-							</td>
-							<td class="px-5 py-3 whitespace-nowrap"
-								><code class="rounded bg-[#1a1d1b] px-1.5 py-0.5 text-xs text-[#bbcabf]"
-									>{v.defaultVal}</code
-								></td
-							>
-							<td class="px-5 py-3 text-[#bbcabf]">{v.description}</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-		</div>
-	</section>
-
-	<!-- SMTP -->
-	<section id="env-smtp" class="flex flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Email (SMTP)</h2>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Configure SMTP for sending email notifications. Supports both TLS/STARTTLS (port 587) and SSL
-			(port 465).
-		</p>
-		<div class="overflow-x-auto rounded-lg border border-white/5">
-			<table class="w-full text-sm">
-				<thead>
-					<tr class="border-b border-white/5 bg-[#1a1d1b]">
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Variable</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Default</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Description</th
-						>
-					</tr>
-				</thead>
-				<tbody class="divide-y divide-white/5 bg-[#0e0e0f]">
-					{#each smtpVars as v}
-						<tr>
-							<td class="px-5 py-3 whitespace-nowrap">
-								<button
-									onclick={() => copyText(v.name, v.name)}
-									class="group flex items-center gap-1.5 font-mono text-xs text-[#e5e2e3] transition-colors hover:text-[#4edea3]"
-								>
-									{v.name}
-									{#if copied === v.name}<Check size={10} class="text-[#4edea3]" />{:else}<Copy
-											size={10}
-											class="opacity-0 group-hover:opacity-100"
-										/>{/if}
-								</button>
-							</td>
-							<td class="px-5 py-3 whitespace-nowrap"
-								><code class="rounded bg-[#1a1d1b] px-1.5 py-0.5 text-xs text-[#bbcabf]"
-									>{v.defaultVal}</code
-								></td
-							>
-							<td class="px-5 py-3 text-[#bbcabf]">{v.description}</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-		</div>
-	</section>
-
-	<!-- Google OAuth -->
-	<section id="env-oauth" class="flex flex-col gap-6">
-		<h2 class="font-display text-3xl font-bold tracking-tight text-[#e5e2e3]">Google OAuth</h2>
-		<p class="max-w-3xl text-sm leading-relaxed text-[#bbcabf]">
-			Optional Google OAuth 2.0 integration for user login. If not configured, only email/password
-			authentication will be available.
-		</p>
-		<div class="overflow-x-auto rounded-lg border border-white/5">
-			<table class="w-full text-sm">
-				<thead>
-					<tr class="border-b border-white/5 bg-[#1a1d1b]">
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Variable</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Default</th
-						>
-						<th
-							class="px-5 py-3 text-left font-mono text-xs font-medium tracking-wider text-[#4edea3] uppercase"
-							>Description</th
-						>
-					</tr>
-				</thead>
-				<tbody class="divide-y divide-white/5 bg-[#0e0e0f]">
-					{#each oauthVars as v}
-						<tr>
-							<td class="px-5 py-3 whitespace-nowrap">
-								<button
-									onclick={() => copyText(v.name, v.name)}
-									class="group flex items-center gap-1.5 font-mono text-xs text-[#e5e2e3] transition-colors hover:text-[#4edea3]"
-								>
-									{v.name}
-									{#if copied === v.name}<Check size={10} class="text-[#4edea3]" />{:else}<Copy
-											size={10}
-											class="opacity-0 group-hover:opacity-100"
-										/>{/if}
-								</button>
-							</td>
-							<td class="px-5 py-3 whitespace-nowrap"
-								><code class="rounded bg-[#1a1d1b] px-1.5 py-0.5 text-xs text-[#bbcabf]"
-									>{v.defaultVal}</code
-								></td
-							>
-							<td class="px-5 py-3 text-[#bbcabf]">{v.description}</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-		</div>
-	</section>
+								</td>
+								<td class="px-4 py-3 whitespace-nowrap">
+									<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-300"
+										>{v.defaultVal}</code
+									>
+								</td>
+								<td class="px-4 py-3 text-sm text-zinc-400">{v.description}</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
+		</section>
+	{/each}
 </div>

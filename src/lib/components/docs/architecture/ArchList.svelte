@@ -1,14 +1,9 @@
 <script lang="ts">
-	import { Check } from 'lucide-svelte';
-
 	let { items }: { items: string[] } = $props();
 </script>
 
-<ul class="flex max-w-3xl flex-col gap-3">
+<ul class="list-disc space-y-2 pl-5 text-sm leading-7 text-zinc-400">
 	{#each items as item (item)}
-		<li class="flex gap-3 text-sm leading-relaxed text-[#bbcabf]">
-			<Check size={16} class="mt-0.5 shrink-0 text-[#4edea3]" />
-			<span>{item}</span>
-		</li>
+		<li>{item}</li>
 	{/each}
 </ul>

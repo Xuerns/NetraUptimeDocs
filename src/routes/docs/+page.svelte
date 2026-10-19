@@ -12,7 +12,6 @@
 
 	let activeItemId = $state('getting-started');
 
-	// Get headings for the current section to pass to TOC
 	const currentSection = $derived(docSections.find((s) => s.id === activeItemId) ?? docSections[0]);
 	const currentHeadings = $derived(currentSection?.headings ?? []);
 
@@ -40,15 +39,14 @@
 
 		const context = gsap.context(() => {
 			gsap.from('[data-reveal]', {
-				duration: 0.7,
-				y: 18,
+				duration: 0.5,
+				y: 12,
 				autoAlpha: 0,
-				stagger: 0.08,
+				stagger: 0.06,
 				ease: 'power2.out'
 			});
 		});
 
-		// Restore active section from URL hash
 		const hash = window.location.hash.slice(1);
 		if (hash) {
 			const section = docSections.find((s) => s.id === hash);
@@ -73,25 +71,23 @@
 	/>
 </svelte:head>
 
-<div class="docs-fonts">
+<div class="docs-fonts min-h-screen bg-[#0d0d0e] text-zinc-300">
 	<DocsNav />
 
-	<div class="flex min-h-screen w-full">
-		<!-- Column 1: Left Navigation Sidebar (w-72, sticky) -->
+	<div class="mx-auto flex min-h-[calc(100vh-56px)] w-full max-w-[1380px] px-4 sm:px-6 lg:px-8">
 		<DocsSidebar groups={docGroups} {activeItemId} onSelectItem={handleSelectItem} />
 
-		<!-- Column 2: Main Content (flexible width) -->
 		<div class="flex min-w-0 flex-1 flex-col">
 			<div data-reveal class="min-w-0 flex-1">
 				<DocsMainContent {activeItemId} />
 			</div>
-			<div data-reveal class="px-8 lg:px-16 xl:px-20">
+			<div data-reveal class="mx-auto w-full max-w-3xl px-4 sm:px-8 lg:px-12">
 				<DocsFooter {activeItemId} onSelectItem={handleSelectItem} />
 			</div>
-			<DocsSiteFooter />
 		</div>
 
-		<!-- Column 3: TOC Right "On this page" (w-64, sticky, visible on xl: >= 1280px) -->
 		<DocsToc headings={currentHeadings} />
 	</div>
+
+	<DocsSiteFooter />
 </div>

@@ -4,40 +4,28 @@
 	let { title, params }: { title: string; params: Param[] } = $props();
 </script>
 
-<div class="mb-8">
-	<h3 class="mb-3 text-sm font-semibold text-[#e5e2e3]">{title}</h3>
-	<div class="overflow-hidden rounded-lg border border-[#3c4a42]">
+<div class="flex flex-col gap-3">
+	<h2 class="text-lg font-semibold text-zinc-100">{title}</h2>
+	<div class="overflow-x-auto rounded-lg border border-zinc-800">
 		<table class="w-full border-collapse text-left text-sm">
 			<thead>
-				<tr class="border-b border-[#3c4a42] bg-[#201f20]">
-					<th
-						class="p-3 font-mono text-[11px] font-semibold tracking-wider text-[#e5e2e3] uppercase"
-					>
-						Attribute
-					</th>
-					<th
-						class="p-3 font-mono text-[11px] font-semibold tracking-wider text-[#e5e2e3] uppercase"
-					>
-						Type
-					</th>
-					<th
-						class="p-3 font-mono text-[11px] font-semibold tracking-wider text-[#e5e2e3] uppercase"
-					>
-						Description
-					</th>
+				<tr class="border-b border-zinc-800 bg-[#141416]">
+					<th class="px-4 py-2.5 font-mono text-xs font-medium text-zinc-300">Attribute</th>
+					<th class="px-4 py-2.5 font-mono text-xs font-medium text-zinc-300">Type</th>
+					<th class="px-4 py-2.5 font-mono text-xs font-medium text-zinc-300">Description</th>
 				</tr>
 			</thead>
-			<tbody class="divide-y divide-[#3c4a42]">
+			<tbody class="divide-y divide-zinc-800/80">
 				{#each params as param (param.name)}
 					<tr>
-						<td class="p-3 align-top font-mono text-[#e5e2e3]">
+						<td class="px-4 py-2.5 align-top font-mono text-xs text-zinc-200">
 							{param.name}
 							{#if param.required}
-								<span class="ml-1 text-[#ffb4ab]">*</span>
+								<span class="ml-1 text-[#4edea3]">*</span>
 							{/if}
 						</td>
-						<td class="p-3 align-top font-mono text-xs text-[#bbcabf]">{param.type}</td>
-						<td class="p-3 align-top text-[#bbcabf]">{param.description}</td>
+						<td class="px-4 py-2.5 align-top font-mono text-xs text-zinc-400">{param.type}</td>
+						<td class="px-4 py-2.5 align-top text-zinc-400">{param.description}</td>
 					</tr>
 				{/each}
 			</tbody>

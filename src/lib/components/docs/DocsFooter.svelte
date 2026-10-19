@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { ArrowRight, ArrowLeft } from 'lucide-svelte';
 	import { sidebarSections } from '$lib/data/docs';
 
 	let { activeItemId, onSelectItem }: { activeItemId: string; onSelectItem: (id: string) => void } =
@@ -12,30 +11,36 @@
 	);
 </script>
 
-<section class="flex items-center justify-between gap-4 pt-8 pb-4">
+<section class="mt-8 flex items-center justify-between gap-4 border-t border-zinc-800/80 py-8">
 	{#if prevSection}
 		<button
-			class="flex min-w-0 flex-1 flex-col items-start rounded-lg border border-white/5 bg-[#1a1d1b] p-6 px-10"
+			type="button"
+			class="group flex flex-col items-start text-left"
 			onclick={() => onSelectItem(prevSection.id)}
 		>
-			<span class="eyebrow mb-3 text-[#bbcabf]/60"> Previous </span>
-			<div class="flex items-center gap-3 text-[#4edea3]/80">
-				<ArrowLeft size={18} class="flex-shrink-0" />
-				<span class="font-display text-lg font-semibold">{prevSection.title}</span>
-			</div>
+			<span class="text-xs text-zinc-500">Previous</span>
+			<span
+				class="mt-1 text-sm font-medium text-zinc-200 transition-colors group-hover:text-[#4edea3]"
+			>
+				&larr; {prevSection.title}
+			</span>
 		</button>
+	{:else}
+		<div></div>
 	{/if}
 
 	{#if nextSection}
 		<button
-			class="flex min-w-0 flex-1 flex-col items-end rounded-lg border border-white/5 bg-[#1a1d1b] p-6 px-10"
+			type="button"
+			class="group flex flex-col items-end text-right"
 			onclick={() => onSelectItem(nextSection.id)}
 		>
-			<span class="eyebrow mb-3 text-[#bbcabf]/60"> Next </span>
-			<div class="flex items-center gap-3 text-[#4edea3]/80">
-				<span class="font-display text-lg font-semibold">{nextSection.title}</span>
-				<ArrowRight size={18} class="flex-shrink-0" />
-			</div>
+			<span class="text-xs text-zinc-500">Next</span>
+			<span
+				class="mt-1 text-sm font-medium text-zinc-200 transition-colors group-hover:text-[#4edea3]"
+			>
+				{nextSection.title} &rarr;
+			</span>
 		</button>
 	{/if}
 </section>

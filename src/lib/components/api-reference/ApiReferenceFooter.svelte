@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { ArrowRight, ArrowLeft } from 'lucide-svelte';
-	import { apiGroups, type EndpointSection } from '$lib/data/api-reference';
+	import { apiGroups, type HttpMethod } from '$lib/data/api-reference';
 
 	let {
 		activeEndpointId,
@@ -10,57 +9,60 @@
 		onSelectEndpoint: (id: string) => void;
 	} = $props();
 
-	const allEndpoints: EndpointSection[] = apiGroups.flatMap((g) => g.endpoints);
-
+	const allEndpoints = $derived(apiGroups.flatMap((g) => g.endpoints));
 	const currentIndex = $derived(allEndpoints.findIndex((e) => e.id === activeEndpointId));
 	const prevEndpoint = $derived(currentIndex > 0 ? allEndpoints[currentIndex - 1] : null);
 	const nextEndpoint = $derived(
 		currentIndex < allEndpoints.length - 1 ? allEndpoints[currentIndex + 1] : null
 	);
 
-	const methodColors: Record<string, string> = {
-		GET: 'text-[#adc6ff]',
+	const methodColors: Record<HttpMethod, string> = {
+		GET: 'text-sky-400',
 		POST: 'text-[#4edea3]',
-		PUT: 'text-[#ffd699]',
-		DELETE: 'text-[#ff99ad]',
-		PATCH: 'text-[#adc6ff]'
+		PUT: 'text-amber-400',
+		PATCH: 'text-violet-400',
+		DELETE: 'text-rose-400'
 	};
 </script>
 
-<section class="flex items-center justify-between gap-4 pt-8 pb-4">
+<div class="mt-16 flex items-center justify-between border-t border-zinc-800/80 pt-8 pb-12">
 	{#if prevEndpoint}
 		<button
-			class="flex min-w-0 flex-1 flex-col items-start rounded-lg border border-white/5 bg-[#1a1d1b] p-6"
+			type="button"
 			onclick={() => onSelectEndpoint(prevEndpoint.id)}
+			class="group flex flex-col items-start gap-1 text-left"
 		>
-			<span class="eyebrow mb-2 text-[#bbcabf]/60"> Previous </span>
-			<div class="flex items-center gap-3 text-[#4edea3]/80">
-				<ArrowLeft size={16} class="flex-shrink-0" />
-				<span class="min-w-0 truncate font-display text-lg font-semibold">{prevEndpoint.title}</span
+			<span class="text-xs text-zinc-500">Previous</span>
+			<span
+				class="flex items-center gap-2 font-mono text-xs text-zinc-300 transition-colors group-hover:text-[#4edea3]"
+			>
+				<span class="text-[10px] font-semibold {methodColors[prevEndpoint.method]}"
+					>{prevEndpoint.method}</span
 				>
-			</div>
-			<span class="mt-1 truncate font-mono text-xs text-[#bbcabf]/40">
-				<span class={methodColors[prevEndpoint.method]}>{prevEndpoint.method}</span>
-				{prevEndpoint.path}
+				<span>{prevEndpoint.path}</span>
 			</span>
 		</button>
+	{:else}
+		<div></div>
 	{/if}
 
 	{#if nextEndpoint}
 		<button
-			class="flex min-w-0 flex-1 flex-col items-end rounded-lg border border-white/5 bg-[#1a1d1b] p-6"
+			type="button"
 			onclick={() => onSelectEndpoint(nextEndpoint.id)}
+			class="group flex flex-col items-end gap-1 text-right"
 		>
-			<span class="eyebrow mb-2 text-[#bbcabf]/60"> Next </span>
-			<div class="flex items-center gap-3 text-[#4edea3]/80">
-				<span class="min-w-0 truncate font-display text-lg font-semibold">{nextEndpoint.title}</span
+			<span class="text-xs text-zinc-500">Next</span>
+			<span
+				class="flex items-center gap-2 font-mono text-xs text-zinc-300 transition-colors group-hover:text-[#4edea3]"
+			>
+				<span class="text-[10px] font-semibold {methodColors[nextEndpoint.method]}"
+					>{nextEndpoint.method}</span
 				>
-				<ArrowRight size={16} class="flex-shrink-0" />
-			</div>
-			<span class="mt-1 truncate font-mono text-xs text-[#bbcabf]/40">
-				<span class={methodColors[nextEndpoint.method]}>{nextEndpoint.method}</span>
-				{nextEndpoint.path}
+				<span>{nextEndpoint.path}</span>
 			</span>
 		</button>
+	{:else}
+		<div></div>
 	{/if}
-</section>
+</div>
