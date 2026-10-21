@@ -155,7 +155,7 @@ export const checklistSteps: ChecklistStep[] = [
 		description:
 			'Start by cloning the official Netra Uptime repository from GitHub to your server. We recommend placing it in /opt/netra-uptime.',
 		commands: [
-			'git clone https://github.com/Xuerns/PulseWatch.git /opt/netra-uptime',
+			'git clone https://github.com/Xuerns/Netra-Uptime.git /opt/netra-uptime',
 			'cd /opt/netra-uptime'
 		]
 	},

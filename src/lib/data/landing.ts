@@ -12,7 +12,7 @@ import bun from '$lib/assets/landing/logos/bun.svg';
 import yarn from '$lib/assets/landing/logos/yarn.svg';
 
 /**
- * Install commands shown in the hero and the final CTA.
+ * Install commands shown in the hero and documentation.
  * Uses the Netra Uptime CLI package runners.
  */
 export const installCommands = {
@@ -23,8 +23,11 @@ export const installCommands = {
 };
 
 export const links = {
-	github: 'https://github.com/Xuerns/PulseWatch',
-	docs: '/docs'
+	github: 'https://github.com/Xuerns/Netra-Uptime',
+	issues: 'https://github.com/Xuerns/Netra-Uptime/issues',
+	license: 'https://github.com/Xuerns/Netra-Uptime/blob/main/LICENSE',
+	docs: '/docs',
+	apiReference: '/docs/api-reference'
 };
 
 export const logos = {
@@ -42,11 +45,6 @@ export const logos = {
 	yarn
 };
 
-/**
- * Screenshots live in src/lib/assets/landing/. Drop a .webp or .png file with
- * the exact base name below and it is picked up automatically.
- * When a file is missing, a placeholder is rendered instead.
- */
 const found = import.meta.glob('$lib/assets/landing/*.{webp,png,jpg,jpeg,avif}', {
 	eager: true,
 	import: 'default',
@@ -66,29 +64,8 @@ export const images = {
 	monitors: image('feature-monitors'),
 	statusPage: image('feature-status-page'),
 	incident: image('feature-incident'),
-	alertRules: image('feature-alert-rules'),
-	slack: image('integration-slack'),
-	discord: image('integration-discord')
+	alertRules: image('feature-alert-rules')
 };
-
-export const worksWith = [
-	{ name: 'Slack', logo: slack },
-	{ name: 'Discord', logo: discord },
-	{ name: 'GitHub', logo: github },
-	{ name: 'Docker', logo: docker },
-	{ name: 'PostgreSQL', logo: postgresql },
-	{ name: 'Redis', logo: redis },
-	{ name: 'Go', logo: go },
-	{ name: 'Svelte', logo: svelte }
-];
-
-export const stack = [
-	{ name: 'Go', logo: go, note: 'Concurrent worker pool' },
-	{ name: 'PostgreSQL', logo: postgresql, note: 'Primary datastore' },
-	{ name: 'Redis', logo: redis, note: 'Cache, pub/sub, rate limits' },
-	{ name: 'Svelte', logo: svelte, note: 'Embedded dashboard UI' },
-	{ name: 'Docker', logo: docker, note: 'One-command deploy' }
-];
 
 export interface FaqItem {
 	question: string;
@@ -97,33 +74,33 @@ export interface FaqItem {
 
 export const faqs: FaqItem[] = [
 	{
-		question: 'Is Netra Uptime free and open source?',
+		question: 'How do I deploy Netra Uptime on my own server?',
 		answer:
-			'Yes, Netra Uptime is 100% free and open-source under the AGPL-3.0 license. There are no paywalled features, artificial monitor limits, or recurring subscription fees. You own your infrastructure and retain complete control over your data.'
-	},
-	{
-		question: 'How do I deploy Netra Uptime on my own servers?',
-		answer:
-			'You can launch Netra Uptime in less than a minute. For instant local testing, run "npx netra-uptime start" (or use pnpm dlx, yarn dlx, or bunx). For production environments, deploy with our official Docker Compose setup featuring PostgreSQL and Redis.'
+			'Run "npx netra-uptime start" (or pnpm dlx, yarn dlx, bunx) to generate a production-ready .env and docker-compose.yml with secure random credentials and start the containers automatically. You can also clone the repository and run "docker compose up -d" manually.'
 	},
 	{
 		question: 'What monitoring protocols and checks are supported?',
 		answer:
-			'Netra Uptime supports multi-protocol checks including HTTP/HTTPS status, latency, and response assertion, TCP port connectivity, and ICMP Ping. It also includes proactive monitoring for SSL/TLS certificate validity and WHOIS/RDAP domain expiration.'
+			'Netra Uptime supports HTTP/HTTPS status code, latency, and response body assertions, TCP port connectivity, ICMP Ping, daily SSL/TLS certificate validity checks, and WHOIS/RDAP domain expiration tracking.'
 	},
 	{
-		question: 'Where can Netra Uptime send incident alerts?',
+		question: 'How does alert evaluation avoid false-positive notifications?',
 		answer:
-			'Alerts can be delivered across multiple notification channels including Email (SMTP), Slack, Discord, and custom Webhooks. You can configure granular alert rules with consecutive failure thresholds and latency limits to prevent false alarms.'
+			'Alert rules use a template-first state machine that differentiates between timeouts (amber state) and hard connection or status failures (red state). You can require consecutive breach counts before opening an incident or dispatching alerts.'
 	},
 	{
-		question: 'Can I create branded public status pages for my users?',
+		question: 'Which notification channels are built in?',
 		answer:
-			'Yes. You can publish branded public or private status pages on custom subdomains with custom logos, themes, 90-day uptime history bars, service component grouping, scheduled maintenance announcements, and embeddable SVG status badges.'
+			'Alerts can be routed to Slack, Discord, Email (SMTP), and custom HTTP webhooks with built-in SSRF protection. Monitors can also assign a Person-in-Charge (PIC) to route incidents to the responsible engineer.'
 	},
 	{
-		question: 'Does Netra Uptime send any telemetry or data to third parties?',
+		question: 'How does long-term data retention work?',
 		answer:
-			'No. Netra Uptime is strictly self-hosted and privacy-first. All monitoring metrics, incident timelines, and user credentials remain entirely within your own database and servers. Nothing is ever sent to a third-party cloud.'
+			'Raw check logs are stored in PostgreSQL and automatically rolled up hourly into 90-day uptime and latency aggregates, keeping queries fast and disk usage predictable without external time-series databases.'
+	},
+	{
+		question: 'What license is Netra Uptime released under?',
+		answer:
+			'Netra Uptime is open-source under the AGPL-3.0 license. All features—including multi-tenant organizations, role-based access control, public status pages, and REST API keys—are included with zero telemetry.'
 	}
 ];

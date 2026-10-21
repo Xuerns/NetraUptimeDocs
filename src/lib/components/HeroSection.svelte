@@ -1,70 +1,131 @@
 <script lang="ts">
-	import { ArrowRight, BookOpen } from 'lucide-svelte';
-	import FloatingLines from './FloatingLines.svelte';
+	import { resolve } from '$app/paths';
+	import { ArrowRight, ArrowUpRight, BookOpen, Code2, Cpu, Layers, Terminal } from 'lucide-svelte';
 	import InstallCommand from './InstallCommand.svelte';
-	import LogoCloud from './LogoCloud.svelte';
 	import DashboardPreview from './DashboardPreview.svelte';
-	import { links, logos } from '$lib/data/landing';
+
+	const quickDocs = [
+		{
+			title: 'Quick Start & CLI',
+			description: 'Initialize configuration and launch containers with a single command.',
+			route: '/docs' as const,
+			hash: '#getting-started',
+			icon: Terminal
+		},
+		{
+			title: 'Docker Compose',
+			description: 'Production topology, persistent volumes, and database backup guides.',
+			route: '/docs' as const,
+			hash: '#docker-compose',
+			icon: Layers
+		},
+		{
+			title: 'System Architecture',
+			description: 'Go worker pool, alert state machine, and Redis caching internals.',
+			route: '/docs' as const,
+			hash: '#architecture',
+			icon: Cpu
+		},
+		{
+			title: 'REST API Reference',
+			description: 'Interactive endpoint specifications, authentication scopes, and curl examples.',
+			route: '/docs/api-reference' as const,
+			hash: '',
+			icon: Code2
+		}
+	];
 </script>
 
-<section id="top" class="relative overflow-hidden" aria-labelledby="hero-heading">
-	<div
-		class="pointer-events-none absolute inset-x-0 top-0 h-190 overflow-hidden opacity-70"
-		style="mask-image: linear-gradient(180deg, #000 30%, transparent); -webkit-mask-image: linear-gradient(180deg, #000 30%, transparent)"
-	>
-		<FloatingLines
-			enabledWaves={['top', 'bottom']}
-			lineCount={8}
-			lineDistance={100}
-			bendRadius={5}
-			bendStrength={1}
-			interactive={false}
-			parallax={true}
-			linesGradient={['#4edea3', '#2dd4bf', '#10B981']}
-		/>
-	</div>
+<section id="top" class="relative" aria-labelledby="hero-heading">
+	<div class="mx-auto max-w-[1380px] px-4 pt-10 pb-12 sm:px-6 lg:px-8 lg:pt-14 lg:pb-16">
+		<div class="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-10">
+			<div data-reveal class="lg:col-span-7">
+				<h1
+					id="hero-heading"
+					class="font-display text-4xl leading-[1.08] tracking-tight text-zinc-100 sm:text-5xl lg:text-[3.35rem]"
+				>
+					Self-hosted uptime monitoring <span class="text-[#4edea3] italic"
+						>&amp; status pages.</span
+					>
+				</h1>
+				<p class="mt-4 max-w-2xl text-base leading-7 text-zinc-400">
+					Netra Uptime is a single-container Go and Svelte monitoring platform backed by PostgreSQL
+					and Redis. Track HTTP, TCP, ICMP, SSL, and domain expiry, manage incidents automatically,
+					and route alerts to Slack, Discord, email, or webhooks.
+				</p>
 
-	<div class="relative mx-auto max-w-360 px-6 pt-32 pb-10 text-center lg:px-10 lg:pt-40">
-		<p data-reveal class="pill">
-			<img src={logos.github} alt="" class="h-3.5 w-3.5" />
-			Open source · Self-hosted · AGPL-3.0
-		</p>
-		<h1
-			data-reveal
-			id="hero-heading"
-			class="mx-auto mt-7 max-w-5xl font-display text-5xl leading-[1.04] tracking-[-0.035em] text-[#f1eeef] sm:text-6xl lg:text-7xl"
-		>
-			Self-hosted uptime monitoring <span class="text-gradient italic">&amp; status pages.</span>
-		</h1>
-		<p data-reveal class="mx-auto mt-7 max-w-2xl text-lg leading-8 text-[#bbcabf]">
-			Netra Uptime watches your websites, APIs, and servers around the clock, opens an incident the
-			moment something breaks, and alerts the right person on Slack, Discord, email, or webhook. One
-			command to install. Your data never leaves your infrastructure.
-		</p>
+				<div class="mt-6 flex flex-wrap items-center gap-3">
+					<a
+						id="hero-docs"
+						href={resolve('/docs')}
+						class="inline-flex items-center gap-2 rounded-md bg-[#4edea3] px-4 py-2.5 text-xs font-semibold text-[#003824] transition-colors hover:bg-[#6ffbbe]"
+					>
+						<BookOpen size={15} /> Read Documentation
+					</a>
+					<a
+						id="hero-api"
+						href={resolve('/docs/api-reference')}
+						class="inline-flex items-center gap-2 rounded-md border border-zinc-800 bg-[#131315] px-4 py-2.5 text-xs font-medium text-zinc-200 transition-colors hover:border-zinc-700 hover:bg-zinc-900"
+					>
+						<Code2 size={15} class="text-zinc-400" /> API Reference
+					</a>
+					<a
+						id="hero-github"
+						href="https://github.com/Xuerns/Netra-Uptime"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="inline-flex items-center gap-2 rounded-md border border-zinc-800 bg-[#131315] px-4 py-2.5 text-xs font-medium text-zinc-200 transition-colors hover:border-zinc-700 hover:bg-zinc-900"
+					>
+						<span>GitHub Repository</span>
+						<ArrowUpRight size={14} class="text-zinc-400" />
+					</a>
+				</div>
+			</div>
 
-		<div data-reveal class="mt-10 flex justify-center">
-			<InstallCommand id="hero" />
+			<div data-reveal class="lg:col-span-5">
+				<InstallCommand id="hero" class="max-w-none" />
+				<div class="mt-2.5 flex items-center justify-between text-xs text-zinc-500">
+					<span
+						>Starts web UI and workers on <code class="font-mono text-zinc-300">localhost:8080</code
+						></span
+					>
+					<a
+						href="{resolve('/docs')}#docker-compose"
+						class="inline-flex items-center gap-1 font-medium text-zinc-400 transition-colors hover:text-[#4edea3]"
+					>
+						Manual Docker setup <ArrowRight size={12} />
+					</a>
+				</div>
+			</div>
 		</div>
 
-		<div data-reveal class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-			<a
-				id="hero-docs"
-				href={links.docs}
-				class="flex items-center gap-2 rounded-full bg-[#4edea3] px-6 py-3 text-sm font-semibold text-[#003824] shadow-[0_0_40px_-8px_#4edea3] transition-all hover:bg-[#6ffbbe]"
-			>
-				<BookOpen size={16} /> Read the docs
-			</a>
-			<a
-				id="hero-github"
-				href={links.github}
-				class="flex items-center gap-2 rounded-full border border-white/15 bg-white/4 px-6 py-3 text-sm font-semibold text-[#e5e2e3] transition-colors hover:border-white/30 hover:bg-white/8"
-			>
-				<img src={logos.github} alt="" class="h-4 w-4" /> Star on GitHub
-				<ArrowRight size={15} />
-			</a>
+		<div data-reveal>
+			<DashboardPreview />
 		</div>
 
-		<div data-reveal><LogoCloud /></div>
-		<div data-reveal><DashboardPreview /></div>
+		<div data-reveal class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+			{#each quickDocs as item (item.title)}
+				<a
+					href="{resolve(item.route)}{item.hash}"
+					class="panel panel-interactive group flex flex-col justify-between rounded-lg p-4"
+				>
+					<div>
+						<div class="flex items-center justify-between">
+							<div class="flex items-center gap-2 text-zinc-200">
+								<item.icon size={16} class="text-[#4edea3]" />
+								<h2 class="text-sm font-semibold tracking-tight group-hover:text-[#4edea3]">
+									{item.title}
+								</h2>
+							</div>
+							<ArrowRight
+								size={14}
+								class="text-zinc-500 transition-transform group-hover:translate-x-0.5 group-hover:text-[#4edea3]"
+							/>
+						</div>
+						<p class="mt-2 text-xs leading-5 text-zinc-400">{item.description}</p>
+					</div>
+				</a>
+			{/each}
+		</div>
 	</div>
 </section>

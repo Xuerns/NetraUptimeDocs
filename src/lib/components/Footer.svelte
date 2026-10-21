@@ -1,99 +1,147 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import logo from '$lib/assets/Logo.svg';
 	import { ArrowUpRight } from 'lucide-svelte';
 
-	const productLinks = [
-		{ label: 'Features', href: '#features' },
-		{ label: 'Multi-Protocol', href: '#features' },
-		{ label: 'Status Pages', href: '#features' },
-		{ label: 'Incident Management', href: '#features' }
+	const deploymentLinks = [
+		{ label: 'Quick Start & CLI', hash: '#getting-started' },
+		{ label: 'Docker Compose', hash: '#docker-compose' },
+		{ label: 'Environment Variables', hash: '#environment-variables' },
+		{ label: 'Reverse Proxy Setup', hash: '#reverse-proxy' }
 	];
 
-	const companyLinks = [
-		{ label: 'About Netra Uptime', href: '#top' },
-		{ label: 'Open Source', href: '#open-source' },
-		{ label: 'Self-Hosting', href: '#quick-start' },
-		{ label: 'FAQ', href: '#faq' }
-	];
-
-	const supportLinks = [
-		{ label: 'Documentation', href: '/docs' },
-		{ label: 'Quick Start Guide', href: '#quick-start' },
-		{ label: 'GitHub Repository', href: 'https://github.com/Xuerns/PulseWatch', external: true },
-		{ label: 'API Reference', href: '/docs/api-reference' }
+	const platformLinks = [
+		{ label: 'Monitors & Health Checks', hash: '#monitors' },
+		{ label: 'Alert Rules & Incidents', hash: '#alert-rules' },
+		{ label: 'Notification Channels', hash: '#notification-channels' },
+		{ label: 'Status Pages & Badges', hash: '#status-pages' }
 	];
 </script>
 
-<footer class="border-t border-white/5 bg-[#0e0e0f] px-6 py-12 lg:px-10">
-	<div class="mx-auto grid max-w-360 grid-cols-1 gap-10 md:grid-cols-4">
-		<!-- Brand Column -->
-		<div class="col-span-1">
-			<div class="mb-4 flex items-center gap-2">
-				<img src={logo} alt="Netra Uptime Logo" class="h-9 w-auto" />
-				<div class="font-display text-xl font-bold tracking-tight text-white">Netra Uptime</div>
+<footer class="border-t border-zinc-800/80 bg-[#0b0b0c]">
+	<div class="mx-auto max-w-[1380px] px-4 py-10 sm:px-6 lg:px-8">
+		<div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5">
+			<div class="lg:col-span-2">
+				<a
+					href={resolve('/')}
+					class="inline-flex items-center gap-2.5 text-zinc-100 transition-opacity hover:opacity-90"
+				>
+					<img src={logo} alt="Netra Uptime Logo" class="h-6 w-6 object-contain" />
+					<span class="text-sm font-semibold tracking-tight">Netra Uptime</span>
+				</a>
+				<p class="mt-3 max-w-sm text-xs leading-5 text-zinc-400">
+					Open-source, self-hosted uptime monitoring, incident management, and status page platform
+					built with Go, Svelte, PostgreSQL, and Redis.
+				</p>
 			</div>
-			<p class="text-sm leading-relaxed text-[#bbcabf]">
-				Modern open-source uptime monitoring platform for businesses and developers who prioritize
-				performance, security, and trust.
-			</p>
+
+			<div>
+				<h3 class="font-mono text-[11px] font-medium tracking-wider text-zinc-300 uppercase">
+					Deployment
+				</h3>
+				<ul class="mt-3 flex flex-col gap-2 text-xs">
+					{#each deploymentLinks as item (item.label)}
+						<li>
+							<a
+								class="text-zinc-400 transition-colors hover:text-zinc-100"
+								href="{resolve('/docs')}{item.hash}"
+							>
+								{item.label}
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</div>
+
+			<div>
+				<h3 class="font-mono text-[11px] font-medium tracking-wider text-zinc-300 uppercase">
+					Platform Guides
+				</h3>
+				<ul class="mt-3 flex flex-col gap-2 text-xs">
+					{#each platformLinks as item (item.label)}
+						<li>
+							<a
+								class="text-zinc-400 transition-colors hover:text-zinc-100"
+								href="{resolve('/docs')}{item.hash}"
+							>
+								{item.label}
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</div>
+
+			<div>
+				<h3 class="font-mono text-[11px] font-medium tracking-wider text-zinc-300 uppercase">
+					Architecture &amp; API
+				</h3>
+				<ul class="mt-3 flex flex-col gap-2 text-xs">
+					<li>
+						<a
+							class="text-zinc-400 transition-colors hover:text-zinc-100"
+							href="{resolve('/docs')}#architecture"
+						>
+							System Architecture
+						</a>
+					</li>
+					<li>
+						<a
+							class="text-zinc-400 transition-colors hover:text-zinc-100"
+							href="{resolve('/docs')}#monitoring-engine"
+						>
+							Monitoring Engine
+						</a>
+					</li>
+					<li>
+						<a
+							class="text-zinc-400 transition-colors hover:text-zinc-100"
+							href={resolve('/docs/api-reference')}
+						>
+							REST API Reference
+						</a>
+					</li>
+					<li>
+						<a
+							class="text-zinc-400 transition-colors hover:text-zinc-100"
+							href="{resolve('/docs')}#cicd"
+						>
+							CI/CD Integration
+						</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 
-		<!-- Product Links -->
-		<div>
-			<h4 class="mb-4 text-xs font-bold tracking-wider text-[#4edea3] uppercase">Product</h4>
-			<div class="flex flex-col gap-2.5 text-sm">
-				{#each productLinks as item (item.label)}
-					<a class="text-[#bbcabf] transition-colors hover:text-white" href={item.href}
-						>{item.label}</a
-					>
-				{/each}
+		<div
+			class="mt-8 flex flex-col items-center justify-between gap-4 border-t border-zinc-800/80 pt-6 text-xs text-zinc-500 sm:flex-row"
+		>
+			<p>© 2026 Netra Uptime.</p>
+			<div class="flex items-center gap-5">
+				<a
+					href="https://github.com/Xuerns/Netra-Uptime"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="inline-flex items-center gap-1 transition-colors hover:text-zinc-300"
+				>
+					GitHub <ArrowUpRight size={12} />
+				</a>
+				<a
+					href="https://github.com/Xuerns/Netra-Uptime/issues"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="inline-flex items-center gap-1 transition-colors hover:text-zinc-300"
+				>
+					Report Issue <ArrowUpRight size={12} />
+				</a>
+				<a
+					href="https://github.com/Xuerns/Netra-Uptime/blob/main/LICENSE"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="inline-flex items-center gap-1 transition-colors hover:text-zinc-300"
+				>
+					AGPL-3.0 License <ArrowUpRight size={12} />
+				</a>
 			</div>
-		</div>
-
-		<!-- Company / Project Links -->
-		<div>
-			<h4 class="mb-4 text-xs font-bold tracking-wider text-[#4edea3] uppercase">Project</h4>
-			<div class="flex flex-col gap-2.5 text-sm">
-				{#each companyLinks as item (item.label)}
-					<a class="text-[#bbcabf] transition-colors hover:text-white" href={item.href}
-						>{item.label}</a
-					>
-				{/each}
-			</div>
-		</div>
-
-		<!-- Support / Docs Links -->
-		<div>
-			<h4 class="mb-4 text-xs font-bold tracking-wider text-[#4edea3] uppercase">Resources</h4>
-			<div class="flex flex-col gap-2.5 text-sm">
-				{#each supportLinks as item (item.label)}
-					<a
-						class="flex items-center gap-1 text-[#bbcabf] transition-colors hover:text-white"
-						href={item.href}
-						target={item.external ? '_blank' : undefined}
-						rel={item.external ? 'noopener noreferrer' : undefined}
-					>
-						{item.label}
-						{#if item.external}
-							<ArrowUpRight size={13} />
-						{/if}
-					</a>
-				{/each}
-			</div>
-		</div>
-	</div>
-
-	<!-- Bottom Section -->
-	<div
-		class="mx-auto mt-10 flex max-w-360 flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 md:flex-row"
-	>
-		<p class="text-xs text-[#bbcabf]/60">© 2026 Netra Uptime.</p>
-		<div class="flex items-center gap-6 text-xs text-[#bbcabf]/60">
-			<span>Self-Hosted</span>
-			<span>•</span>
-			<span>No Vendor Lock-in</span>
-			<span>•</span>
-			<span>AGPL-3.0</span>
 		</div>
 	</div>
 </footer>

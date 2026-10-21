@@ -47,15 +47,21 @@
 			});
 		});
 
-		const hash = window.location.hash.slice(1);
-		if (hash) {
-			const section = docSections.find((s) => s.id === hash);
-			if (section) {
-				activeItemId = hash;
+		function syncFromHash() {
+			const hash = window.location.hash.slice(1);
+			if (hash) {
+				const section = docSections.find((s) => s.id === hash);
+				if (section) {
+					activeItemId = hash;
+				}
 			}
 		}
 
+		syncFromHash();
+		window.addEventListener('hashchange', syncFromHash);
+
 		return () => {
+			window.removeEventListener('hashchange', syncFromHash);
 			context.revert();
 			cancelAnimationFrame(rafId);
 			lenis.destroy();

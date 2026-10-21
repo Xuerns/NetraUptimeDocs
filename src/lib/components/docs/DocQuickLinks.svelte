@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { Terminal, Settings, HeartPulse, Bell, Code } from 'lucide-svelte';
 	import type { QuickLink } from '$lib/data/docs';
 
@@ -16,8 +17,11 @@
 <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 	{#each links as link (link.id)}
 		{@const Icon = iconMap[link.icon]}
+		{@const route =
+			link.href === '/docs/api-reference' ? ('/docs/api-reference' as const) : ('/docs' as const)}
+		{@const hash = link.href.startsWith('#') ? link.href : ''}
 		<a
-			href={link.href}
+			href="{resolve(route)}{hash}"
 			class="group rounded-lg border border-white/5 bg-[#1a1d1b] p-8 transition-all hover:border-[#4edea3]/30"
 		>
 			<div class="mb-4 text-[#4edea3]/70">
