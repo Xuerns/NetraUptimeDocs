@@ -11,6 +11,7 @@
 			copy: 'Track response times, uptime ratios, and check history across all endpoints in a live WebSocket-driven dashboard. Trigger manual checks on demand.',
 			image: images.monitors,
 			file: 'feature-monitors',
+			route: '/docs' as const,
 			hash: '#monitors',
 			linkLabel: 'Monitors documentation'
 		},
@@ -20,6 +21,7 @@
 			copy: 'Publish 90-day uptime bars, component groups, scheduled maintenance windows, and machine-readable JSON feeds on custom subdomains.',
 			image: images.statusPage,
 			file: 'feature-status-page',
+			route: '/docs' as const,
 			hash: '#status-pages',
 			linkLabel: 'Status page guide'
 		},
@@ -29,6 +31,7 @@
 			copy: 'Incidents open on breach and resolve automatically upon recovery. Assign a Person-in-Charge and record timestamped status transitions.',
 			image: images.incident,
 			file: 'feature-incident',
+			route: '/docs/architecture' as const,
 			hash: '#incidents-notifications',
 			linkLabel: 'Incident lifecycle docs'
 		},
@@ -38,6 +41,7 @@
 			copy: 'Evaluate status codes, latency thresholds, and timeouts with consecutive breach counters to eliminate false-positive alert fatigue.',
 			image: images.alertRules,
 			file: 'feature-alert-rules',
+			route: '/docs' as const,
 			hash: '#alert-rules',
 			linkLabel: 'Alert rules guide'
 		}
@@ -47,24 +51,28 @@
 		{
 			title: 'Multi-protocol checks',
 			copy: 'HTTP/HTTPS header and payload assertions, TCP port handshakes, and ICMP ping probes.',
+			route: '/docs' as const,
 			hash: '#monitors',
 			icon: Network
 		},
 		{
 			title: 'SSL & domain expiry',
 			copy: 'Daily background worker tracking TLS certificate chains and WHOIS/RDAP domain expiration.',
+			route: '/docs/architecture' as const,
 			hash: '#ssl-domain-runner',
 			icon: Lock
 		},
 		{
 			title: 'Multi-channel dispatch',
 			copy: 'Deliver alerts to Slack, Discord, SMTP email, and SSRF-protected custom HTTP webhooks.',
+			route: '/docs' as const,
 			hash: '#notification-channels',
 			icon: Bell
 		},
 		{
 			title: 'Strict RBAC & API keys',
 			copy: 'Multi-tenant organizations with Owner, Admin, and Member roles plus scoped REST API keys.',
+			route: '/docs' as const,
 			hash: '#permissions',
 			icon: KeyRound
 		}
@@ -101,7 +109,7 @@
 						<div class="flex items-start justify-between gap-4">
 							<h3 class="text-lg font-semibold tracking-tight text-zinc-100">{card.title}</h3>
 							<a
-								href="{resolve('/docs')}{card.hash}"
+								href="{resolve(card.route)}{card.hash}"
 								class="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-[#4edea3] transition-opacity hover:opacity-80"
 							>
 								{card.linkLabel}
@@ -128,7 +136,7 @@
 			{#each secondaryFeatures as item (item.title)}
 				<a
 					data-reveal
-					href="{resolve('/docs')}{item.hash}"
+					href="{resolve(item.route)}{item.hash}"
 					class="panel panel-interactive group flex flex-col justify-between rounded-lg p-5"
 				>
 					<div>

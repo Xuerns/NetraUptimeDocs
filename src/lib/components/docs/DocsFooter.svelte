@@ -1,13 +1,20 @@
 <script lang="ts">
-	import { sidebarSections } from '$lib/data/docs';
+	import { sidebarSections, type DocSection } from '$lib/data/docs';
 
-	let { activeItemId, onSelectItem }: { activeItemId: string; onSelectItem: (id: string) => void } =
-		$props();
+	let {
+		activeItemId,
+		onSelectItem,
+		sections = sidebarSections
+	}: {
+		activeItemId: string;
+		onSelectItem: (id: string) => void;
+		sections?: DocSection[];
+	} = $props();
 
-	const currentIndex = $derived(sidebarSections.findIndex((s) => s.id === activeItemId));
-	const prevSection = $derived(currentIndex > 0 ? sidebarSections[currentIndex - 1] : null);
+	const currentIndex = $derived(sections.findIndex((s) => s.id === activeItemId));
+	const prevSection = $derived(currentIndex > 0 ? sections[currentIndex - 1] : null);
 	const nextSection = $derived(
-		currentIndex < sidebarSections.length - 1 ? sidebarSections[currentIndex + 1] : null
+		currentIndex < sections.length - 1 ? sections[currentIndex + 1] : null
 	);
 </script>
 

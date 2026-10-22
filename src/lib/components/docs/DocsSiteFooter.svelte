@@ -13,6 +13,9 @@
 		</div>
 		<div class="flex items-center gap-6 text-xs text-zinc-500">
 			<a href={resolve('/docs')} class="transition-colors hover:text-zinc-300">Documentation</a>
+			<a href={resolve('/docs/architecture')} class="transition-colors hover:text-zinc-300"
+				>Architecture</a
+			>
 			<a href={resolve('/docs/api-reference')} class="transition-colors hover:text-zinc-300"
 				>API Reference</a
 			>

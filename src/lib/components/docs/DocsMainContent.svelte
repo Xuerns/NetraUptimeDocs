@@ -25,11 +25,17 @@
 	import EmailDocContent from './EmailDocContent.svelte';
 	import PermissionsContent from './PermissionsContent.svelte';
 	import CicdContent from './CicdContent.svelte';
-	import { docSections } from '$lib/data/docs';
+	import { docSections, architectureSections, type DocSection } from '$lib/data/docs';
 
-	let { activeItemId }: { activeItemId: string } = $props();
+	let {
+		activeItemId,
+		sections = [...docSections, ...architectureSections]
+	}: {
+		activeItemId: string;
+		sections?: DocSection[];
+	} = $props();
 
-	const activeSection = $derived(docSections.find((s) => s.id === activeItemId) ?? docSections[0]);
+	const activeSection = $derived(sections.find((s) => s.id === activeItemId) ?? sections[0]);
 </script>
 
 <main class="flex-1 px-4 py-10 sm:px-8 lg:px-12">

@@ -9,9 +9,9 @@
 			class="flex items-center justify-between border-b border-zinc-800/80 bg-[#131315] px-4 py-2.5"
 		>
 			<div class="flex items-center gap-1.5">
-				<span class="h-2.5 w-2.5 rounded-full bg-zinc-700"></span>
-				<span class="h-2.5 w-2.5 rounded-full bg-zinc-700"></span>
-				<span class="h-2.5 w-2.5 rounded-full bg-zinc-700"></span>
+				<span class="h-2.5 w-2.5 rounded-full bg-[#ff5f57]"></span>
+				<span class="h-2.5 w-2.5 rounded-full bg-[#febc2e]"></span>
+				<span class="h-2.5 w-2.5 rounded-full bg-[#28c840]"></span>
 			</div>
 			<div class="font-mono text-[11px] text-zinc-400">http://localhost:8080/dashboard</div>
 			<div class="w-10"></div>

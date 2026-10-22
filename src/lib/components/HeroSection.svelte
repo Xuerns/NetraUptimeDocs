@@ -22,7 +22,7 @@
 		{
 			title: 'System Architecture',
 			description: 'Go worker pool, alert state machine, and Redis caching internals.',
-			route: '/docs' as const,
+			route: '/docs/architecture' as const,
 			hash: '#architecture',
 			icon: Cpu
 		},

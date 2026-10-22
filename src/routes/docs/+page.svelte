@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { gsap } from 'gsap';
 	import Lenis from 'lenis';
-	import { docGroups, docSections } from '$lib/data/docs';
+	import { docGroups, docSections, architectureSections } from '$lib/data/docs';
 	import DocsNav from '$lib/components/docs/DocsNav.svelte';
 	import DocsSidebar from '$lib/components/docs/DocsSidebar.svelte';
 	import DocsMainContent from '$lib/components/docs/DocsMainContent.svelte';
@@ -53,6 +55,8 @@
 				const section = docSections.find((s) => s.id === hash);
 				if (section) {
 					activeItemId = hash;
+				} else if (architectureSections.some((s) => s.id === hash)) {
+					goto(`${resolve('/docs/architecture')}#${hash}`, { replaceState: true });
 				}
 			}
 		}

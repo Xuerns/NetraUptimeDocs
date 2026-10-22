@@ -82,7 +82,7 @@
 				</p>
 			</div>
 			<a
-				href="{resolve('/docs')}#architecture"
+				href="{resolve('/docs/architecture')}#architecture"
 				class="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-300 transition-colors hover:text-[#4edea3]"
 			>
 				Read system architecture <ArrowRight size={14} />
@@ -93,7 +93,7 @@
 			{#each pillars as pillar (pillar.name)}
 				<a
 					data-reveal
-					href="{resolve('/docs')}{pillar.hash}"
+					href="{resolve('/docs/architecture')}{pillar.hash}"
 					class="panel panel-interactive group flex flex-col justify-between rounded-lg p-5"
 				>
 					<div>

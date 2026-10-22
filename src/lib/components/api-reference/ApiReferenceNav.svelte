@@ -16,6 +16,10 @@
 					class="py-4 text-sm text-zinc-400 transition-colors hover:text-zinc-200">Documentation</a
 				>
 				<a
+					href={resolve('/docs/architecture')}
+					class="py-4 text-sm text-zinc-400 transition-colors hover:text-zinc-200">Architecture</a
+				>
+				<a
 					href={resolve('/docs/api-reference')}
 					class="border-b-2 border-[#4edea3] py-4 text-sm font-medium text-zinc-100"
 					>API Reference</a

@@ -1,6 +1,12 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import Logo from '$lib/assets/Logo.svg';
+
+	let {
+		activeTab = 'docs'
+	}: {
+		activeTab?: 'docs' | 'architecture' | 'api-reference';
+	} = $props();
 </script>
 
 <nav class="sticky top-0 z-50 border-b border-zinc-800/80 bg-[#0d0d0e]/95 backdrop-blur-md">
@@ -13,12 +19,21 @@
 			<div class="hidden items-center gap-6 md:flex">
 				<a
 					href={resolve('/docs')}
-					class="border-b-2 border-[#4edea3] py-4 text-sm font-medium text-zinc-100"
-					>Documentation</a
+					class={activeTab === 'docs'
+						? 'border-b-2 border-[#4edea3] py-4 text-sm font-medium text-zinc-100'
+						: 'py-4 text-sm text-zinc-400 transition-colors hover:text-zinc-200'}>Documentation</a
+				>
+				<a
+					href={resolve('/docs/architecture')}
+					class={activeTab === 'architecture'
+						? 'border-b-2 border-[#4edea3] py-4 text-sm font-medium text-zinc-100'
+						: 'py-4 text-sm text-zinc-400 transition-colors hover:text-zinc-200'}>Architecture</a
 				>
 				<a
 					href={resolve('/docs/api-reference')}
-					class="py-4 text-sm text-zinc-400 transition-colors hover:text-zinc-200">API Reference</a
+					class={activeTab === 'api-reference'
+						? 'border-b-2 border-[#4edea3] py-4 text-sm font-medium text-zinc-100'
+						: 'py-4 text-sm text-zinc-400 transition-colors hover:text-zinc-200'}>API Reference</a
 				>
 			</div>
 		</div>

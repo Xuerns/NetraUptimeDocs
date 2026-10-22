@@ -79,7 +79,7 @@
 					<li>
 						<a
 							class="text-zinc-400 transition-colors hover:text-zinc-100"
-							href="{resolve('/docs')}#architecture"
+							href="{resolve('/docs/architecture')}#architecture"
 						>
 							System Architecture
 						</a>
@@ -87,7 +87,7 @@
 					<li>
 						<a
 							class="text-zinc-400 transition-colors hover:text-zinc-100"
-							href="{resolve('/docs')}#monitoring-engine"
+							href="{resolve('/docs/architecture')}#monitoring-engine"
 						>
 							Monitoring Engine
 						</a>
