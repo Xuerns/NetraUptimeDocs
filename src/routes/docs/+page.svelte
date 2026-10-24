@@ -56,6 +56,7 @@
 				if (section) {
 					activeItemId = hash;
 				} else if (architectureSections.some((s) => s.id === hash)) {
+					// eslint-disable-next-line svelte/no-navigation-without-resolve -- path is resolved above; only the hash fragment is appended
 					goto(`${resolve('/docs/architecture')}#${hash}`, { replaceState: true });
 				}
 			}

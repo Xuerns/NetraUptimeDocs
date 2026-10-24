@@ -22,6 +22,7 @@ services:
       - DB_SSLMODE=disable
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - REDIS_PASSWORD=redis_secret_change_me
       - JWT_SECRET=change_me_to_a_random_secure_secret_string
       - ALLOWED_ORIGIN=http://localhost:8080
       - PUBLIC_API_URL=http://localhost:8080/api/v1
@@ -51,10 +52,11 @@ services:
     image: redis:7-alpine
     container_name: netra_uptime_redis
     restart: unless-stopped
+    command: redis-server --requirepass redis_secret_change_me
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "-a", "redis_secret_change_me", "ping"]
       interval: 5s
       timeout: 5s
       retries: 5
