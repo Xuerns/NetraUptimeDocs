@@ -9,11 +9,11 @@ services:
     container_name: netra_uptime_app
     restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "27346:27346"
     environment:
       - APP_ENV=production
       - APP_MODE=selfhosted
-      - PORT=8080
+      - PORT=27346
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_USER=netra
@@ -24,8 +24,8 @@ services:
       - REDIS_PORT=6379
       - REDIS_PASSWORD=redis_secret_change_me
       - JWT_SECRET=change_me_to_a_random_secure_secret_string
-      - ALLOWED_ORIGIN=http://localhost:8080
-      - PUBLIC_API_URL=http://localhost:8080/api/v1
+      - ALLOWED_ORIGIN=http://localhost:27346
+      - PUBLIC_API_URL=http://localhost:27346/api/v1
     depends_on:
       postgres:
         condition: service_healthy
@@ -87,7 +87,7 @@ volumes:
 				Compose v2.20+ with the compose plugin installed.
 			</li>
 			<li>
-				<strong class="font-medium text-zinc-200">Network & Ports</strong> — Port 8080 exposed for HTTP
+				<strong class="font-medium text-zinc-200">Network & Ports</strong> — Port 27346 exposed for HTTP
 				and WebSocket traffic, or proxied behind Nginx or Caddy.
 			</li>
 		</ul>

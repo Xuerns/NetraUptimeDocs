@@ -28,19 +28,19 @@
 		{
 			name: 'PORT',
 			type: 'integer',
-			defaultVal: '8080',
+			defaultVal: '27346',
 			description: 'Primary HTTP port for the single-container Go + Svelte application.'
 		},
 		{
 			name: 'ALLOWED_ORIGIN',
 			type: 'string',
-			defaultVal: 'http://localhost:8080',
+			defaultVal: 'http://localhost:27346',
 			description: 'CORS origin setting. Update when using a custom domain.'
 		},
 		{
 			name: 'PUBLIC_API_URL',
 			type: 'string',
-			defaultVal: 'http://localhost:8080/api/v1',
+			defaultVal: 'http://localhost:27346/api/v1',
 			description: 'Public API URL accessed by the browser frontend.'
 		}
 	];

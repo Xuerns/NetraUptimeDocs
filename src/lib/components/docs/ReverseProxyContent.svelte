@@ -17,7 +17,7 @@ server {
     ssl_ciphers HIGH:!aNULL:!MD5;
 
     location / {
-        proxy_pass http://127.0.0.1:8080;
+        proxy_pass http://127.0.0.1:27346;
         proxy_http_version 1.1;
 
         # WebSocket support
@@ -43,7 +43,7 @@ map $http_upgrade $connection_upgrade {
 }`;
 
 	const caddyConfig = `uptime.yourdomain.com {
-    reverse_proxy 127.0.0.1:8080 {
+    reverse_proxy 127.0.0.1:27346 {
         # Caddy automatically handles WebSocket upgrade headers
         # and issues managed Let's Encrypt certificates
         header_up Host {host}
@@ -60,7 +60,7 @@ PUBLIC_API_URL=https://uptime.yourdomain.com/api/v1`;
 	<section id="rp-overview" class="flex scroll-mt-24 flex-col gap-4">
 		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Why a Reverse Proxy?</h2>
 		<p class="text-sm leading-7 text-zinc-400">
-			While Netra Uptime serves HTTP directly on port 8080, deploying a production reverse proxy
+			While Netra Uptime serves HTTP directly on port 27346, deploying a production reverse proxy
 			such as Nginx, Caddy, or Traefik provides essential security and operational capabilities:
 		</p>
 		<ul class="ml-5 flex list-disc flex-col gap-2 text-sm leading-7 text-zinc-400">

@@ -18,7 +18,7 @@ docker compose up -d`;
 netra-uptime status
 
 # Verify health endpoint
-curl -s http://localhost:8080/healthz
+curl -s http://localhost:27346/healthz
 # Expected: {"status":"ok"}
 
 # View container logs
@@ -86,7 +86,7 @@ netra-uptime logs`;
 		<p class="text-sm leading-7 text-zinc-400">
 			Once Netra Uptime is running, the web dashboard is accessible at
 			<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-200"
-				>http://localhost:8080</code
+				>http://localhost:27346</code
 			>. Verify service health and container status with the following commands:
 		</p>
 		<CodeBlock code={verifyCode} language="bash" id="gs-verify-code" />

@@ -13,7 +13,7 @@
 				<span class="h-2.5 w-2.5 rounded-full bg-[#febc2e]"></span>
 				<span class="h-2.5 w-2.5 rounded-full bg-[#28c840]"></span>
 			</div>
-			<div class="font-mono text-[11px] text-zinc-400">http://localhost:8080/dashboard</div>
+			<div class="font-mono text-[11px] text-zinc-400">http://localhost:27346/dashboard</div>
 			<div class="w-10"></div>
 		</div>
 		<div class="aspect-16/10 bg-[#0d0d0e]">

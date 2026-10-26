@@ -14,7 +14,7 @@ Interval: 30 seconds
 Timeout:  10 seconds`;
 
 	const manualCheckCode = `curl -X POST \\
-  http://localhost:8080/api/v1/organization/:orgId/monitors/:monitorId/check \\
+  http://localhost:27346/api/v1/organization/:orgId/monitors/:monitorId/check \\
   -H "Authorization: Bearer YOUR_TOKEN"`;
 </script>
 

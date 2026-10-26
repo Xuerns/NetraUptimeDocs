@@ -76,7 +76,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/auth/register \\
+					code: `curl -X POST http://localhost:27346/api/v1/auth/register \\
   -H "Content-Type: application/json" \\
   -d '{
     "email": "user@example.com",
@@ -124,7 +124,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/auth/login \\
+					code: `curl -X POST http://localhost:27346/api/v1/auth/login \\
   -H "Content-Type: application/json" \\
   -d '{
     "email": "user@example.com",
@@ -157,7 +157,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/auth/logout`,
+					code: `curl -X POST http://localhost:27346/api/v1/auth/logout`,
 					responses: [
 						{
 							status: '200 OK',
@@ -180,7 +180,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/auth/refresh \\
+					code: `curl -X POST http://localhost:27346/api/v1/auth/refresh \\
   --cookie "refresh_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -217,7 +217,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/auth/forgotpassword \\
+					code: `curl -X POST http://localhost:27346/api/v1/auth/forgotpassword \\
   -H "Content-Type: application/json" \\
   -d '{
     "email": "user@example.com"
@@ -263,7 +263,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PATCH http://localhost:8080/api/v1/auth/resetpassword \\
+					code: `curl -X PATCH http://localhost:27346/api/v1/auth/resetpassword \\
   -H "Content-Type: application/json" \\
   -d '{
     "token": "reset_token_from_email",
@@ -311,7 +311,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/auth \\
+					code: `curl -X POST http://localhost:27346/api/v1/auth \\
   -H "Content-Type: application/json" \\
   -d '{
     "provider": "google",
@@ -349,7 +349,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/auth/profile \\
+					code: `curl -X GET http://localhost:27346/api/v1/auth/profile \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -391,7 +391,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/auth/password/change/init \\
+					code: `curl -X POST http://localhost:27346/api/v1/auth/password/change/init \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -437,7 +437,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/auth/password/change/verify \\
+					code: `curl -X POST http://localhost:27346/api/v1/auth/password/change/verify \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -476,7 +476,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/all \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/all \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -529,7 +529,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/organization/create \\
+					code: `curl -X POST http://localhost:27346/api/v1/organization/create \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -557,7 +557,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/invitation \\
+					code: `curl -X GET http://localhost:27346/api/v1/invitation \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -602,7 +602,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PUT http://localhost:8080/api/v1/invitation/action \\
+					code: `curl -X PUT http://localhost:27346/api/v1/invitation/action \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -650,7 +650,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET "http://localhost:8080/api/v1/search/persons?name=john&page=1" \\
+					code: `curl -X GET "http://localhost:27346/api/v1/search/persons?name=john&page=1" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -679,7 +679,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/members \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/members \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -724,7 +724,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/invite \\
+					code: `curl -X POST http://localhost:27346/api/v1/organization/org_uuid/invite \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -762,7 +762,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/kick \\
+					code: `curl -X DELETE http://localhost:27346/api/v1/organization/org_uuid/kick \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '"member_uuid"'`,
@@ -787,7 +787,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/disband \\
+					code: `curl -X DELETE http://localhost:27346/api/v1/organization/org_uuid/disband \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -830,7 +830,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/update \\
+					code: `curl -X PUT http://localhost:27346/api/v1/organization/org_uuid/update \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -866,7 +866,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/transfer \\
+					code: `curl -X PUT http://localhost:27346/api/v1/organization/org_uuid/transfer \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -893,7 +893,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/leave \\
+					code: `curl -X PUT http://localhost:27346/api/v1/organization/org_uuid/leave \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -925,7 +925,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/promote \\
+					code: `curl -X PUT http://localhost:27346/api/v1/organization/org_uuid/promote \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -960,7 +960,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/demote \\
+					code: `curl -X PUT http://localhost:27346/api/v1/organization/org_uuid/demote \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -1050,7 +1050,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/monitors \\
+					code: `curl -X POST http://localhost:27346/api/v1/organization/org_uuid/monitors \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -1085,7 +1085,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/monitors \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/monitors \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -1108,7 +1108,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/monitors/monitor_uuid \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/monitors/monitor_uuid \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -1139,7 +1139,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET "http://localhost:8080/api/v1/organization/org_uuid/monitors/monitor_uuid/stats?days=30" \\
+					code: `curl -X GET "http://localhost:27346/api/v1/organization/org_uuid/monitors/monitor_uuid/stats?days=30" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -1219,7 +1219,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/monitors/monitor_uuid \\
+					code: `curl -X PUT http://localhost:27346/api/v1/organization/org_uuid/monitors/monitor_uuid \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -1247,7 +1247,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/monitors/monitor_uuid \\
+					code: `curl -X DELETE http://localhost:27346/api/v1/organization/org_uuid/monitors/monitor_uuid \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -1271,7 +1271,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/monitors/monitor_uuid/check \\
+					code: `curl -X POST http://localhost:27346/api/v1/organization/org_uuid/monitors/monitor_uuid/check \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -1300,7 +1300,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/monitors \\
+					code: `curl -X GET http://localhost:27346/api/v1/monitors \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -1330,7 +1330,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/alert-templates \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/alert-templates \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -1402,7 +1402,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/alert-templates \\
+					code: `curl -X POST http://localhost:27346/api/v1/organization/org_uuid/alert-templates \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -1452,7 +1452,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/alert-templates/template_uuid \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/alert-templates/template_uuid \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -1482,7 +1482,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/alert-templates/template_uuid \\
+					code: `curl -X PUT http://localhost:27346/api/v1/organization/org_uuid/alert-templates/template_uuid \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{ "name": "Updated Template Name", "is_default": true }'`,
@@ -1504,7 +1504,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/alert-templates/template_uuid \\
+					code: `curl -X DELETE http://localhost:27346/api/v1/organization/org_uuid/alert-templates/template_uuid \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -1562,7 +1562,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/alert-templates/template_uuid/rules \\
+					code: `curl -X POST http://localhost:27346/api/v1/organization/org_uuid/alert-templates/template_uuid/rules \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -1592,7 +1592,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/alert-templates/template_uuid/rules/rule_uuid \\
+					code: `curl -X DELETE http://localhost:27346/api/v1/organization/org_uuid/alert-templates/template_uuid/rules/rule_uuid \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -1621,7 +1621,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/monitors/monitor_uuid/template \\
+					code: `curl -X POST http://localhost:27346/api/v1/organization/org_uuid/monitors/monitor_uuid/template \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{ "template_id": "e4b1a2c3-d4e5-6f7a-8b9c-0d1e2f3a4b5c" }'`,
@@ -1644,7 +1644,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/monitors/monitor_uuid/alert-rules \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/monitors/monitor_uuid/alert-rules \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -1728,7 +1728,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/monitors/monitor_uuid/alert-rules \\
+					code: `curl -X POST http://localhost:27346/api/v1/organization/org_uuid/monitors/monitor_uuid/alert-rules \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -1780,7 +1780,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/alert-rules/rule_uuid \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/alert-rules/rule_uuid \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -1867,7 +1867,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/alert-rules/rule_uuid \\
+					code: `curl -X PUT http://localhost:27346/api/v1/organization/org_uuid/alert-rules/rule_uuid \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -1914,7 +1914,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/alert-rules/rule_uuid \\
+					code: `curl -X DELETE http://localhost:27346/api/v1/organization/org_uuid/alert-rules/rule_uuid \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -1949,7 +1949,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/incident/incident_uuid \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/incident/incident_uuid \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -2015,7 +2015,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET "http://localhost:8080/api/v1/organization/org_uuid/incident?status=ongoing&page=1&limit=10" \\
+					code: `curl -X GET "http://localhost:27346/api/v1/organization/org_uuid/incident?status=ongoing&page=1&limit=10" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -2046,7 +2046,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/incident/incident_uuid \\
+					code: `curl -X POST http://localhost:27346/api/v1/organization/org_uuid/incident/incident_uuid \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -2073,7 +2073,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/incident/incident_uuid/join \\
+					code: `curl -X POST http://localhost:27346/api/v1/organization/org_uuid/incident/incident_uuid/join \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -2096,7 +2096,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/incident/incident_uuid/updates \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/incident/incident_uuid/updates \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -2188,7 +2188,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/statuspage \\
+					code: `curl -X POST http://localhost:27346/api/v1/organization/org_uuid/statuspage \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -2219,7 +2219,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/statuspage \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/statuspage \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -2242,7 +2242,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/statuspage/statuspage_uuid \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -2282,7 +2282,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/monitors \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/statuspage/statuspage_uuid/monitors \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -2312,7 +2312,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid \\
+					code: `curl -X DELETE http://localhost:27346/api/v1/organization/org_uuid/statuspage/statuspage_uuid \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -2391,7 +2391,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid \\
+					code: `curl -X PUT http://localhost:27346/api/v1/organization/org_uuid/statuspage/statuspage_uuid \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -2419,7 +2419,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/statuspages \\
+					code: `curl -X GET http://localhost:27346/api/v1/statuspages \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -2473,7 +2473,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/groups \\
+					code: `curl -X POST http://localhost:27346/api/v1/organization/org_uuid/statuspage/statuspage_uuid/groups \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -2510,7 +2510,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/groups \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/statuspage/statuspage_uuid/groups \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -2564,7 +2564,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/groups/group_uuid \\
+					code: `curl -X PUT http://localhost:27346/api/v1/organization/org_uuid/statuspage/statuspage_uuid/groups/group_uuid \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -2602,7 +2602,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/groups/group_uuid \\
+					code: `curl -X DELETE http://localhost:27346/api/v1/organization/org_uuid/statuspage/statuspage_uuid/groups/group_uuid \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -2634,7 +2634,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/monitors/monitor_uuid/group \\
+					code: `curl -X PUT http://localhost:27346/api/v1/organization/org_uuid/statuspage/statuspage_uuid/monitors/monitor_uuid/group \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -2694,7 +2694,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/maintenance \\
+					code: `curl -X POST http://localhost:27346/api/v1/organization/org_uuid/statuspage/statuspage_uuid/maintenance \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -2735,7 +2735,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/maintenance \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/statuspage/statuspage_uuid/maintenance \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -2807,7 +2807,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/maintenance/maintenance_uuid \\
+					code: `curl -X PUT http://localhost:27346/api/v1/organization/org_uuid/statuspage/statuspage_uuid/maintenance/maintenance_uuid \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -2838,7 +2838,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/statuspage/statuspage_uuid/maintenance/maintenance_uuid \\
+					code: `curl -X DELETE http://localhost:27346/api/v1/organization/org_uuid/statuspage/statuspage_uuid/maintenance/maintenance_uuid \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -2862,7 +2862,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/public/statuspage/status`,
+					code: `curl -X GET http://localhost:27346/api/v1/public/statuspage/status`,
 					responses: [
 						{
 							status: '200 OK',
@@ -2933,7 +2933,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/public/statuspage/status/summary.json`,
+					code: `curl -X GET http://localhost:27346/api/v1/public/statuspage/status/summary.json`,
 					responses: [
 						{
 							status: '200 OK',
@@ -2961,7 +2961,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/public/statuspage/status/status.json`,
+					code: `curl -X GET http://localhost:27346/api/v1/public/statuspage/status/status.json`,
 					responses: [
 						{
 							status: '200 OK',
@@ -2989,7 +2989,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/public/statuspage/status/badge.svg`,
+					code: `curl -X GET http://localhost:27346/api/v1/public/statuspage/status/badge.svg`,
 					responses: [
 						{
 							status: '200 OK (image/svg+xml)',
@@ -3061,7 +3061,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET "http://localhost:8080/api/v1/organization/org_uuid/audit-logs?page=1&limit=20" \\
+					code: `curl -X GET "http://localhost:27346/api/v1/organization/org_uuid/audit-logs?page=1&limit=20" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -3112,7 +3112,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/notifications/channels \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/notifications/channels \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -3145,7 +3145,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/notifications/channels/channel_uuid \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/notifications/channels/channel_uuid \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -3203,7 +3203,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/notifications/channels \\
+					code: `curl -X POST http://localhost:27346/api/v1/organization/org_uuid/notifications/channels \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -3262,7 +3262,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PUT http://localhost:8080/api/v1/organization/org_uuid/notifications/channels/channel_uuid \\
+					code: `curl -X PUT http://localhost:27346/api/v1/organization/org_uuid/notifications/channels/channel_uuid \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -3289,7 +3289,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/notifications/channels/channel_uuid \\
+					code: `curl -X DELETE http://localhost:27346/api/v1/organization/org_uuid/notifications/channels/channel_uuid \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -3344,7 +3344,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET "http://localhost:8080/api/v1/organization/org_uuid/notifications/logs?limit=50&offset=0" \\
+					code: `curl -X GET "http://localhost:27346/api/v1/organization/org_uuid/notifications/logs?limit=50&offset=0" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -3390,7 +3390,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/organization/org_uuid/api-keys \\
+					code: `curl -X GET http://localhost:27346/api/v1/organization/org_uuid/api-keys \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -3446,7 +3446,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/organization/org_uuid/api-keys \\
+					code: `curl -X POST http://localhost:27346/api/v1/organization/org_uuid/api-keys \\
   -H "Content-Type: application/json" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
   -d '{
@@ -3487,7 +3487,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X DELETE http://localhost:8080/api/v1/organization/org_uuid/api-keys/key_uuid \\
+					code: `curl -X DELETE http://localhost:27346/api/v1/organization/org_uuid/api-keys/key_uuid \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -3524,7 +3524,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'javascript',
 					label: 'Example Client',
-					code: `const ws = new WebSocket("ws://localhost:8080/api/v1/ws");
+					code: `const ws = new WebSocket("ws://localhost:27346/api/v1/ws");
 
 ws.onopen = () => {
   console.log("WebSocket connected. Subscribed to all org rooms.");
@@ -3572,7 +3572,7 @@ ws.onclose = () => {
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/public/monitors \\
+					code: `curl -X GET http://localhost:27346/api/v1/public/monitors \\
   -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx"`,
 					responses: [
 						{
@@ -3595,7 +3595,7 @@ ws.onclose = () => {
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/public/monitors/monitor_uuid \\
+					code: `curl -X GET http://localhost:27346/api/v1/public/monitors/monitor_uuid \\
   -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx"`,
 					responses: [
 						{
@@ -3668,7 +3668,7 @@ ws.onclose = () => {
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/public/monitors \\
+					code: `curl -X POST http://localhost:27346/api/v1/public/monitors \\
   -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -3728,7 +3728,7 @@ ws.onclose = () => {
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X PUT http://localhost:8080/api/v1/public/monitors/monitor_uuid \\
+					code: `curl -X PUT http://localhost:27346/api/v1/public/monitors/monitor_uuid \\
   -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -3756,7 +3756,7 @@ ws.onclose = () => {
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X DELETE http://localhost:8080/api/v1/public/monitors/monitor_uuid \\
+					code: `curl -X DELETE http://localhost:27346/api/v1/public/monitors/monitor_uuid \\
   -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx"`,
 					responses: [
 						{
@@ -3780,7 +3780,7 @@ ws.onclose = () => {
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/public/monitors/monitor_uuid/check \\
+					code: `curl -X POST http://localhost:27346/api/v1/public/monitors/monitor_uuid/check \\
   -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx"`,
 					responses: [
 						{
@@ -3809,7 +3809,7 @@ ws.onclose = () => {
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/public/incidents \\
+					code: `curl -X GET http://localhost:27346/api/v1/public/incidents \\
   -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx"`,
 					responses: [
 						{
@@ -3846,7 +3846,7 @@ ws.onclose = () => {
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X POST http://localhost:8080/api/v1/public/incidents \\
+					code: `curl -X POST http://localhost:27346/api/v1/public/incidents \\
   -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -3875,7 +3875,7 @@ ws.onclose = () => {
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:8080/api/v1/public/status-pages \\
+					code: `curl -X GET http://localhost:27346/api/v1/public/status-pages \\
   -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx"`,
 					responses: [
 						{
@@ -3905,7 +3905,7 @@ ws.onclose = () => {
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -s http://localhost:8080/healthz`,
+					code: `curl -s http://localhost:27346/healthz`,
 					responses: [
 						{
 							status: '200 OK',
@@ -3929,7 +3929,7 @@ ws.onclose = () => {
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -s http://localhost:8080/api/v1/health`,
+					code: `curl -s http://localhost:27346/api/v1/health`,
 					responses: [
 						{
 							status: '200 OK',

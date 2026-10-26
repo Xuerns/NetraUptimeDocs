@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CodeBlock from './CodeBlock.svelte';
 
-	const sampleApiKeyRequest = `curl -X GET http://localhost:8080/api/v1/public/monitors \\
+	const sampleApiKeyRequest = `curl -X GET http://localhost:27346/api/v1/public/monitors \\
   -H "Authorization: Bearer pw_live_a1b2c3d4e5f6..."`;
 </script>
 

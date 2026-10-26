@@ -86,7 +86,7 @@
 				<InstallCommand id="hero" class="max-w-none" />
 				<div class="mt-2.5 flex items-center justify-between text-xs text-zinc-500">
 					<span
-						>Starts web UI and workers on <code class="font-mono text-zinc-300">localhost:8080</code
+						>Starts web UI and workers on <code class="font-mono text-zinc-300">localhost:27346</code
 						></span
 					>
 					<a
