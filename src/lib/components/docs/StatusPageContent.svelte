@@ -1,14 +1,17 @@
 <script lang="ts">
 	import CodeBlock from './CodeBlock.svelte';
 
-	const subdomainUrl = `https://your-subdomain.yourdomain.com/status`;
+	const subdomainUrl = `https://uptime.yourdomain.com/status/acme-corp`;
 
 	const maintenancePayload = `{
-  "title": "Database Migration",
-  "description": "Upgrading PostgreSQL to v16.2",
-  "start_time": "2026-10-01T02:00:00Z",
-  "end_time": "2026-10-01T04:00:00Z",
-  "monitors": ["monitor-id-1", "monitor-id-2"]
+  "title": "Database Maintenance Window",
+  "description": "Routine index optimization and schema updates",
+  "scheduled_start": "2026-10-01T02:00:00Z",
+  "scheduled_end": "2026-10-01T04:00:00Z",
+  "monitor_ids": [
+    "7b58c70e-1284-48f1-94be-b552fa0f9d41",
+    "e4b1a2c3-d4e5-6f7a-8b9c-0d1e2f3a4b5c"
+  ]
 }`;
 
 	const badgeMarkdown = `![Status](https://your-domain.com/api/v1/public/statuspage/your-subdomain/badge.svg)`;
@@ -29,8 +32,11 @@
 	<section id="sp-subdomain" class="flex scroll-mt-24 flex-col gap-4">
 		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Custom Subdomains & Branding</h2>
 		<p class="text-sm leading-7 text-zinc-400">
-			Each status page is assigned a unique subdomain slug and can be customized with your
-			organization name, logo, and brand identity:
+			Each status page is accessible via the <code
+				class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-[#4edea3]"
+				>/status/:subdomain</code
+			> URL pattern and can be customized with your organization name, logo, favicon, theme color, and
+			custom CSS:
 		</p>
 		<CodeBlock code={subdomainUrl} language="text" id="subdomain-url" />
 	</section>
@@ -51,7 +57,7 @@
 			</li>
 			<li>
 				<strong class="font-medium text-zinc-200">Database Clusters</strong> — PostgreSQL Primary, Read
-				Replicas, Redis Cache
+				Replicas, In-Memory Cache
 			</li>
 		</ul>
 	</section>
@@ -123,14 +129,18 @@
 						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]"
 							>GET /api/v1/public/statuspage/:subdomain/summary.json</td
 						>
-						<td class="px-4 py-3 text-sm text-zinc-400">Lightweight summary of uptime status</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
+							>Complete machine-readable status page summary including component groups, monitors,
+							active/recent incidents, maintenances, and 90-day daily uptime history</td
+						>
 					</tr>
 					<tr>
 						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]"
 							>GET /api/v1/public/statuspage/:subdomain/status.json</td
 						>
 						<td class="px-4 py-3 text-sm text-zinc-400"
-							>Detailed status of each individual monitor</td
+							>Lightweight health summary JSON (status, description, and updated_at timestamp) for
+							quick health-check integrations</td
 						>
 					</tr>
 					<tr>

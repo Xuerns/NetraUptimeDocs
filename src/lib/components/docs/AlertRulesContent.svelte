@@ -2,25 +2,45 @@
 	import CodeBlock from './CodeBlock.svelte';
 
 	const templateJson = `{
-  "name": "Standard Web Service",
-  "description": "Production alert thresholds for HTTP APIs",
+  "name": "Standard Web / API",
+  "description": "Auto-seeded default template for HTTP and API endpoints",
   "is_default": true,
   "rules": [
     {
-      "name": "High Response Latency",
-      "metric": "response_time_ms",
-      "operator": ">",
-      "target_value": "1500",
-      "consecutive": 3,
-      "severity": "warning"
+      "name": "5xx Server Error",
+      "metric": "status_code",
+      "operator": "==",
+      "target_value": "5xx",
+      "consecutive": 2,
+      "severity": "critical",
+      "is_active": true
     },
     {
-      "name": "Server 5xx Outage",
+      "name": "Unexpected Status Code",
       "metric": "status_code",
-      "operator": "in",
-      "target_value": "500,502,503,504",
-      "consecutive": 1,
-      "severity": "critical"
+      "operator": "!=",
+      "target_value": "200",
+      "consecutive": 3,
+      "severity": "warning",
+      "is_active": true
+    },
+    {
+      "name": "High Latency (> 2000ms)",
+      "metric": "response_time_ms",
+      "operator": ">",
+      "target_value": "2000",
+      "consecutive": 3,
+      "severity": "warning",
+      "is_active": true
+    },
+    {
+      "name": "Request Timeout",
+      "metric": "timeout",
+      "operator": "==",
+      "target_value": "true",
+      "consecutive": 2,
+      "severity": "critical",
+      "is_active": true
     }
   ]
 }`;
@@ -46,7 +66,7 @@
 			</li>
 			<li>
 				<strong class="font-medium text-zinc-200">Auto-Seeded Defaults</strong> — New organizations automatically
-				receive a pre-configured "Standard Web Service" template.
+				receive a pre-configured "Standard Web / API" template with 4 production rules.
 			</li>
 			<li>
 				<strong class="font-medium text-zinc-200">Zero-Config Fallback</strong> — Monitors without an
@@ -185,12 +205,20 @@
 	<section id="ar-pic" class="flex scroll-mt-24 flex-col gap-4">
 		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Person-in-Charge (PIC)</h2>
 		<p class="text-sm leading-7 text-zinc-400">
-			Assign team members as Person-in-Charge for each monitor. PICs receive direct notifications
-			when incidents occur, routing alerts based on service ownership. You can assign up to
-			<strong class="font-medium text-zinc-200">10 PICs per monitor</strong> (configurable via
+			Assign team members as Persons-in-Charge for each monitor using their organization user UUIDs
+			(passed via the <code class="font-mono text-xs text-[#4edea3]">assignees</code> or
+			<code class="font-mono text-xs text-[#4edea3]">MonitorPICs</code> payload field).
+		</p>
+		<p class="text-sm leading-7 text-zinc-400">
+			PICs are the primary operational owners for the service. When an incident is triggered or
+			auto-resolved, direct email notifications are dispatched specifically to assigned PICs. Up to
+			<strong class="font-medium text-zinc-200">10 PICs per monitor</strong> can be assigned by
+			default (configurable via the
 			<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-[#4edea3]"
-				>SELFHOSTED_MAX_PIC</code
-			>).
+				>MAX_ASSIGNEES_PER_MONITOR</code
+			>
+			environment variable, with backwards-compatible fallback to
+			<code class="font-mono text-xs text-zinc-300">SELFHOSTED_MAX_PIC</code>).
 		</p>
 	</section>
 

@@ -196,7 +196,7 @@ export const checklistSteps: ChecklistStep[] = [
 		title: 'Verify Installation',
 		description:
 			'Check the logs to ensure all services have started correctly without errors. The web UI should now be accessible at your configured domain or IP.',
-		commands: ['docker compose logs -f web']
+		commands: ['docker compose logs -f netra-uptime']
 	}
 ];
 
@@ -211,6 +211,8 @@ export const docSections: DocSection[] = [
 			{ id: 'gs-overview', title: 'Overview', level: 2 },
 			{ id: 'gs-requirements', title: 'System Requirements', level: 2 },
 			{ id: 'gs-docker-deploy', title: 'Quick Start via CLI', level: 2 },
+			{ id: 'gs-cli-commands', title: 'CLI Command Reference', level: 2 },
+			{ id: 'gs-standalone', title: 'Standalone Binary (SQLite)', level: 2 },
 			{ id: 'gs-verify', title: 'Verifying Services & Healthcheck', level: 2 },
 			{ id: 'gs-next-steps', title: 'Next Steps', level: 2 }
 		]
@@ -220,7 +222,7 @@ export const docSections: DocSection[] = [
 		title: 'Docker Compose Guide',
 		subtitle: 'Deployment · Setup · Docker',
 		description:
-			'Docker Compose is the recommended deployment method. It manages all Netra Uptime services including the web application, background workers, PostgreSQL database, and Redis cache.',
+			'Docker Compose is the recommended deployment method. It manages all Netra Uptime services including the single-container Go and Svelte web application, background workers, and PostgreSQL database with in-memory caching.',
 		headings: [
 			{ id: 'dc-prerequisites', title: 'Prerequisites', level: 2 },
 			{ id: 'dc-compose-file', title: 'Docker Compose File', level: 2 },
@@ -235,15 +237,14 @@ export const docSections: DocSection[] = [
 		title: 'Environment Variables',
 		subtitle: 'Configuration · Setup · Environment',
 		description:
-			'Netra Uptime is configured through environment variables defined in a .env file. There are 26 crucial variables covering application core, security, database, Redis, operational quotas, SMTP, and OAuth settings.',
+			'Netra Uptime is configured via environment variables defined in your .env file or container environment. Configuration is grouped into Core & Server, Tokens & Secrets, Database (SQLite & PostgreSQL), Network & Security, Operational Quotas, and SMTP Settings.',
 		headings: [
-			{ id: 'env-app-core', title: 'Application Core', level: 2 },
-			{ id: 'env-security', title: 'Security & JWT', level: 2 },
-			{ id: 'env-database', title: 'Database (PostgreSQL)', level: 2 },
-			{ id: 'env-redis', title: 'Redis Cache', level: 2 },
-			{ id: 'env-quotas', title: 'Operational Quotas (Self-Hosted)', level: 2 },
-			{ id: 'env-smtp', title: 'Email (SMTP)', level: 2 },
-			{ id: 'env-oauth', title: 'Google OAuth', level: 2 }
+			{ id: 'env-app-core', title: 'Application Core & Server', level: 2 },
+			{ id: 'env-security', title: 'Tokens & Secrets', level: 2 },
+			{ id: 'env-database', title: 'Database (SQLite & PostgreSQL)', level: 2 },
+			{ id: 'env-network-security', title: 'Registration, Rate Limits & SSRF', level: 2 },
+			{ id: 'env-quotas', title: 'Operational Quotas & Limits', level: 2 },
+			{ id: 'env-smtp', title: 'Email (SMTP)', level: 2 }
 		]
 	},
 	{
@@ -265,17 +266,18 @@ export const docSections: DocSection[] = [
 		title: 'Monitors & Health Checks',
 		subtitle: 'Core · Detection · Multi-Protocol',
 		description:
-			'Netra Uptime supports HTTP, TCP, ICMP Ping, SSL certificate, and Domain expiry checks. Each monitor type has unique configuration parameters and detection logic. This page covers all five protocols, smart incident detection, and on-demand manual checks.',
+			'Netra Uptime supports HTTP/HTTPS, TCP port, unprivileged Ping reachability, SSL certificate, and Domain expiry checks. This guide covers monitor schemas, fleet telemetry, status code distributions, criticality, PIC assignments, smart incident detection, and manual checks.',
 		headings: [
 			{ id: 'mon-overview', title: 'Overview & Check Lifecycle', level: 2 },
+			{ id: 'mon-fleet-overview', title: 'Fleet Overview Telemetry', level: 2 },
 			{ id: 'mon-http', title: 'HTTP / HTTPS Monitoring', level: 2 },
-			{ id: 'mon-http-headers', title: 'Custom Headers & Auth', level: 3 },
-			{ id: 'mon-http-status', title: 'Status Codes & Payloads', level: 3 },
+			{ id: 'mon-http-status', title: 'Status Code Distribution & Daily Stats', level: 3 },
 			{ id: 'mon-tcp', title: 'TCP Port Monitoring', level: 2 },
-			{ id: 'mon-ping', title: 'ICMP Ping Checks', level: 2 },
+			{ id: 'mon-ping', title: 'Ping Reachability Checks', level: 2 },
 			{ id: 'mon-ssl', title: 'SSL / TLS Certificate Expiry', level: 2 },
-			{ id: 'mon-domain', title: 'Domain Expiration (WHOIS)', level: 2 },
-			{ id: 'mon-smart-detection', title: 'Smart Incident Detection (3×/1×)', level: 2 },
+			{ id: 'mon-domain', title: 'Domain Expiration (RDAP & WHOIS)', level: 2 },
+			{ id: 'mon-criticality-pic', title: 'Criticality & PIC Assignment', level: 2 },
+			{ id: 'mon-smart-detection', title: 'Smart Incident Detection & 4-State Machine', level: 2 },
 			{ id: 'mon-manual-check', title: 'On-Demand Manual Checks', level: 2 }
 		]
 	},
@@ -411,7 +413,7 @@ export const architectureSections: DocSection[] = [
 		title: 'System Architecture',
 		subtitle: 'Core · Concepts · Architecture',
 		description:
-			'Netra Uptime is a single-container Go + Svelte application backed by PostgreSQL and Redis. This page covers the overall topology and the principles behind the design.',
+			'Netra Uptime is a single-container Go + Svelte application backed by PostgreSQL or embedded SQLite with built-in in-memory caching. This page covers the overall topology and the principles behind the design.',
 		headings: [
 			{ id: 'arch-topology', title: 'System Topology', level: 2 },
 			{ id: 'arch-characteristics', title: 'Key Characteristics', level: 2 }
@@ -508,12 +510,12 @@ export const architectureSections: DocSection[] = [
 	{
 		id: 'caching-rate-limit',
 		title: 'Caching & Rate Limiting',
-		subtitle: 'Architecture · Redis · Performance',
+		subtitle: 'Architecture · In-Memory Cache · Performance',
 		description:
-			'The Redis tier: read-through caching, precise invalidation, and rate limiting for auth and public API endpoints.',
+			'The in-memory cache tier: thread-safe sync.RWMutex TTL caching, atomic sliding-window rate limiting, and prefix-based cache invalidation.',
 		headings: [
 			{ id: 'cache-flow', title: 'Read-Through Cache & Invalidation', level: 2 },
-			{ id: 'cache-keys', title: 'Redis Key Matrix', level: 2 }
+			{ id: 'cache-keys', title: 'Cache & Rate Limit Key Matrix', level: 2 }
 		]
 	},
 	{

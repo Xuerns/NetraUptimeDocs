@@ -31,7 +31,7 @@
 				</a>
 				<p class="mt-3 max-w-sm text-xs leading-5 text-zinc-400">
 					Open-source, self-hosted uptime monitoring, incident management, and status page platform
-					built with Go, Svelte, PostgreSQL, and Redis.
+					built with Go, Svelte, PostgreSQL, and SQLite.
 				</p>
 			</div>
 
@@ -115,7 +115,7 @@
 		<div
 			class="mt-8 flex flex-col items-center justify-between gap-4 border-t border-zinc-800/80 pt-6 text-xs text-zinc-500 sm:flex-row"
 		>
-			<p>© 2026 Netra Uptime.</p>
+			<p>&copy; 2026 Netra Uptime.</p>
 			<div class="flex items-center gap-5">
 				<a
 					href="https://github.com/Xuerns/Netra-Uptime"

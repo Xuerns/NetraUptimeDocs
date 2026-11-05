@@ -1,10 +1,8 @@
 <script lang="ts">
 	import CodeBlock from './CodeBlock.svelte';
 
-	const composeFile = `version: '3.8'
-
-services:
-  app:
+	const composeFile = `services:
+  netra-uptime:
     image: ghcr.io/xuerns/netra-uptime:latest
     container_name: netra_uptime_app
     restart: unless-stopped
@@ -14,22 +12,23 @@ services:
       - APP_ENV=production
       - APP_MODE=selfhosted
       - PORT=27346
+      - DB_DRIVER=postgres
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_USER=netra
-      - DB_PASSWORD=netra_secret
+      - DB_PASSWORD=netra_secret_change_me
       - DB_NAME=netra_uptime
       - DB_SSLMODE=disable
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=redis_secret_change_me
       - JWT_SECRET=change_me_to_a_random_secure_secret_string
       - ALLOWED_ORIGIN=http://localhost:27346
-      - PUBLIC_API_URL=http://localhost:27346/api/v1
+      - PUBLIC_API_URL=/api/v1
+      - ALLOW_REGISTRATION=true
+      - ALLOW_PRIVATE_NETWORK_MONITORING=false
+      - MAX_MONITORS_PER_ORG=100
+      - MAX_STATUS_PAGES_PER_ORG=10
+      - MIN_MONITOR_INTERVAL_SECONDS=30
     depends_on:
       postgres:
-        condition: service_healthy
-      redis:
         condition: service_healthy
 
   postgres:
@@ -37,33 +36,19 @@ services:
     container_name: netra_uptime_postgres
     restart: unless-stopped
     environment:
-      - POSTGRES_USER=netra
-      - POSTGRES_PASSWORD=netra_secret
-      - POSTGRES_DB=netra_uptime
+      POSTGRES_USER: netra
+      POSTGRES_PASSWORD: netra_secret_change_me
+      POSTGRES_DB: netra_uptime
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U netra -d netra_uptime"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-  redis:
-    image: redis:7-alpine
-    container_name: netra_uptime_redis
-    restart: unless-stopped
-    command: redis-server --requirepass redis_secret_change_me
-    volumes:
-      - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "-a", "redis_secret_change_me", "ping"]
-      interval: 5s
+      interval: 10s
       timeout: 5s
       retries: 5
 
 volumes:
-  postgres_data:
-  redis_data:`;
+  pgdata:`;
 
 	const backupCommand = `docker compose exec -T postgres pg_dump -U netra -d netra_uptime > backup_$(date +%Y%m%d_%H%M%S).sql`;
 	const restoreCommand = `cat backup.sql | docker compose exec -T postgres psql -U netra -d netra_uptime`;
@@ -87,8 +72,8 @@ volumes:
 				Compose v2.20+ with the compose plugin installed.
 			</li>
 			<li>
-				<strong class="font-medium text-zinc-200">Network & Ports</strong> — Port 27346 exposed for HTTP
-				and WebSocket traffic, or proxied behind Nginx or Caddy.
+				<strong class="font-medium text-zinc-200">Network &amp; Ports</strong> — Port 27346 exposed for
+				HTTP and WebSocket traffic, or proxied behind Nginx or Caddy.
 			</li>
 		</ul>
 	</section>
@@ -109,32 +94,29 @@ volumes:
 	<section id="dc-services" class="flex scroll-mt-24 flex-col gap-4">
 		<h3 class="text-lg font-semibold tracking-tight text-zinc-200">Service Configuration</h3>
 		<p class="text-sm leading-7 text-zinc-400">
-			The Netra Uptime Compose stack consists of three coordinated services:
+			The production Netra Uptime Compose stack consists of two coordinated services:
 		</p>
 		<ul class="ml-5 flex list-disc flex-col gap-2 text-sm leading-7 text-zinc-400">
 			<li>
-				<strong class="font-medium text-zinc-200">app</strong> — Single-container binary executing the
-				Gin HTTP engine, Gorilla WebSocket hub, 10-goroutine worker pool, and serving the embedded SvelteKit
-				frontend.
+				<strong class="font-medium text-zinc-200">netra-uptime</strong> — Single-container binary
+				executing the Gin HTTP engine, Gorilla WebSocket hub, concurrent worker pool, in-memory
+				cache (<code class="font-mono text-zinc-300">cache.MemoryCache</code>), and serving the
+				embedded SvelteKit frontend with zero external cache dependencies.
 			</li>
 			<li>
-				<strong class="font-medium text-zinc-200">postgres</strong> — PostgreSQL 16 engine storing organizations,
-				monitors, incidents, status pages, and aggregated stats with automatic schema migrations.
-			</li>
-			<li>
-				<strong class="font-medium text-zinc-200">redis</strong> — In-memory store providing token-bucket
-				rate limiting for authentication and API keys, plus read-through caching for status pages and
-				monitor lists.
+				<strong class="font-medium text-zinc-200">postgres</strong> — PostgreSQL 16 relational database
+				engine storing organizations, monitors, incidents, status pages, and 90-day daily aggregated statistics
+				with automatic schema migrations.
 			</li>
 		</ul>
 	</section>
 
 	<!-- Volumes & Persistence -->
 	<section id="dc-volumes" class="flex scroll-mt-24 flex-col gap-4">
-		<h3 class="text-lg font-semibold tracking-tight text-zinc-200">Volumes & Persistence</h3>
+		<h3 class="text-lg font-semibold tracking-tight text-zinc-200">Volumes &amp; Persistence</h3>
 		<p class="text-sm leading-7 text-zinc-400">
-			State is isolated into named Docker volumes to prevent data loss across container recreations
-			and image updates:
+			Database state is isolated into a named Docker volume to ensure persistence across container
+			recreations and image updates:
 		</p>
 		<div class="overflow-x-auto rounded-lg border border-zinc-800">
 			<table class="w-full text-left text-sm">
@@ -147,18 +129,12 @@ volumes:
 				</thead>
 				<tbody class="divide-y divide-zinc-800/60 bg-transparent">
 					<tr>
-						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">postgres_data</td>
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">pgdata</td>
 						<td class="px-4 py-3 font-mono text-xs text-zinc-300">/var/lib/postgresql/data</td>
-						<td class="px-4 py-3 text-sm text-zinc-400"
-							>All tables, users, monitor configs, metrics, and incident history</td
-						>
-					</tr>
-					<tr>
-						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">redis_data</td>
-						<td class="px-4 py-3 font-mono text-xs text-zinc-300">/data</td>
-						<td class="px-4 py-3 text-sm text-zinc-400"
-							>Redis dump snapshots and sliding window rate limiter states</td
-						>
+						<td class="px-4 py-3 text-sm text-zinc-400">
+							All relational tables, users, monitor configs, metrics, daily rollups, and incident
+							history
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -178,14 +154,14 @@ volumes:
 			</div>
 			<div class="flex flex-col gap-1.5">
 				<span class="text-xs text-zinc-400">Stream logs from the application container:</span>
-				<CodeBlock code="docker compose logs -f app" language="bash" id="cmd-logs" />
+				<CodeBlock code="docker compose logs -f netra-uptime" language="bash" id="cmd-logs" />
 			</div>
 			<div class="flex flex-col gap-1.5">
 				<span class="text-xs text-zinc-400">Restart services cleanly:</span>
 				<CodeBlock code="docker compose restart" language="bash" id="cmd-restart" />
 			</div>
 			<div class="flex flex-col gap-1.5">
-				<span class="text-xs text-zinc-400">Pull new images and rebuild:</span>
+				<span class="text-xs text-zinc-400">Pull new images and recreate containers:</span>
 				<CodeBlock
 					code="docker compose pull && docker compose up -d"
 					language="bash"
@@ -197,7 +173,9 @@ volumes:
 
 	<!-- Database Backup & Recovery -->
 	<section id="dc-backup" class="flex scroll-mt-24 flex-col gap-4">
-		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Database Backup & Recovery</h2>
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">
+			Database Backup &amp; Recovery
+		</h2>
 		<p class="text-sm leading-7 text-zinc-400">
 			Perform periodic dumps of your PostgreSQL database to maintain disaster recovery readiness:
 		</p>

@@ -17,13 +17,13 @@
     <a href="#overview"><strong>Overview</strong></a> •
     <a href="#quick-start"><strong>Quick Start</strong></a> •
     <a href="CONTRIBUTING.md"><strong>Contributing</strong></a> •
-    <a href="https://github.com/Xuerns/NetraUptime.dev/issues"><strong>Report Issue</strong></a>
+    <a href="https://github.com/Xuerns/NetraUptimeDocs/issues"><strong>Report Issue</strong></a>
   </p>
 </div>
 
 ## Overview
 
-**NetraUptime.dev** is the official documentation platform, landing website, and technical knowledge base for **[Netra Uptime](https://github.com/Xuerns/Netra-Uptime)** — the modern, lightweight, and self-hosted uptime and status monitoring platform.
+**NetraUptimeDocs** is the official documentation platform, landing website, and technical knowledge base for **[Netra Uptime](https://github.com/Xuerns/Netra-Uptime)** — the modern, lightweight, and self-hosted uptime and status monitoring platform.
 
 This repository powers the complete documentation portal, including:
 
@@ -41,8 +41,8 @@ Run the documentation site locally on your machine for previewing or contributin
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Xuerns/NetraUptime.dev.git
-cd NetraUptime.dev
+git clone https://github.com/Xuerns/NetraUptimeDocs.git
+cd NetraUptimeDocs
 ```
 
 ### 2. Install Dependencies

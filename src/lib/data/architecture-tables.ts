@@ -30,7 +30,7 @@ export const severityMatrix: TableData = {
 	]
 };
 
-export const redisKeyMatrix: TableData = {
+export const cacheKeyMatrix: TableData = {
 	columns: ['Category', 'Key pattern', 'TTL', 'Purpose'],
 	mono: [1, 2],
 	rows: [
@@ -47,6 +47,12 @@ export const redisKeyMatrix: TableData = {
 			'Monitor configuration; invalidated when the configuration changes.'
 		],
 		[
+			'Fleet overview cache',
+			'monitors:overview:org:{orgId}:days:{days}',
+			'60 seconds',
+			'Cached 30-day overview telemetry and fleet health summary; invalidated on monitor changes.'
+		],
+		[
 			'User status page cache',
 			'statuspages:user:{userId}',
 			'24 hours',
@@ -56,13 +62,13 @@ export const redisKeyMatrix: TableData = {
 			'Auth IP rate limit',
 			'rate:{fullPath}:{clientIP}',
 			'1-15 minutes',
-			'Brute-force protection: login and register 5 req/min, password reset 3 req/15 min.'
+			'Brute-force protection: login and register 60 req/min (AUTH_RATE_LIMIT), password reset 3 req/15 min.'
 		],
 		[
 			'Public API rate limit',
 			'rate_limit:api_key:{keyId}:{minute}',
 			'65 seconds',
-			'Sliding-window counter per API key, 60 requests per minute.'
+			'In-memory sliding-window counter per API key (nuk_...), 60 requests per minute.'
 		]
 	]
 };
@@ -74,7 +80,7 @@ export const concurrencyMatrix: TableData = {
 			'HTTP server goroutines',
 			'Incoming HTTP request',
 			'Gin router and handlers',
-			'context.Context, DB connection pool, Redis atomicity'
+			'context.Context, DB connection pool, MemoryCache RWMutex atomicity'
 		],
 		[
 			'WebSocket hub loop',
@@ -133,36 +139,40 @@ export const checkerMatrix: TableData = {
 	rows: [
 		[
 			'checker/http.go',
-			'Isolated http.Client with user timeout; GET request, measures DNS, TLS and body time, verifies status code.',
-			'Websites and APIs'
+			'Isolated http.Client with user timeout; GET request with net.Dialer.Control anti-SSRF socket guard, up to 10 redirects (re-validated per hop), measures latency, verifies status code.',
+			'Websites and REST APIs'
 		],
 		[
 			'checker/tcp.go',
-			'net.DialTimeout("tcp", target, timeout) to verify the port accepts connections.',
+			'net.Dialer with timeout and anti-SSRF guard; verifies raw TCP port handshake accepts connections.',
 			'PostgreSQL, Redis, mail servers, custom sockets'
 		],
 		[
 			'checker/ping.go',
-			'net.LookupIP resolution plus round-trip latency measurement.',
+			'Unprivileged user-space reachability probe (net.LookupIP + dial reachability, no root or NET_RAW capability required).',
 			'Hosts and IP addresses'
 		]
 	]
 };
 
 export const defaultRulesMatrix: TableData = {
-	columns: ['Condition', 'Severity', 'State Transition & Ambang Batas'],
+	columns: ['Condition', 'Severity', 'State Transition & Threshold'],
 	rows: [
 		[
 			'Network or connection failure (ECONNREFUSED, DNS error, 5xx)',
 			'critical',
-			'DOWN after 3 consecutive failures'
+			'DOWN after 2 consecutive breaches'
 		],
 		[
 			'Request timeout streak (ErrTimeout / Deadline exceeded)',
 			'warning',
 			'UNRESPONSIVE (Amber) after 3 consecutive timeouts'
 		],
-		['statusCode != monitor.expectedStatusCode', 'critical', 'DOWN after 3 consecutive breaches']
+		[
+			'statusCode != monitor.expectation_status_code',
+			'critical',
+			'DOWN after 2 consecutive breaches'
+		]
 	]
 };
 

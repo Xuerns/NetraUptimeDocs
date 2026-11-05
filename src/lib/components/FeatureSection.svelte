@@ -50,7 +50,7 @@
 	const secondaryFeatures = [
 		{
 			title: 'Multi-protocol checks',
-			copy: 'HTTP/HTTPS header and payload assertions, TCP port handshakes, and ICMP ping probes.',
+			copy: 'HTTP/HTTPS status and latency assertions, TCP port handshakes, and unprivileged Ping reachability probes.',
 			route: '/docs' as const,
 			hash: '#monitors',
 			icon: Network

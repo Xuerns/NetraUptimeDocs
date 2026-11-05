@@ -3,7 +3,6 @@ import discord from '$lib/assets/landing/logos/discord.svg';
 import github from '$lib/assets/landing/logos/github.svg';
 import docker from '$lib/assets/landing/logos/docker.svg';
 import postgresql from '$lib/assets/landing/logos/postgresql.svg';
-import redis from '$lib/assets/landing/logos/redis.svg';
 import go from '$lib/assets/landing/logos/go.svg';
 import svelte from '$lib/assets/landing/logos/svelte.svg';
 import npm from '$lib/assets/landing/logos/npm.svg';
@@ -36,7 +35,6 @@ export const logos = {
 	github,
 	docker,
 	postgresql,
-	redis,
 	go,
 	svelte,
 	npm,
@@ -76,12 +74,12 @@ export const faqs: FaqItem[] = [
 	{
 		question: 'How do I deploy Netra Uptime on my own server?',
 		answer:
-			'Run "npx netra-uptime start" (or pnpm dlx, yarn dlx, bunx) to generate a production-ready .env and docker-compose.yml with secure random credentials and start the containers automatically. You can also clone the repository and run "docker compose up -d" manually.'
+			'Run "npx netra-uptime start" (or pnpm dlx, yarn dlx, bunx) to generate a production-ready .env and docker-compose.yml with secure random credentials in ~/.netra-uptime and start the 2-service stack (postgres + netra-uptime with built-in in-memory caching). The CLI provides full lifecycle management: start, stop, restart, update, logs, status, and config. You can also deploy Netra Uptime as a standalone single-binary with embedded SQLite (DB_DRIVER=sqlite) or clone the repository and run "docker compose up -d" manually.'
 	},
 	{
 		question: 'What monitoring protocols and checks are supported?',
 		answer:
-			'Netra Uptime supports HTTP/HTTPS status code, latency, and response body assertions, TCP port connectivity, ICMP Ping, daily SSL/TLS certificate validity checks, and WHOIS/RDAP domain expiration tracking.'
+			'Netra Uptime supports HTTP/HTTPS status code and latency assertions, TCP port handshakes, unprivileged Ping reachability probes, daily SSL/TLS certificate validity checks, and WHOIS/RDAP domain expiration tracking.'
 	},
 	{
 		question: 'How does alert evaluation avoid false-positive notifications?',
@@ -94,9 +92,14 @@ export const faqs: FaqItem[] = [
 			'Alerts can be routed to Slack, Discord, Email (SMTP), and custom HTTP webhooks with built-in SSRF protection. Monitors can also assign a Person-in-Charge (PIC) to route incidents to the responsible engineer.'
 	},
 	{
+		question: 'How do operational quotas and resource limits work in self-hosted mode?',
+		answer:
+			'Operational limits can be customized using environment variables such as MAX_MONITORS_PER_ORG (default 100), MAX_STATUS_PAGES_PER_ORG (default 10), MAX_ORGS_PER_USER (default 10), MAX_MEMBERS_PER_ORG (default 50), MAX_ASSIGNEES_PER_MONITOR (default 10), and MIN_MONITOR_INTERVAL_SECONDS (default 30s). Setting any limit to 0 removes the restriction.'
+	},
+	{
 		question: 'How does long-term data retention work?',
 		answer:
-			'Raw check logs are stored in PostgreSQL and automatically rolled up hourly into 90-day uptime and latency aggregates, keeping queries fast and disk usage predictable without external time-series databases.'
+			'Raw check logs are stored in PostgreSQL or SQLite and automatically rolled up hourly into 90-day uptime and latency aggregates, keeping queries fast and disk usage predictable without external time-series databases.'
 	},
 	{
 		question: 'What license is Netra Uptime released under?',

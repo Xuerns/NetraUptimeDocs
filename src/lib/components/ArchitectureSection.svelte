@@ -8,7 +8,7 @@
 			name: 'Monitoring Engine',
 			tech: 'Go Worker Pool',
 			logo: logos.go,
-			copy: 'Deterministic tick scheduler and bounded goroutine worker pool executing HTTP, TCP, and ICMP probes concurrently.',
+			copy: 'Deterministic tick scheduler and bounded goroutine worker pool executing HTTP, TCP, and unprivileged Ping probes concurrently.',
 			hash: '#monitoring-engine'
 		},
 		{
@@ -20,16 +20,16 @@
 		},
 		{
 			name: 'Data & 90-Day Rollup',
-			tech: 'PostgreSQL',
+			tech: 'PostgreSQL / SQLite',
 			logo: logos.postgresql,
 			copy: 'Stores incidents, audit trails, and check results with automated hourly aggregation to keep 90-day queries fast.',
 			hash: '#data-retention'
 		},
 		{
 			name: 'Cache & Live Socket',
-			tech: 'Redis',
-			logo: logos.redis,
-			copy: 'Read-through caching, API rate limiting, and room-isolated WebSocket broadcasting for instant UI updates.',
+			tech: 'Go MemoryCache + WS',
+			logo: logos.go,
+			copy: 'In-process thread-safe read-through caching, sliding-window rate limiting, and room-isolated WebSocket broadcasting.',
 			hash: '#caching-rate-limit'
 		}
 	];
@@ -78,7 +78,7 @@
 				</h2>
 				<p class="mt-2 max-w-2xl text-sm leading-6 text-zinc-400">
 					A single Go binary serving the REST API, concurrent check workers, and compiled Svelte
-					frontend, backed by PostgreSQL and Redis.
+					frontend, backed by PostgreSQL or SQLite with zero external cache dependencies.
 				</p>
 			</div>
 			<a

@@ -3,11 +3,21 @@
 
 	const payloadJson = `{
   "event": "monitor.down",
-  "monitor": "Production API",
-  "target": "https://api.example.com/health",
+  "monitor": {
+    "id": "7b58c70e-1284-48f1-94be-b552fa0f9d41",
+    "name": "Production API Gateway",
+    "type": "http",
+    "target": "https://api.yourdomain.com/healthz"
+  },
+  "incident": {
+    "id": "c460d3d5-6677-4b19-9cf4-fa5f6176ea39",
+    "status": "ongoing",
+    "cause": "HTTP 502 Bad Gateway",
+    "started_at": "2026-10-04T12:00:00Z"
+  },
   "status": "down",
-  "message": "[Incident] Production API is DOWN: HTTP 502 Bad Gateway",
-  "timestamp": "2026-09-30T12:00:00Z"
+  "message": "[Incident] Production API Gateway is DOWN: HTTP 502 Bad Gateway",
+  "timestamp": "2026-10-04T12:00:00Z"
 }`;
 </script>
 
@@ -46,17 +56,25 @@
 					<tr>
 						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">monitor.down</td>
 						<td class="px-4 py-3 text-sm text-zinc-400"
-							>Monitor detected as down after consecutive failures</td
+							>Monitor detected as down after consecutive critical failures</td
 						>
 					</tr>
 					<tr>
 						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">monitor.up</td>
-						<td class="px-4 py-3 text-sm text-zinc-400">Monitor recovered from a down state</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
+							>Monitor recovered and returned to operational status</td
+						>
 					</tr>
 					<tr>
 						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">monitor.degraded</td>
 						<td class="px-4 py-3 text-sm text-zinc-400"
-							>Performance degradation detected by alert rules</td
+							>Performance degradation detected by warning alert rules</td
+						>
+					</tr>
+					<tr>
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">monitor.unresponsive</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
+							>Monitor exceeded request timeout across consecutive checks</td
 						>
 					</tr>
 				</tbody>

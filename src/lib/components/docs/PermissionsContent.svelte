@@ -2,7 +2,7 @@
 	import CodeBlock from './CodeBlock.svelte';
 
 	const sampleApiKeyRequest = `curl -X GET http://localhost:27346/api/v1/public/monitors \\
-  -H "Authorization: Bearer pw_live_a1b2c3d4e5f6..."`;
+  -H "Authorization: Bearer nuk_5f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a"`;
 </script>
 
 <div class="flex flex-col gap-12">
@@ -21,13 +21,13 @@
 		<ul class="ml-5 flex list-disc flex-col gap-2 text-sm leading-7 text-zinc-400">
 			<li>
 				<strong class="font-medium text-zinc-200">Owner</strong> — Full organization authority. Only the
-				Owner can transfer ownership, disband the organization, remove members, promote members to Admin,
-				and invite new users with the Admin role.
+				Owner can provision new monitors, transfer ownership, disband the organization, remove members,
+				promote members to Admin, and invite new users with the Admin role.
 			</li>
 			<li>
-				<strong class="font-medium text-zinc-200">Admin</strong> — Operational manager. Can manage monitors,
-				alert templates, notification channels, and status pages. Can only invite users as Member (cannot
-				invite Admins or promote members).
+				<strong class="font-medium text-zinc-200">Admin</strong> — Operational manager. Can configure
+				and update existing monitors, manage alert templates, notification channels, and status pages.
+				Cannot create new monitors (Owner only), invite Admins (Owner only), or promote members.
 			</li>
 			<li>
 				<strong class="font-medium text-zinc-200">Member</strong> — Read-only stakeholder. Can inspect
@@ -52,14 +52,26 @@
 				</thead>
 				<tbody class="divide-y divide-zinc-800/60 bg-transparent">
 					<tr>
-						<td class="px-4 py-3 text-sm text-zinc-200">View Dashboard & Monitors</td>
+						<td class="px-4 py-3 text-sm text-zinc-200">View Dashboard & Telemetry</td>
 						<td class="px-4 py-3 text-center text-[#4edea3]">Yes</td>
 						<td class="px-4 py-3 text-center text-[#4edea3]">Yes</td>
 						<td class="px-4 py-3 text-center text-[#4edea3]">Yes</td>
 					</tr>
 					<tr>
+						<td class="px-4 py-3 text-sm text-zinc-200">Create Monitors (POST /monitors)</td>
+						<td class="px-4 py-3 text-center text-[#4edea3]">Yes</td>
+						<td class="px-4 py-3 text-center text-zinc-500">No (Owner only)</td>
+						<td class="px-4 py-3 text-center text-zinc-500">No</td>
+					</tr>
+					<tr>
+						<td class="px-4 py-3 text-sm text-zinc-200">Update / Delete Monitors</td>
+						<td class="px-4 py-3 text-center text-[#4edea3]">Yes</td>
+						<td class="px-4 py-3 text-center text-[#4edea3]">Yes</td>
+						<td class="px-4 py-3 text-center text-zinc-500">No</td>
+					</tr>
+					<tr>
 						<td class="px-4 py-3 text-sm text-zinc-200"
-							>Manage Monitors, Alert Templates & Channels</td
+							>Manage Alert Templates, Status Pages & Channels</td
 						>
 						<td class="px-4 py-3 text-center text-[#4edea3]">Yes</td>
 						<td class="px-4 py-3 text-center text-[#4edea3]">Yes</td>
@@ -108,7 +120,7 @@
 			cookies. API keys authenticate requests to
 			<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-[#4edea3]"
 				>/api/v1/public/*</code
-			> endpoints and are hashed with SHA-256 before being stored in PostgreSQL.
+			> endpoints and are hashed with SHA-256 before being stored in PostgreSQL or SQLite.
 		</p>
 		<ul class="ml-5 flex list-disc flex-col gap-2 text-sm leading-7 text-zinc-400">
 			<li>
@@ -117,11 +129,11 @@
 			</li>
 			<li>
 				<strong class="font-medium text-zinc-200">Scoped Access</strong> — Keys are restricted to either
-				read-only inspection or write-level administrative control.
+				read-only inspection or write-level management control.
 			</li>
 			<li>
-				<strong class="font-medium text-zinc-200">Redis Rate Limited</strong> — A sliding window counter
-				enforces a limit of 60 requests per minute per active key.
+				<strong class="font-medium text-zinc-200">In-Memory Rate Limited</strong> — A thread-safe sliding
+				window counter enforces a limit of 60 requests per minute per active key.
 			</li>
 		</ul>
 	</section>
@@ -153,10 +165,10 @@
 					</tr>
 					<tr>
 						<td class="px-4 py-3 font-mono text-xs text-zinc-200">Incidents</td>
-						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]"
-							>GET /public/incidents, GET /public/incidents/:id</td
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">GET /public/incidents</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
+							>Ongoing & past incident records (optional ?monitor_id=...)</td
 						>
-						<td class="px-4 py-3 text-sm text-zinc-400">Ongoing & past incident records</td>
 					</tr>
 					<tr>
 						<td class="px-4 py-3 font-mono text-xs text-zinc-200">Status Pages</td>
@@ -179,16 +191,28 @@
 		</p>
 		<ul class="ml-5 flex list-disc flex-col gap-2 text-sm leading-7 text-zinc-400">
 			<li>
-				<strong class="font-medium text-zinc-200">Create & Update Monitors</strong> — Programmatically
-				provision or modify HTTP, TCP, and Ping monitors from CI/CD pipelines.
+				<strong class="font-medium text-zinc-200">Create & Provision Monitors</strong> —
+				Programmatically create HTTP, TCP, and Ping monitors from CI/CD automation (<code
+					class="font-mono text-xs text-[#4edea3]">POST /public/monitors</code
+				>).
 			</li>
 			<li>
-				<strong class="font-medium text-zinc-200">Trigger On-Demand Checks</strong> — Force instant health
-				verification after a release without waiting for the next check interval.
+				<strong class="font-medium text-zinc-200">Update & Pause/Resume Monitors</strong> — Modify
+				monitor settings, thresholds, or toggle monitoring active state (<code
+					class="font-mono text-xs text-[#4edea3]">PUT /public/monitors/:id</code
+				>).
 			</li>
 			<li>
-				<strong class="font-medium text-zinc-200">Publish Incident Updates</strong> — Add operational
-				status notes directly into active incident timelines.
+				<strong class="font-medium text-zinc-200">Delete Monitors</strong> — Permanently remove
+				monitors when infrastructure is decommissioned (<code
+					class="font-mono text-xs text-[#4edea3]">DELETE /public/monitors/:id</code
+				>).
+			</li>
+			<li>
+				<strong class="font-medium text-zinc-200">Publish Incident Updates</strong> — Add
+				operational status notes directly into active incident timelines (<code
+					class="font-mono text-xs text-[#4edea3]">POST /public/incidents</code
+				>).
 			</li>
 		</ul>
 	</section>
@@ -219,7 +243,7 @@
 			<li>
 				Copy your token immediately. It starts with the prefix
 				<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-[#4edea3]"
-					>pw_live_</code
+					>nuk_</code
 				>.
 			</li>
 		</ol>

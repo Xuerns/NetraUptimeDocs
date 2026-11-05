@@ -11,37 +11,43 @@
 			name: 'APP_ENV',
 			type: 'string',
 			defaultVal: 'development',
-			description: 'Determines logging level & Gin release mode. Set to production for deployments.'
+			description:
+				'Runtime environment (development or production). Controls Gin release mode, secure cookie flags, and strict CORS enforcement.'
 		},
 		{
 			name: 'APP_MODE',
 			type: 'string',
 			defaultVal: 'selfhosted',
-			description: 'Self-hosted mode opens access without cloud registration.'
+			description:
+				'Backend operational mode. Enforced as selfhosted at runtime in all standalone and container deployments.'
 		},
 		{
 			name: 'PUBLIC_APP_MODE',
 			type: 'string',
 			defaultVal: 'selfhosted',
-			description: 'Frontend app mode. Must match APP_MODE.'
+			description:
+				'Frontend application mode dynamically injected into the browser via /_app/env.js.'
 		},
 		{
 			name: 'PORT',
 			type: 'integer',
 			defaultVal: '27346',
-			description: 'Primary HTTP port for the single-container Go + Svelte application.'
+			description:
+				'HTTP listening port for the unified Go API worker and embedded SvelteKit static client.'
 		},
 		{
 			name: 'ALLOWED_ORIGIN',
 			type: 'string',
 			defaultVal: 'http://localhost:27346',
-			description: 'CORS origin setting. Update when using a custom domain.'
+			description:
+				'Comma-separated list of allowed CORS origins. Also used as the base URL for verification and password reset links.'
 		},
 		{
 			name: 'PUBLIC_API_URL',
 			type: 'string',
-			defaultVal: 'http://localhost:27346/api/v1',
-			description: 'Public API URL accessed by the browser frontend.'
+			defaultVal: '/api/v1',
+			description:
+				'Base API URL injected into /_app/env.js. In Docker deployments, defaults to http://localhost:27346/api/v1.'
 		}
 	];
 
@@ -49,121 +55,197 @@
 		{
 			name: 'JWT_SECRET',
 			type: 'string',
-			defaultVal: '(required)',
-			description: 'Secret key for signing JWT access tokens. Must be changed from default.'
+			defaultVal: 'Auto-generated (.netra_secret)',
+			description:
+				'HMAC-SHA256 secret key (minimum 32 characters). If empty or set to default placeholder, Netra Uptime generates a random 64-hex secret and persists it to .netra_secret (0600 file permissions).'
 		},
 		{
 			name: 'JWT_ACCESS_EXPIRY',
 			type: 'duration',
 			defaultVal: '15m',
-			description: 'Access token expiration time (default 15 minutes).'
+			description:
+				'Access token lifetime. Sets the access_token HttpOnly cookie max-age to 900 seconds.'
 		},
 		{
 			name: 'JWT_REFRESH_EXPIRY',
 			type: 'duration',
 			defaultVal: '168h',
-			description: 'Refresh token expiration time (default 7 days).'
+			description:
+				'Refresh token lifetime (7 days). Sets the refresh_token HttpOnly cookie max-age to 604,800 seconds.'
 		}
 	];
 
 	const databaseVars: EnvVar[] = [
 		{
-			name: 'POSTGRES_USER',
+			name: 'DB_DRIVER',
 			type: 'string',
-			defaultVal: 'postgres',
-			description: 'PostgreSQL container user.'
+			defaultVal: 'sqlite / postgres',
+			description:
+				'Database engine driver (sqlite or postgres). Defaults to postgres if DB_HOST is set; otherwise defaults to pure-Go sqlite.'
 		},
 		{
-			name: 'POSTGRES_PASSWORD',
+			name: 'DB_PATH',
 			type: 'string',
-			defaultVal: '(required)',
-			description: 'PostgreSQL container password.'
-		},
-		{
-			name: 'POSTGRES_DB',
-			type: 'string',
-			defaultVal: 'netra_uptime',
-			description: 'Database name.'
+			defaultVal: 'netra.db',
+			description:
+				'Database file path when DB_DRIVER=sqlite. Operates in WAL mode with busy_timeout(5000) and MaxOpenConns(1).'
 		},
 		{
 			name: 'DB_HOST',
 			type: 'string',
-			defaultVal: 'postgres',
-			description: 'Database hostname (Docker service name).'
+			defaultVal: '(empty) / postgres',
+			description:
+				'PostgreSQL server hostname (e.g., postgres in Docker Compose networks). If empty, SQLite is used.'
 		},
-		{ name: 'DB_PORT', type: 'integer', defaultVal: '5432', description: 'Database port.' },
+		{
+			name: 'DB_PORT',
+			type: 'integer',
+			defaultVal: '5432',
+			description: 'PostgreSQL listening port.'
+		},
+		{
+			name: 'DB_USER',
+			type: 'string',
+			defaultVal: 'postgres',
+			description:
+				'PostgreSQL authentication username. Falls back to POSTGRES_USER if DB_USER is not set.'
+		},
+		{
+			name: 'DB_PASSWORD',
+			type: 'string',
+			defaultVal: '(empty)',
+			description:
+				'PostgreSQL authentication password. Falls back to POSTGRES_PASSWORD if DB_PASSWORD is not set.'
+		},
 		{
 			name: 'DB_NAME',
 			type: 'string',
 			defaultVal: 'netra_uptime',
-			description: 'GORM database name connection.'
+			description: 'PostgreSQL database name. Falls back to POSTGRES_DB if DB_NAME is not set.'
 		},
 		{
 			name: 'DB_SSLMODE',
 			type: 'string',
 			defaultVal: 'disable',
-			description: 'SSL mode for database connection.'
+			description: 'PostgreSQL SSL connection mode (disable, require, verify-ca, verify-full).'
+		},
+		{
+			name: 'POSTGRES_USER',
+			type: 'string',
+			defaultVal: 'postgres',
+			description:
+				'Database container username in docker-compose.yml. Serves as automatic fallback for DB_USER.'
+		},
+		{
+			name: 'POSTGRES_PASSWORD',
+			type: 'string',
+			defaultVal: '(required in Docker)',
+			description:
+				'Database container password in docker-compose.yml. Serves as automatic fallback for DB_PASSWORD.'
+		},
+		{
+			name: 'POSTGRES_DB',
+			type: 'string',
+			defaultVal: 'netra_uptime',
+			description:
+				'Database container database name in docker-compose.yml. Serves as automatic fallback for DB_NAME.'
 		}
 	];
 
-	const redisVars: EnvVar[] = [
+	const networkSecurityVars: EnvVar[] = [
 		{
-			name: 'REDIS_HOST',
-			type: 'string',
-			defaultVal: 'redis',
-			description: 'Redis hostname (Docker service name).'
-		},
-		{ name: 'REDIS_PORT', type: 'integer', defaultVal: '6379', description: 'Redis port.' },
-		{
-			name: 'REDIS_PASSWORD',
+			name: 'TRUSTED_PROXIES',
 			type: 'string',
 			defaultVal: '(empty)',
-			description: 'Redis password. Set for production security.'
+			description:
+				'Comma-separated list of trusted upstream proxy IPs or CIDRs (e.g., 127.0.0.1,10.0.0.0/8). If empty, Gin ignores X-Forwarded-For to prevent IP spoofing.'
+		},
+		{
+			name: 'ALLOW_REGISTRATION',
+			type: 'boolean',
+			defaultVal: 'true',
+			description:
+				'Permits public sign-ups on /api/v1/auth/register. When set to false, sign-up is disabled except for the very first user (user count == 0), ensuring initial installation succeeds.'
+		},
+		{
+			name: 'AUTH_RATE_LIMIT',
+			type: 'integer',
+			defaultVal: '60',
+			description:
+				'Maximum allowed requests per minute per IP on authentication routes (login, register, logout, password change).'
+		},
+		{
+			name: 'ALLOW_PRIVATE_NETWORK_MONITORING',
+			type: 'boolean',
+			defaultVal: 'false',
+			description:
+				'When false, SSRF protection blocks monitors and webhooks from reaching loopback (127.0.0.1, localhost), RFC 1918 subnets (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16), and cloud metadata (169.254.169.254). Set to true to monitor internal LAN targets.'
 		}
 	];
 
 	const quotaVars: EnvVar[] = [
 		{
+			name: 'MAX_MONITORS_PER_ORG',
+			type: 'integer',
+			defaultVal: '100',
+			description:
+				'Maximum number of monitors allowed per organization (0 = unlimited). Legacy fallback: SELFHOSTED_MAX_MONITORS.'
+		},
+		{
+			name: 'MAX_STATUS_PAGES_PER_ORG',
+			type: 'integer',
+			defaultVal: '10',
+			description:
+				'Maximum number of public and internal status pages allowed per organization (0 = unlimited).'
+		},
+		{
+			name: 'MAX_ORGS_PER_USER',
+			type: 'integer',
+			defaultVal: '10',
+			description:
+				'Maximum organizations an individual user account can create (0 = unlimited). Legacy fallback: SELFHOSTED_MAX_ORGS.'
+		},
+		{
+			name: 'MAX_MEMBERS_PER_ORG',
+			type: 'integer',
+			defaultVal: '50',
+			description:
+				'Maximum members and pending invites allowed per organization (0 = unlimited). Legacy fallback: SELFHOSTED_MAX_MEMBERS.'
+		},
+		{
+			name: 'MAX_ASSIGNEES_PER_MONITOR',
+			type: 'integer',
+			defaultVal: '10',
+			description:
+				'Maximum Person-in-Charge (PIC) user assignments allowed per monitor. Legacy fallback: SELFHOSTED_MAX_PIC.'
+		},
+		{
+			name: 'MIN_MONITOR_INTERVAL_SECONDS',
+			type: 'integer',
+			defaultVal: '30',
+			description:
+				'Minimum check interval in seconds allowed on monitor creation or update (hard floor: 5s). Legacy fallback: SELFHOSTED_MIN_INTERVAL.'
+		},
+		{
+			name: 'DEFAULT_MONITOR_INTERVAL_SECONDS',
+			type: 'integer',
+			defaultVal: '60',
+			description:
+				'Default check interval in seconds assigned when interval_seconds is omitted during monitor creation.'
+		},
+		{
 			name: 'RECENT_CHECKS_LIMIT',
 			type: 'integer',
 			defaultVal: '60',
-			description: 'Number of recent check history bars displayed in dashboard UI.'
-		},
-		{
-			name: 'SELFHOSTED_MAX_MONITORS',
-			type: 'integer',
-			defaultVal: '0',
-			description: 'Max monitors per org (0 = unlimited).'
-		},
-		{
-			name: 'SELFHOSTED_MAX_ORGS',
-			type: 'integer',
-			defaultVal: '0',
-			description: 'Max organizations per user (0 = unlimited).'
-		},
-		{
-			name: 'SELFHOSTED_MAX_MEMBERS',
-			type: 'integer',
-			defaultVal: '0',
-			description: 'Max members per org (0 = unlimited).'
-		},
-		{
-			name: 'SELFHOSTED_MAX_PIC',
-			type: 'integer',
-			defaultVal: '10',
-			description: 'Max Person-In-Charge per monitor.'
-		},
-		{
-			name: 'SELFHOSTED_MIN_INTERVAL',
-			type: 'integer',
-			defaultVal: '10',
-			description: 'Minimum check interval in seconds (prevents DDoS).'
+			description:
+				'Number of recent check history pings returned per monitor in UI telemetry payloads (clamped between 1 and 500).'
 		},
 		{
 			name: 'SELFHOSTED_MAX_TIMEOUT',
 			type: 'integer',
 			defaultVal: '60',
-			description: 'Maximum timeout before request is considered failed.'
+			description:
+				'Legacy configuration timeout ceiling in seconds. The monitor API enforces a maximum timeout of 30 seconds.'
 		}
 	];
 
@@ -172,96 +254,71 @@
 			name: 'SMTP_HOST',
 			type: 'string',
 			defaultVal: 'smtp.gmail.com',
-			description: 'SMTP server hostname.'
+			description: 'Outbound SMTP mail server hostname.'
 		},
 		{
 			name: 'SMTP_PORT',
 			type: 'integer',
 			defaultVal: '587',
-			description: 'SMTP port (587 for TLS/STARTTLS, 465 for SSL).'
+			description: 'Outbound SMTP port (587 for STARTTLS, 465 for implicit TLS).'
 		},
 		{
 			name: 'SMTP_EMAIL',
 			type: 'string',
-			defaultVal: '(required)',
-			description: 'Email address for sending notifications.'
+			defaultVal: '(empty)',
+			description:
+				'Sender email address and SMTP username. When empty in development mode, generated emails are printed to stdout.'
 		},
 		{
 			name: 'SMTP_PASSWORD',
 			type: 'string',
-			defaultVal: '(required)',
-			description: 'SMTP password or app-specific password.'
-		}
-	];
-
-	const oauthVars: EnvVar[] = [
-		{
-			name: 'PUBLIC_GOOGLE_CLIENT_ID',
-			type: 'string',
-			defaultVal: '(optional)',
-			description: 'Google OAuth 2.0 Client ID.'
-		},
-		{
-			name: 'GOOGLE_CLIENT_SECRET',
-			type: 'string',
-			defaultVal: '(optional)',
-			description: 'Google OAuth 2.0 Client Secret.'
-		},
-		{
-			name: 'PUBLIC_GOOGLE_REDIRECT_URL',
-			type: 'string',
-			defaultVal: '(optional)',
-			description: 'Google OAuth redirect URL.'
+			defaultVal: '(empty)',
+			description: 'SMTP authentication password or 16-character dedicated Google App Password.'
 		}
 	];
 
 	const sections = [
 		{
 			id: 'env-app-core',
-			title: 'Application Core',
+			title: 'Application Core & Server',
 			description:
-				'Core application settings that control runtime behavior, ports, and CORS configuration.',
+				'Core application runtime settings controlling environment mode, listening port, and CORS origins.',
 			vars: appCoreVars
 		},
 		{
 			id: 'env-security',
-			title: 'Security & JWT',
-			description: 'Secret keys and expiration durations for JWT session authentication.',
+			title: 'Tokens & Secrets',
+			description:
+				'Cryptographic signing secrets and token lifetime limits for authenticated sessions.',
 			vars: securityVars
 		},
 		{
 			id: 'env-database',
-			title: 'Database (PostgreSQL)',
+			title: 'Database (SQLite & PostgreSQL)',
 			description:
-				'Netra Uptime uses PostgreSQL 16 as its primary database. The schema is automatically migrated on startup using GORM AutoMigrate.',
+				'Dual-driver database persistence. Netra Uptime automatically selects SQLite (netra.db) or PostgreSQL depending on DB_HOST.',
 			vars: databaseVars
 		},
 		{
-			id: 'env-redis',
-			title: 'Redis Cache',
-			description: 'Connection settings for Redis caching and sliding-window rate limiting.',
-			vars: redisVars
+			id: 'env-network-security',
+			title: 'Registration, Rate Limits & SSRF',
+			description:
+				'Security policies for reverse proxy headers, registration availability, authentication throttling, and outbound network boundaries.',
+			vars: networkSecurityVars
 		},
 		{
 			id: 'env-quotas',
-			title: 'Operational Quotas (Self-Hosted)',
+			title: 'Operational Quotas & Limits',
 			description:
-				'Resource limits for your self-hosted deployment. Set 0 for unlimited on most quota fields.',
+				'Organization resource limits, check interval constraints, and telemetry history sizing. Supports modern names with legacy SELFHOSTED_* aliases.',
 			vars: quotaVars
 		},
 		{
 			id: 'env-smtp',
 			title: 'Email (SMTP)',
 			description:
-				'Configure SMTP for sending email notifications. Supports both TLS/STARTTLS (port 587) and SSL (port 465).',
+				'Outbound email delivery settings for user invitations, password resets, and incident escalation notifications.',
 			vars: smtpVars
-		},
-		{
-			id: 'env-oauth',
-			title: 'Google OAuth',
-			description:
-				'Optional Google OAuth 2.0 integration for user login. If not configured, email/password authentication remains available.',
-			vars: oauthVars
 		}
 	];
 </script>
@@ -276,6 +333,7 @@
 					<thead>
 						<tr class="border-b border-zinc-800 bg-[#141416]">
 							<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Variable</th>
+							<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Type</th>
 							<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Default</th>
 							<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Description</th>
 						</tr>
@@ -285,6 +343,9 @@
 							<tr>
 								<td class="px-4 py-3 font-mono text-xs whitespace-nowrap text-[#4edea3]">
 									{v.name}
+								</td>
+								<td class="px-4 py-3 font-mono text-xs whitespace-nowrap text-zinc-400">
+									{v.type}
 								</td>
 								<td class="px-4 py-3 whitespace-nowrap">
 									<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-300"

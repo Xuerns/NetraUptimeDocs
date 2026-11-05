@@ -12,15 +12,18 @@ export const topologyDiagram: ArchitectureDiagram = {
         Browser["Web Browser"]
         WSClient["WebSocket Client"]
     end
-    subgraph Container["Single Docker Container"]
+    subgraph Container["Single Container / Process"]
         subgraph Ingress["Gin HTTP Engine"]
             Static["go:embed BuildFS + SPA fallback"]
             EnvJS["Runtime config /_app/env.js"]
-            RateLimit["Redis rate limiters"]
+            MemRate["In-memory sliding-window limiters"]
             Auth["JWT auth + tenant RBAC"]
             API["REST API /api/v1/*"]
             PublicAPI["Public API /api/v1/public/*"]
             WSEndpoint["WebSocket /api/v1/ws"]
+        end
+        subgraph InternalCache["In-Memory Store"]
+            MemCache["cache.MemoryCache (sync.RWMutex)"]
         end
         subgraph RT["Real-time"]
             Hub["WebSocket Hub"]
@@ -37,8 +40,7 @@ export const topologyDiagram: ArchitectureDiagram = {
         end
     end
     subgraph Storage["Data layer"]
-        PG[("PostgreSQL 16")]
-        Redis[("Redis 7")]
+        DB[("PostgreSQL 16 / SQLite (WAL)")]
     end
     subgraph External["External targets"]
         Targets["HTTP / TCP / Ping targets"]
@@ -48,18 +50,18 @@ export const topologyDiagram: ArchitectureDiagram = {
     WSClient <--> WSEndpoint
     WSEndpoint --> Hub
     Ingress --> Auth --> API
-    API --> PG
-    API --> Redis
-    RateLimit <--> Redis
-    PublicAPI <--> Redis
+    API --> DB
+    API <--> MemCache
+    MemRate <--> MemCache
+    PublicAPI <--> MemCache
     Sched --> Queue --> Pool --> Checkers
     Checkers --> Targets
     Checkers --> Eval
-    Eval --> PG
+    Eval --> DB
     Eval --> Hub
     Eval --> Notifier --> Channels
-    SSL --> PG
-    Retention --> PG`
+    SSL --> DB
+    Retention --> DB`
 };
 
 export const bootstrapDiagram: ArchitectureDiagram = {
@@ -69,18 +71,22 @@ export const bootstrapDiagram: ArchitectureDiagram = {
     autonumber
     participant Main as main.go
     participant Cfg as config
-    participant DB as PostgreSQL
+    participant Cache as MemoryCache
+    participant DB as PostgreSQL / SQLite
     participant Hub as WebSocket Hub
     participant WP as WorkerPool
     participant Sched as Scheduler
+    participant SSL as SSLDomainScheduler
     participant Ret as RetentionJob
     participant Gin as Gin Engine
-    Main->>Cfg: Load environment
-    Main->>DB: gorm.Open and connection pool
-    Main->>DB: AutoMigrate (24 tables)
+    Main->>Cfg: Load environment & ensure JWT secret
+    Main->>Cache: NewMemoryCache (TTL & 60s eviction)
+    Main->>DB: Database Init (Postgres pool or SQLite WAL)
+    Main->>DB: AutoMigrate (27 tables)
     Main->>Hub: NewHub and Run goroutine
     Main->>WP: NewWorkerPool(10) and Start
     Main->>Sched: Start ticker (20s)
+    Main->>SSL: Start daily ticker (24h)
     Main->>Ret: Start ticker (1h)
     Main->>Gin: Register validator, CORS, static routes
     Main->>Gin: SetupRouter and Run on PORT`
@@ -93,14 +99,14 @@ export const requestRoutingDiagram: ArchitectureDiagram = {
     Req["Incoming HTTP request"] --> Check{"URL path"}
     Check -->|"/_app/* and static files"| Static["Serve from go:embed"]
     Check -->|"Non-API path"| SPA["Fallback to index.html"]
-    Check -->|"/healthz, /api/v1/health"| Health["DB and Redis ping"]
+    Check -->|"/healthz, /api/v1/health"| Health["DB connectivity check"]
     Check -->|"/api/v1/public/*"| KeyGate["APIKeyAuthMiddleware"]
     KeyGate --> Hash["Verify SHA-256 key hash"]
-    Hash --> KeyRate["Redis counter 60 req/min"]
+    Hash --> KeyRate["In-memory counter 60 req/min"]
     KeyRate --> Perm["RequireAPIKeyPermission"]
     Perm --> PublicHandler["Public API handler"]
-    Check -->|"/api/v1/auth/*"| IPRate["Redis IP token bucket"]
-    IPRate --> AuthCtl["Register / Login / OAuth / Reset"]
+    Check -->|"/api/v1/auth/*"| IPRate["In-memory IP rate limiter"]
+    IPRate --> AuthCtl["Register / Login / Refresh / Reset"]
     Check -->|"/api/v1/organization/:orgId/*"| JWT["AuthMiddleware (JWT cookie)"]
     JWT --> Tenant["TenantMiddleware (membership)"]
     Tenant --> Role["RequireRole (owner / admin / member)"]
@@ -241,16 +247,17 @@ export const sslRunnerDiagram: ArchitectureDiagram = {
 
 export const cacheDiagram: ArchitectureDiagram = {
 	id: 'cache',
-	label: 'Redis read-through cache and invalidation',
+	label: 'In-memory read-through cache and invalidation',
 	definition: `graph TD
-    Req["Read monitor or status page"] --> Hit{"Redis key exists?"}
+    Req["Read monitor or status page"] --> Hit{"MemoryCache key exists?"}
     Hit -->|HIT| Cached["Return cached JSON"]
-    Hit -->|MISS| PG["Query PostgreSQL"]
-    PG --> Store["Store in Redis with TTL"]
+    Hit -->|MISS| DB["Query DB (Postgres / SQLite)"]
+    DB --> Store["Store in MemoryCache with TTL"]
     Store --> Fresh["Return fresh data"]
-    Mut["Create / update / delete monitor"] --> Write["Write to PostgreSQL"]
+    Mut["Create / update / delete monitor"] --> Write["Write to DB"]
     Write --> Del1["DEL monitors:org:{orgId}"]
-    Write --> Del2["DEL monitor:{monitorId}"]`
+    Write --> Del2["DEL monitor:{monitorId}"]
+    Write --> Del3["DEL monitors:overview:org:{orgId}:*"]`
 };
 
 export const retentionDiagram: ArchitectureDiagram = {

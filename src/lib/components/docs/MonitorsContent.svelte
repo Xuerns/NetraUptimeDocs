@@ -1,17 +1,74 @@
 <script lang="ts">
 	import CodeBlock from './CodeBlock.svelte';
 
-	const headersCode = `{
-  "Authorization": "Bearer your-token-here",
-  "Content-Type": "application/json",
-  "X-Custom-Header": "monitor-check"
+	const createMonitorJson = `{
+  "name": "Production API Gateway",
+  "type": "http",
+  "target": "https://api.example.com/health",
+  "interval_seconds": 60,
+  "timeout_seconds": 10,
+  "expectation_status_code": 200,
+  "criticality": "high",
+  "assignees": [
+    "4d8a2bf6-3fa7-4f4e-a128-48b4e6729581"
+  ],
+  "enable_ssl_domain_check": true,
+  "alert_template_id": "7b2c8901-419b-4375-9b98-cd847926b1f2"
 }`;
 
-	const tcpConfigCode = `// TCP Monitor Configuration
-Host:     "db.example.com"
-Port:     5432
+	const tcpConfigCode = `// TCP Port Check Target Format: host:port
+Target:   "db.internal.net:5432"
+Type:     "tcp"
 Interval: 30 seconds
-Timeout:  10 seconds`;
+Timeout:  5 seconds`;
+
+	const pingConfigCode = `// Ping Reachability Target Format: hostname or IP
+Target:   "10.0.1.15" (or "edge-router.local")
+Type:     "ping"
+Interval: 30 seconds
+Timeout:  5 seconds`;
+
+	const fleetOverviewJson = `{
+  "uptime": {
+    "window_days": 30,
+    "overall_pct": 99.98,
+    "previous_window_pct": 99.92,
+    "delta_pct": 0.06,
+    "has_previous_window": true,
+    "total_checks": 43200,
+    "up_checks": 43191,
+    "down_checks": 9
+  },
+  "latency": {
+    "window_hours": 24,
+    "avg_ms": 42.4,
+    "median_ms": 38.0,
+    "p95_ms": 86.2,
+    "min_ms": 14.1,
+    "max_ms": 340.5,
+    "fastest_monitor": "US East Edge Gateway",
+    "sample_count": 1440
+  },
+  "fleet": {
+    "total": 12,
+    "active": 11,
+    "paused": 1,
+    "up": 10,
+    "down": 0,
+    "degraded": 1,
+    "unresponsive": 0,
+    "min_interval_seconds": 30,
+    "max_interval_seconds": 300
+  },
+  "ssl_dns": {
+    "enabled_monitors": 9,
+    "healthy_monitors": 8,
+    "warning_monitors": 1,
+    "expired_monitors": 0,
+    "next_ssl_expiry": "2026-12-14T08:00:00Z",
+    "next_domain_expiry": "2027-04-10T00:00:00Z"
+  }
+}`;
 
 	const manualCheckCode = `curl -X POST \\
   http://localhost:27346/api/v1/organization/:orgId/monitors/:monitorId/check \\
@@ -23,86 +80,266 @@ Timeout:  10 seconds`;
 	<section id="mon-overview" class="flex scroll-mt-24 flex-col gap-4">
 		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Overview & Check Lifecycle</h2>
 		<p class="text-sm leading-7 text-zinc-400">
-			Netra Uptime monitors work on a simple lifecycle: the <strong
+			Netra Uptime executes multi-protocol health checks using a concurrent <strong
 				class="font-medium text-zinc-200">worker pool</strong
-			> dispatches goroutines at configurable intervals to check each target. Results are evaluated, stored
-			in PostgreSQL, and broadcast via WebSocket to all connected dashboards in real time. Supported check
-			types include HTTP/HTTPS, TCP, ICMP Ping, SSL/TLS certificate expiry, and WHOIS domain expiration.
+			> of 10 goroutines fed by a central scheduler. Every check result is stored in the database, evaluated
+			against the monitor's assigned Alert Template, and immediately broadcast over WebSocket rooms to
+			all active dashboard sessions.
 		</p>
-	</section>
-
-	<!-- HTTP / HTTPS Monitoring -->
-	<section id="mon-http" class="flex scroll-mt-24 flex-col gap-4">
-		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">HTTP / HTTPS Monitoring</h2>
 		<p class="text-sm leading-7 text-zinc-400">
-			HTTP monitors send requests to your endpoints at configurable intervals. They support custom
-			headers, authentication tokens, expected status codes, and response time thresholds. Netra
-			Uptime evaluates the response against your rules and triggers incidents when conditions are
-			met.
+			The system supports five monitoring vectors: HTTP/HTTPS endpoints, TCP port handshakes,
+			unprivileged Ping reachability, TLS/SSL certificate lifecycle tracking, and RDAP/WHOIS domain
+			expiration.
 		</p>
 
 		<div class="overflow-x-auto rounded-lg border border-zinc-800">
 			<table class="w-full text-left text-sm">
 				<thead>
 					<tr class="border-b border-zinc-800 bg-[#141416]">
-						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Parameter</th>
+						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Field</th>
 						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Type</th>
+						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Constraints</th>
 						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Description</th>
 					</tr>
 				</thead>
 				<tbody class="divide-y divide-zinc-800/60 bg-transparent">
 					<tr>
-						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">url</td>
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">name</td>
 						<td class="px-4 py-3 font-mono text-xs text-zinc-400">string</td>
-						<td class="px-4 py-3 text-sm text-zinc-400"
-							>Full URL including protocol (<code class="font-mono text-xs text-zinc-300"
-								>https://...</code
-							>)</td
+						<td class="px-4 py-3 text-xs text-zinc-400">4–100 chars</td>
+						<td class="px-4 py-3 text-sm text-zinc-400">Descriptive human-readable monitor name.</td
 						>
 					</tr>
 					<tr>
-						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">method</td>
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">type</td>
 						<td class="px-4 py-3 font-mono text-xs text-zinc-400">string</td>
-						<td class="px-4 py-3 text-sm text-zinc-400">GET, POST, HEAD, PUT, DELETE</td>
+						<td class="px-4 py-3 text-xs text-zinc-400">http, tcp, ping</td>
+						<td class="px-4 py-3 text-sm text-zinc-400">Protocol checker engine to execute.</td>
 					</tr>
 					<tr>
-						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">interval</td>
-						<td class="px-4 py-3 font-mono text-xs text-zinc-400">integer</td>
-						<td class="px-4 py-3 text-sm text-zinc-400">Check interval in seconds (min: 10)</td>
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">target</td>
+						<td class="px-4 py-3 font-mono text-xs text-zinc-400">string</td>
+						<td class="px-4 py-3 text-xs text-zinc-400">4–100 chars</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
+							>URL for HTTP (<code class="font-mono text-xs text-zinc-300">https://...</code>),
+							<code class="font-mono text-xs text-zinc-300">host:port</code> for TCP, or hostname/IP for
+							Ping.</td
+						>
 					</tr>
 					<tr>
-						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">timeout</td>
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">interval_seconds</td>
 						<td class="px-4 py-3 font-mono text-xs text-zinc-400">integer</td>
-						<td class="px-4 py-3 text-sm text-zinc-400">Request timeout in seconds (max: 60)</td>
+						<td class="px-4 py-3 text-xs text-zinc-400">&ge; 30 (min allowed: 5)</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
+							>Time between scheduled checks. Enforced by <code
+								class="font-mono text-xs text-zinc-300">MIN_MONITOR_INTERVAL_SECONDS</code
+							>.</td
+						>
 					</tr>
 					<tr>
-						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">expected_status</td>
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">timeout_seconds</td>
 						<td class="px-4 py-3 font-mono text-xs text-zinc-400">integer</td>
-						<td class="px-4 py-3 text-sm text-zinc-400">Expected HTTP status code (default: 200)</td
+						<td class="px-4 py-3 text-xs text-zinc-400">1–30 seconds</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
+							>Socket read and connection deadline before failing with timeout.</td
+						>
+					</tr>
+					<tr>
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">expectation_status_code</td>
+						<td class="px-4 py-3 font-mono text-xs text-zinc-400">integer</td>
+						<td class="px-4 py-3 text-xs text-zinc-400">HTTP status code</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
+							>Expected HTTP status code (default: 200). Triggers alert breach when mismatched.</td
+						>
+					</tr>
+					<tr>
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">criticality</td>
+						<td class="px-4 py-3 font-mono text-xs text-zinc-400">string</td>
+						<td class="px-4 py-3 text-xs text-zinc-400">extreme, high, medium, low</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
+							>Service priority tier. Drives dynamic incident severity weighting.</td
+						>
+					</tr>
+					<tr>
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">assignees</td>
+						<td class="px-4 py-3 font-mono text-xs text-zinc-400">uuid[]</td>
+						<td class="px-4 py-3 text-xs text-zinc-400">1–50 items</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
+							>User UUIDs assigned as Persons-in-Charge (PIC). Also accepts alias <code
+								class="font-mono text-xs text-zinc-300">MonitorPICs</code
+							>.</td
+						>
+					</tr>
+					<tr>
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">enable_ssl_domain_check</td>
+						<td class="px-4 py-3 font-mono text-xs text-zinc-400">boolean</td>
+						<td class="px-4 py-3 text-xs text-zinc-400">true | false</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
+							>Enables daily background SSL certificate and RDAP/WHOIS domain tracking (HTTP only,
+							default: true).</td
+						>
+					</tr>
+					<tr>
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">alert_template_id</td>
+						<td class="px-4 py-3 font-mono text-xs text-zinc-400">uuid | null</td>
+						<td class="px-4 py-3 text-xs text-zinc-400">optional UUID</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
+							>Reusable Alert Template ID. If omitted, falls back to safe system default rules.</td
+						>
+					</tr>
+					<tr>
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">is_active</td>
+						<td class="px-4 py-3 font-mono text-xs text-zinc-400">boolean</td>
+						<td class="px-4 py-3 text-xs text-zinc-400">true | false</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
+							>Operational toggle. Set false to pause check scheduling without deleting
+							configuration.</td
 						>
 					</tr>
 				</tbody>
 			</table>
 		</div>
+
+		<CodeBlock code={createMonitorJson} language="json" id="monitor-create-payload" />
 	</section>
 
-	<!-- Custom Headers & Auth -->
-	<section id="mon-http-headers" class="flex scroll-mt-24 flex-col gap-4">
-		<h3 class="text-lg font-semibold tracking-tight text-zinc-200">Custom Headers & Auth</h3>
+	<!-- Fleet Overview Telemetry -->
+	<section id="mon-fleet-overview" class="flex scroll-mt-24 flex-col gap-4">
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Fleet Overview Telemetry</h2>
 		<p class="text-sm leading-7 text-zinc-400">
-			Add custom headers to your HTTP monitors for authenticated endpoints. Common use cases include
-			API key headers, Bearer tokens, and custom content-type headers.
+			The organization overview endpoint (<code class="font-mono text-xs text-zinc-300"
+				>GET /organization/:orgId/monitors/overview?window=30</code
+			>) computes real-time operational telemetry across all active monitors in your organization
+			over a configurable window (1 to 90 days, default 30).
 		</p>
-		<CodeBlock code={headersCode} language="json" id="headers" />
+
+		<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+			<div class="rounded-lg border border-zinc-800 bg-[#131315] p-5">
+				<h3 class="font-mono text-xs font-semibold tracking-wider text-[#4edea3] uppercase">
+					30-Day Uptime & Trend Delta
+				</h3>
+				<p class="mt-2 text-sm leading-6 text-zinc-400">
+					Calculates overall uptime percentage across all checks within the window, and compares it
+					against the preceding window of the same duration. The resulting <code
+						class="font-mono text-xs text-zinc-300">delta_pct</code
+					> provides immediate visibility into fleet availability trends.
+				</p>
+			</div>
+
+			<div class="rounded-lg border border-zinc-800 bg-[#131315] p-5">
+				<h3 class="font-mono text-xs font-semibold tracking-wider text-[#4edea3] uppercase">
+					24-Hour Latency Distribution
+				</h3>
+				<p class="mt-2 text-sm leading-6 text-zinc-400">
+					Aggregates recent checks over the past 24 hours to report average, median (50th
+					percentile), P95 (95th percentile), fastest (minimum), and peak (maximum) response
+					latencies alongside the name of the top-performing endpoint.
+				</p>
+			</div>
+
+			<div class="rounded-lg border border-zinc-800 bg-[#131315] p-5">
+				<h3 class="font-mono text-xs font-semibold tracking-wider text-[#4edea3] uppercase">
+					Fleet Operational States
+				</h3>
+				<p class="mt-2 text-sm leading-6 text-zinc-400">
+					Provides an instantaneous count of monitors in each operational state: <strong
+						class="text-zinc-200">total</strong
+					>, <strong class="text-[#4edea3]">up</strong>,
+					<strong class="text-amber-300">degraded</strong>,
+					<strong class="text-amber-400">unresponsive</strong>,
+					<strong class="text-red-400">down</strong>, and
+					<strong class="text-zinc-400">paused</strong>.
+				</p>
+			</div>
+
+			<div class="rounded-lg border border-zinc-800 bg-[#131315] p-5">
+				<h3 class="font-mono text-xs font-semibold tracking-wider text-[#4edea3] uppercase">
+					SSL & Domain Expiry Rollup
+				</h3>
+				<p class="mt-2 text-sm leading-6 text-zinc-400">
+					Summarizes domain and certificate health across all HTTP monitors, reporting healthy
+					counts, active warnings (&le; 30 days remaining), expired counts, and the exact timestamps
+					of the next impending certificate and domain expirations.
+				</p>
+			</div>
+		</div>
+
+		<CodeBlock code={fleetOverviewJson} language="json" id="fleet-overview-json" />
 	</section>
 
-	<!-- Status Codes & Payloads -->
-	<section id="mon-http-status" class="flex scroll-mt-24 flex-col gap-4">
-		<h3 class="text-lg font-semibold tracking-tight text-zinc-200">Status Codes & Payloads</h3>
+	<!-- HTTP / HTTPS Monitoring -->
+	<section id="mon-http" class="flex scroll-mt-24 flex-col gap-4">
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">HTTP / HTTPS Monitoring</h2>
 		<p class="text-sm leading-7 text-zinc-400">
-			Configure expected status codes for your monitors. Netra Uptime marks the check as failed if
-			the response status does not match your expectation. You can also send a request body for POST
-			and PUT monitors.
+			HTTP monitors test web applications, microservices, and REST APIs. The Go worker issues an
+			HTTP <code class="font-mono text-xs text-zinc-300">GET</code> request with the user agent
+			<code class="font-mono text-xs text-zinc-300">User-Agent: Netra-Uptime-Bot/1.0</code>, follows
+			up to 10 HTTP redirects, reads up to 4 KB of response content, and records total latency in
+			milliseconds.
+		</p>
+		<p class="text-sm leading-7 text-zinc-400">
+			Checks are executed via an isolated HTTP client equipped with an anti-SSRF dialer guard. By
+			default, attempts to target loopback (<code class="font-mono text-xs text-zinc-300"
+				>127.0.0.1</code
+			>,
+			<code class="font-mono text-xs text-zinc-300">localhost</code>), private RFC 1918 networks (<code
+				class="font-mono text-xs text-zinc-300">10.0.0.0/8</code
+			>,
+			<code class="font-mono text-xs text-zinc-300">172.16.0.0/12</code>,
+			<code class="font-mono text-xs text-zinc-300">192.168.0.0/16</code>), or cloud metadata
+			endpoints (<code class="font-mono text-xs text-zinc-300">169.254.169.254</code>) are rejected
+			at the socket level.
+		</p>
+		<div class="rounded-lg border border-zinc-800 bg-[#131315] p-4 text-sm leading-6 text-zinc-300">
+			<strong class="font-medium text-zinc-100">Monitoring Internal Endpoints:</strong> If you run
+			Netra Uptime inside a private network or homelab and want to monitor internal servers, set
+			<code class="font-mono text-xs text-[#4edea3]">ALLOW_PRIVATE_NETWORK_MONITORING=true</code> in
+			your
+			<code class="font-mono text-xs text-zinc-200">.env</code> configuration file.
+		</div>
+	</section>
+
+	<!-- Status Code Distribution & Daily Stats -->
+	<section id="mon-http-status" class="flex scroll-mt-24 flex-col gap-4">
+		<h3 class="text-lg font-semibold tracking-tight text-zinc-200">
+			Status Code Distribution & Daily Stats
+		</h3>
+		<p class="text-sm leading-7 text-zinc-400">
+			Netra Uptime aggregates every completed check into daily histogram buckets. Rather than merely
+			recording a binary up/down status, the platform groups HTTP responses into five distinct
+			telemetry counters:
+		</p>
+
+		<div class="grid grid-cols-1 gap-3 sm:grid-cols-5">
+			<div class="rounded-lg border border-zinc-800 bg-[#131315] p-3 text-center">
+				<span class="font-mono text-xs font-semibold text-[#4edea3]">2xx Success</span>
+				<p class="mt-1 text-xs text-zinc-400">Status codes 200–299</p>
+			</div>
+			<div class="rounded-lg border border-zinc-800 bg-[#131315] p-3 text-center">
+				<span class="font-mono text-xs font-semibold text-sky-400">3xx Redirect</span>
+				<p class="mt-1 text-xs text-zinc-400">Status codes 300–399</p>
+			</div>
+			<div class="rounded-lg border border-zinc-800 bg-[#131315] p-3 text-center">
+				<span class="font-mono text-xs font-semibold text-amber-400">4xx Client Err</span>
+				<p class="mt-1 text-xs text-zinc-400">Status codes 400–499</p>
+			</div>
+			<div class="rounded-lg border border-zinc-800 bg-[#131315] p-3 text-center">
+				<span class="font-mono text-xs font-semibold text-red-400">5xx Server Err</span>
+				<p class="mt-1 text-xs text-zinc-400">Status codes 500–599</p>
+			</div>
+			<div class="rounded-lg border border-zinc-800 bg-[#131315] p-3 text-center">
+				<span class="font-mono text-xs font-semibold text-zinc-400">Errors</span>
+				<p class="mt-1 text-xs text-zinc-400">Timeouts, DNS, refusals</p>
+			</div>
+		</div>
+
+		<p class="text-sm leading-7 text-zinc-400">
+			The stats endpoint (<code class="font-mono text-xs text-zinc-300"
+				>GET /organization/:orgId/monitors/:monitorId/stats?days=30</code
+			>) merges long-term historical records from the
+			<code class="font-mono text-xs text-zinc-300">monitor_daily_stats</code> table with live, unaggregated
+			checks from the current UTC day. This delivers an uninterrupted uptime and latency timeline with
+			zero reporting lag.
 		</p>
 	</section>
 
@@ -110,137 +347,222 @@ Timeout:  10 seconds`;
 	<section id="mon-tcp" class="flex scroll-mt-24 flex-col gap-4">
 		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">TCP Port Monitoring</h2>
 		<p class="text-sm leading-7 text-zinc-400">
-			TCP monitors verify that specific ports on your servers are reachable and accepting
-			connections:
+			TCP monitors perform a raw network socket handshake against a target <code
+				class="font-mono text-xs text-zinc-300">host:port</code
+			> to verify that infrastructure daemons are accepting inbound connections. The worker records socket
+			establishment latency and verifies SSRF boundaries before dialing.
 		</p>
 		<ul class="ml-5 flex list-disc flex-col gap-2 text-sm leading-7 text-zinc-400">
 			<li>
 				<strong class="font-medium text-zinc-200">Databases</strong> — PostgreSQL (5432), MySQL (3306),
-				MongoDB (27017)
+				Redis (6379), MongoDB (27017)
 			</li>
 			<li>
-				<strong class="font-medium text-zinc-200">Caches</strong> — Redis (6379), Memcached (11211)
+				<strong class="font-medium text-zinc-200">Email Transport</strong> — Outbound SMTP (587/465),
+				IMAP (993)
 			</li>
 			<li>
-				<strong class="font-medium text-zinc-200">Mail Servers</strong> — SMTP (587/465), IMAP (993)
-			</li>
-			<li>
-				<strong class="font-medium text-zinc-200">Custom Daemons</strong> — Any service listening on a
-				TCP port
+				<strong class="font-medium text-zinc-200">Infrastructure Daemons</strong> — SSH (22), DNS (53),
+				gRPC services, and custom TCP listeners
 			</li>
 		</ul>
 		<CodeBlock code={tcpConfigCode} language="text" id="tcp-config" />
 	</section>
 
-	<!-- ICMP Ping Checks -->
+	<!-- Ping Reachability Checks -->
 	<section id="mon-ping" class="flex scroll-mt-24 flex-col gap-4">
-		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">ICMP Ping Checks</h2>
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Ping Reachability Checks</h2>
 		<p class="text-sm leading-7 text-zinc-400">
-			ICMP Ping monitors verify host availability by sending echo requests. They measure
-			<strong class="font-medium text-zinc-200">round-trip latency</strong> and detect
-			<strong class="font-medium text-zinc-200">network-level issues</strong> that may not be visible
-			through HTTP or TCP checks.
+			Ping monitors test network-level reachability and round-trip latency to a host without
+			requiring an open HTTP port. Targets can be specified as a domain name or IP address; URL
+			schemes and path segments are automatically trimmed.
 		</p>
-		<p class="text-sm leading-7 text-zinc-400">
-			<strong class="font-medium text-zinc-200">Note:</strong> ICMP requires raw socket privileges.
-			Ensure the Docker container runs with the
-			<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-200"
-				>NET_RAW</code
-			> capability.
-		</p>
+		<div class="rounded-lg border border-zinc-800 bg-[#131315] p-4 text-sm leading-6 text-zinc-300">
+			<strong class="font-medium text-[#4edea3]">Unprivileged User-Space Operation:</strong> Netra
+			Uptime's Ping checker is implemented in pure Go using DNS resolution (<code
+				class="font-mono text-xs text-zinc-200">net.LookupIP</code
+			>) and unprivileged socket reachability probes. It does
+			<strong class="text-zinc-100">not</strong> require root privileges or the Docker
+			<code class="font-mono text-xs text-zinc-200">NET_RAW</code> capability, enabling safe execution
+			inside hardened non-root containers (UID 10001).
+		</div>
+		<CodeBlock code={pingConfigCode} language="text" id="ping-config" />
 	</section>
 
 	<!-- SSL / TLS Certificate Expiry -->
 	<section id="mon-ssl" class="flex scroll-mt-24 flex-col gap-4">
 		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">SSL / TLS Certificate Expiry</h2>
 		<p class="text-sm leading-7 text-zinc-400">
-			SSL monitors check the validity and expiration date of your SSL/TLS certificates. Netra Uptime
-			alerts you before certificates expire, preventing outages caused by expired certificates.
+			When <code class="font-mono text-xs text-zinc-300">enable_ssl_domain_check</code> is active on
+			an HTTP monitor, Netra Uptime's dedicated SSL runner connects over TLS (port 443 or target
+			custom port) every 24 hours, parses the leaf certificate's
+			<code class="font-mono text-xs text-zinc-300">NotAfter</code> timestamp, and calculates the exact
+			days remaining.
 		</p>
+
 		<div class="overflow-x-auto rounded-lg border border-zinc-800">
 			<table class="w-full text-left text-sm">
 				<thead>
 					<tr class="border-b border-zinc-800 bg-[#141416]">
-						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Alert Threshold</th>
+						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Reminder Schedule</th>
 						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Severity</th>
+						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Recipients</th>
 						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Description</th>
 					</tr>
 				</thead>
 				<tbody class="divide-y divide-zinc-800/60 bg-transparent">
 					<tr>
-						<td class="px-4 py-3 text-sm text-zinc-200">30 days</td>
-						<td class="px-4 py-3 font-mono text-xs text-zinc-300">Warning</td>
-						<td class="px-4 py-3 text-sm text-zinc-400">Certificate expires within 30 days</td>
+						<td class="px-4 py-3 text-sm font-medium text-zinc-200">30 days remaining</td>
+						<td class="px-4 py-3 font-mono text-xs text-amber-400">Warning</td>
+						<td class="px-4 py-3 text-sm text-zinc-400">Monitor PICs</td>
+						<td class="px-4 py-3 text-sm text-zinc-400">Proactive renewal notice.</td>
 					</tr>
 					<tr>
-						<td class="px-4 py-3 text-sm text-zinc-200">7 days</td>
-						<td class="px-4 py-3 font-mono text-xs text-zinc-300">Critical</td>
-						<td class="px-4 py-3 text-sm text-zinc-400">Certificate expires within 7 days</td>
+						<td class="px-4 py-3 text-sm font-medium text-zinc-200">14 days remaining</td>
+						<td class="px-4 py-3 font-mono text-xs text-amber-400">Warning</td>
+						<td class="px-4 py-3 text-sm text-zinc-400">Monitor PICs</td>
+						<td class="px-4 py-3 text-sm text-zinc-400">Second renewal reminder.</td>
 					</tr>
 					<tr>
-						<td class="px-4 py-3 text-sm text-zinc-200">Expired</td>
-						<td class="px-4 py-3 font-mono text-xs text-zinc-300">Critical</td>
-						<td class="px-4 py-3 text-sm text-zinc-400">Certificate has expired</td>
+						<td class="px-4 py-3 text-sm font-medium text-zinc-200">7 days remaining</td>
+						<td class="px-4 py-3 font-mono text-xs text-red-400">Critical (Escalated)</td>
+						<td class="px-4 py-3 text-sm text-zinc-300">Monitor PICs + Owners & Admins</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
+							>Urgent notice escalated to all organization administrators.</td
+						>
+					</tr>
+					<tr>
+						<td class="px-4 py-3 text-sm font-medium text-zinc-200">3 days remaining</td>
+						<td class="px-4 py-3 font-mono text-xs text-red-400">Critical (Escalated)</td>
+						<td class="px-4 py-3 text-sm text-zinc-300">Monitor PICs + Owners & Admins</td>
+						<td class="px-4 py-3 text-sm text-zinc-400"
+							>Final emergency escalation prior to expiration.</td
+						>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</section>
 
-	<!-- Domain Expiration (WHOIS) -->
+	<!-- Domain Expiration (RDAP & WHOIS) -->
 	<section id="mon-domain" class="flex scroll-mt-24 flex-col gap-4">
-		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Domain Expiration (WHOIS)</h2>
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">
+			Domain Expiration (RDAP & WHOIS)
+		</h2>
 		<p class="text-sm leading-7 text-zinc-400">
-			Domain expiry monitors track WHOIS expiration dates and notify you in advance to prevent
-			accidental domain loss. Netra Uptime queries WHOIS records every 24 hours (86,400 seconds) to
-			determine the exact expiry date of your domains.
+			To protect against domain hijackings and accidental registration lapses, Netra Uptime runs a
+			daily domain expiration check. The runner extracts the registrable root domain using a
+			multi-part TLD parser (supporting complex extensions such as <code
+				class="font-mono text-xs text-zinc-300">.co.id</code
+			>, <code class="font-mono text-xs text-zinc-300">.ac.id</code>,
+			<code class="font-mono text-xs text-zinc-300">.co.uk</code>, and
+			<code class="font-mono text-xs text-zinc-300">.com.au</code>).
+		</p>
+		<p class="text-sm leading-7 text-zinc-400">
+			The lookup uses a two-tier mechanism: querying the modern <strong
+				class="font-medium text-zinc-200">RDAP JSON protocol</strong
+			>
+			first, and seamlessly falling back to raw
+			<strong class="font-medium text-zinc-200">TCP port 43 WHOIS</strong> with an IANA referral resolver.
+			A 500ms delay between targets prevents registry rate limiting.
+		</p>
+		<p class="text-sm leading-7 text-zinc-400">
+			<strong class="font-medium text-zinc-200">Platform Whitelist Filtering:</strong> Shared PaaS
+			subdomains (including <code class="font-mono text-xs text-zinc-300">vercel.app</code>,
+			<code class="font-mono text-xs text-zinc-300">github.io</code>,
+			<code class="font-mono text-xs text-zinc-300">pages.dev</code>,
+			<code class="font-mono text-xs text-zinc-300">railway.app</code>,
+			<code class="font-mono text-xs text-zinc-300">netlify.app</code>, and 16 other cloud
+			providers) are automatically skipped to avoid spurious domain expiry alerts.
 		</p>
 	</section>
 
-	<!-- Smart Incident Detection & 4-State Lifecycle -->
+	<!-- Criticality & PIC Assignment -->
+	<section id="mon-criticality-pic" class="flex scroll-mt-24 flex-col gap-4">
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Criticality & PIC Assignment</h2>
+		<p class="text-sm leading-7 text-zinc-400">
+			Every monitor is assigned a <strong class="font-medium text-zinc-200">Criticality tier</strong
+			>
+			(<code class="font-mono text-xs text-zinc-300">extreme</code>,
+			<code class="font-mono text-xs text-zinc-300">high</code>,
+			<code class="font-mono text-xs text-zinc-300">medium</code>, or
+			<code class="font-mono text-xs text-zinc-300">low</code>). When an alert rule breaches, the
+			engine combines the rule severity with the monitor criticality to calculate the final incident
+			severity.
+		</p>
+		<p class="text-sm leading-7 text-zinc-400">
+			Monitors also specify one or more <strong class="font-medium text-zinc-200"
+				>Persons-in-Charge (PIC)</strong
+			>
+			using their organization user UUIDs. Up to
+			<code class="font-mono text-xs text-[#4edea3]">MAX_ASSIGNEES_PER_MONITOR</code> (default: 10) PICs
+			can be assigned. PICs receive immediate direct email alerts on incident trigger and incident resolution.
+		</p>
+	</section>
+
+	<!-- Smart Incident Detection & 4-State Machine -->
 	<section id="mon-smart-detection" class="flex scroll-mt-24 flex-col gap-4">
 		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">
-			Smart Incident Detection & Operational States
+			Smart Incident Detection & 4-State Machine
 		</h2>
 		<p class="text-sm leading-7 text-zinc-400">
-			Netra Uptime monitors inherit rules from an assigned <strong class="font-medium text-zinc-200"
-				>Alert Template</strong
-			> and evaluate targets through a 4-state finite state machine:
+			Netra Uptime tracks each monitor through a strict 4-state finite state machine designed to
+			eliminate transient alert noise:
 		</p>
 
-		<ul class="ml-5 flex list-disc flex-col gap-2 text-sm leading-7 text-zinc-400">
-			<li>
-				<strong class="font-medium text-[#4edea3]">UP</strong> — All checks succeeded, latency is within
-				normal thresholds, and HTTP status code matches expectation.
-			</li>
-			<li>
-				<strong class="font-medium text-zinc-200">DEGRADED</strong> — Target responded, but breached warning
-				thresholds (for example, latency exceeds the warning limit for consecutive checks).
-			</li>
-			<li>
-				<strong class="font-medium text-zinc-200">UNRESPONSIVE</strong> — Request timed out 3
-				consecutive times (<code
-					class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-200"
-					>ErrTimeout</code
-				>). Generates a medium-severity incident.
-			</li>
-			<li>
-				<strong class="font-medium text-zinc-200">DOWN</strong> — Hard failure (<code
-					class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-200"
-					>ECONNREFUSED</code
-				>, DNS failure, 5xx server error) or consecutive critical breaches reached threshold.
-			</li>
-		</ul>
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+			<div class="rounded-lg border border-emerald-900/40 bg-[#131315] p-4">
+				<span class="font-mono text-xs font-semibold tracking-wider text-[#4edea3] uppercase"
+					>UP (Healthy)</span
+				>
+				<p class="mt-2 text-xs leading-6 text-zinc-400">
+					All checks succeeded, latency is within normal parameters, and HTTP response code matches
+					expectation. Resets failure and timeout counters to zero.
+				</p>
+			</div>
+
+			<div class="rounded-lg border border-amber-900/40 bg-[#131315] p-4">
+				<span class="font-mono text-xs font-semibold tracking-wider text-amber-300 uppercase"
+					>DEGRADED (Warning)</span
+				>
+				<p class="mt-2 text-xs leading-6 text-zinc-400">
+					The target responded, but breached warning criteria (such as elevated latency exceeding
+					warning thresholds for consecutive checks).
+				</p>
+			</div>
+
+			<div class="rounded-lg border border-amber-900/40 bg-[#131315] p-4">
+				<span class="font-mono text-xs font-semibold tracking-wider text-amber-400 uppercase"
+					>UNRESPONSIVE (Amber Warning)</span
+				>
+				<p class="mt-2 text-xs leading-6 text-zinc-400">
+					Three consecutive request timeouts (<code class="font-mono text-xs text-zinc-300"
+						>ErrTimeout</code
+					>). Generates a medium-severity incident without panicking on transient packet drops.
+				</p>
+			</div>
+
+			<div class="rounded-lg border border-red-900/40 bg-[#131315] p-4">
+				<span class="font-mono text-xs font-semibold tracking-wider text-red-400 uppercase"
+					>DOWN (Hard Failure)</span
+				>
+				<p class="mt-2 text-xs leading-6 text-zinc-400">
+					Hard connection failures (<code class="font-mono text-xs text-zinc-300">ECONNREFUSED</code
+					>, DNS lookup failure), 5xx server crashes, or consecutive breaches reaching the critical
+					threshold.
+				</p>
+			</div>
+		</div>
 
 		<h3 class="mt-2 text-lg font-semibold tracking-tight text-zinc-200">
 			Consecutive Breaches & Auto-Recovery
 		</h3>
 		<p class="text-sm leading-7 text-zinc-400">
-			A monitor requires <strong class="font-medium text-zinc-200">3 consecutive failures</strong>
-			(configurable from 1 to 20) before escalating to DOWN or UNRESPONSIVE, preventing transient network
-			blips from triggering false alarms. Conversely, a
-			<strong class="font-medium text-zinc-200">single successful check</strong> immediately resolves
-			the incident, resets failure counters, and dispatches recovery notices across all channels.
+			A monitor requires consecutive rule violations before escalating to DOWN or UNRESPONSIVE. A
+			single passing check immediately returns the monitor to <strong
+				class="font-medium text-[#4edea3]">UP</strong
+			>, auto-resolves any active incident, records a system timeline entry, and dispatches recovery
+			notifications.
 		</p>
 	</section>
 
@@ -248,10 +570,15 @@ Timeout:  10 seconds`;
 	<section id="mon-manual-check" class="flex scroll-mt-24 flex-col gap-4">
 		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">On-Demand Manual Checks</h2>
 		<p class="text-sm leading-7 text-zinc-400">
-			After fixing a server issue, you do not have to wait for the next scheduled check. Trigger an
-			immediate health check via the API or dashboard, and the result is broadcast in real time over
-			WebSocket:
+			After deploying a fix or restarting infrastructure, you can trigger an immediate check without
+			waiting for the scheduled interval. The API executes the check directly via <code
+				class="font-mono text-xs text-zinc-300">workerPool.ProcessImmediate</code
+			> and broadcasts results across WebSocket in real time:
 		</p>
-		<CodeBlock code={manualCheckCode} language="bash" id="manual" />
+		<CodeBlock code={manualCheckCode} language="bash" id="manual-check-curl" />
+		<p class="text-xs text-zinc-500">
+			Manual checks are rate-limited to 10 requests per minute per monitor to prevent check queue
+			flooding.
+		</p>
 	</section>
 </div>

@@ -9,8 +9,12 @@
     "type": "http",
     "target": "https://api.yourdomain.com/healthz"
   },
-  "incident_id": "c460d3d5-6677-4b19-9cf4-fa5f6176ea39",
-  "severity": "critical",
+  "incident": {
+    "id": "c460d3d5-6677-4b19-9cf4-fa5f6176ea39",
+    "status": "ongoing",
+    "cause": "HTTP 502 Bad Gateway",
+    "started_at": "2026-10-04T12:00:00Z"
+  },
   "status": "down",
   "message": "[Incident] Production API Gateway is DOWN: HTTP 502 Bad Gateway",
   "timestamp": "2026-10-04T12:00:00Z"

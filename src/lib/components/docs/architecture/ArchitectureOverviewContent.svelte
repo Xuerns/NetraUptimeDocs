@@ -9,10 +9,12 @@
 <div class="flex flex-col gap-16">
 	<ArchSection id="arch-topology" title="System Topology">
 		<ArchText>
-			Netra Uptime is a self-hosted uptime monitoring and public status page platform. A single
-			container runs a Go backend (Gin, GORM, goroutines) that serves the SvelteKit 5 SPA embedded
-			with go:embed. PostgreSQL 16 is the persistent store; Redis 7 provides caching, rate limiting,
-			and counters.
+			Netra Uptime is an open-source, self-hosted uptime monitoring and public status page platform.
+			A single container or standalone binary runs a Go backend (Gin, GORM, goroutines) that serves
+			the SvelteKit 5 SPA embedded via go:embed. Persistent data is stored in PostgreSQL 16 or
+			embedded pure-Go SQLite in WAL mode; an in-process thread-safe cache (cache.MemoryCache)
+			provides TTL caching, atomic sliding-window rate limiting, and prefix-based cache invalidation
+			with zero external cache dependencies.
 		</ArchText>
 		<MermaidDiagram definition={topologyDiagram.definition} label={topologyDiagram.label} />
 	</ArchSection>

@@ -52,7 +52,8 @@ map $http_upgrade $connection_upgrade {
 }`;
 
 	const envExample = `ALLOWED_ORIGIN=https://uptime.yourdomain.com
-PUBLIC_API_URL=https://uptime.yourdomain.com/api/v1`;
+PUBLIC_API_URL=https://uptime.yourdomain.com/api/v1
+TRUSTED_PROXIES=127.0.0.1`;
 </script>
 
 <div class="flex flex-col gap-12">
@@ -136,7 +137,7 @@ PUBLIC_API_URL=https://uptime.yourdomain.com/api/v1`;
 						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">X-Forwarded-For</td>
 						<td class="px-4 py-3 font-mono text-xs text-zinc-300">$remote_addr</td>
 						<td class="px-4 py-3 text-sm text-zinc-400"
-							>Preserves true client IP for Redis auth rate limiters</td
+							>Preserves true client IP for in-memory auth and API key rate limiters</td
 						>
 					</tr>
 				</tbody>
@@ -146,7 +147,7 @@ PUBLIC_API_URL=https://uptime.yourdomain.com/api/v1`;
 
 	<!-- Cloudflare SSL & Proxy -->
 	<section id="rp-cloudflare" class="flex scroll-mt-24 flex-col gap-4">
-		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Cloudflare SSL & Proxy</h2>
+		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">Cloudflare SSL &amp; Proxy</h2>
 		<p class="text-sm leading-7 text-zinc-400">
 			If using Cloudflare proxy (orange cloud), configure the following settings in your Cloudflare
 			dashboard:
@@ -161,6 +162,14 @@ PUBLIC_API_URL=https://uptime.yourdomain.com/api/v1`;
 				<strong class="font-medium text-zinc-200">WebSockets</strong> — Navigate to
 				<strong class="font-medium text-zinc-200">Network</strong> settings and verify that
 				WebSockets are toggled <strong class="font-medium text-zinc-200">On</strong>.
+			</li>
+			<li>
+				<strong class="font-medium text-zinc-200">Configure TRUSTED_PROXIES</strong> — Set
+				<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-[#4edea3]"
+					>TRUSTED_PROXIES=127.0.0.1</code
+				>
+				(or your proxy subnet CIDR) in <code class="font-mono text-zinc-300">.env</code> so Gin's trusted
+				proxy engine trusts the forwarded headers for accurate client IP attribution.
 			</li>
 			<li>
 				<strong class="font-medium text-zinc-200">Update .env</strong> — Ensure

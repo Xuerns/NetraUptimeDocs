@@ -52,7 +52,7 @@ export const apiGroups: ApiGroup[] = [
 				title: 'Register a new account',
 				description: 'Create a new user account.',
 				auth: 'None',
-				rateLimit: '5 req/min',
+				rateLimit: '60 req/min (AUTH_RATE_LIMIT)',
 				requestBody: [
 					{
 						name: 'email',
@@ -87,7 +87,7 @@ export const apiGroups: ApiGroup[] = [
 						{
 							status: '201 Created',
 							code: `{
-  "message": "string"
+  "message": "User registered successfully"
 }`
 						},
 						{
@@ -106,7 +106,7 @@ export const apiGroups: ApiGroup[] = [
 				title: 'Log in',
 				description: 'Authenticate a user. Sets cookies: access_token, refresh_token (httpOnly).',
 				auth: 'None',
-				rateLimit: '5 req/min',
+				rateLimit: '60 req/min (AUTH_RATE_LIMIT)',
 				requestBody: [
 					{
 						name: 'email',
@@ -134,13 +134,20 @@ export const apiGroups: ApiGroup[] = [
 						{
 							status: '200 OK',
 							code: `{
-  "message": "Login Succesfully"
+  "message": "Login successfully",
+  "user": {
+    "id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+    "email": "user@example.com",
+    "name": "John Doe",
+    "avatar_url": "https://api.dicebear.com/7.x/identicon/svg?seed=user",
+    "is_verified": true
+  }
 }`
 						},
 						{
 							status: '401 Unauthorized',
 							code: `{
-  "error": "string"
+  "error": "Invalid email or password"
 }`
 						}
 					]
@@ -153,7 +160,7 @@ export const apiGroups: ApiGroup[] = [
 				title: 'Log out',
 				description: 'Clears cookies: access_token, refresh_token.',
 				auth: 'None',
-				rateLimit: '5 req/min',
+				rateLimit: '60 req/min (AUTH_RATE_LIMIT)',
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
@@ -162,7 +169,7 @@ export const apiGroups: ApiGroup[] = [
 						{
 							status: '200 OK',
 							code: `{
-  "message": "Logout succesfully"
+  "message": "Logout successfully"
 }`
 						}
 					]
@@ -175,8 +182,8 @@ export const apiGroups: ApiGroup[] = [
 				title: 'Refresh access token',
 				description:
 					'Obtain a new access token using the refresh_token cookie. Sets cookie: access_token.',
-				auth: 'None',
-				rateLimit: '5 req/min',
+				auth: 'Cookie refresh_token',
+				rateLimit: '30 req/min',
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
@@ -186,13 +193,13 @@ export const apiGroups: ApiGroup[] = [
 						{
 							status: '200 OK',
 							code: `{
-  "message": "New access Token granted"
+  "message": "Token refreshed successfully"
 }`
 						},
 						{
 							status: '401 Unauthorized',
 							code: `{
-  "error": "Refresh token not found"
+  "error": "Refresh token not found or invalid"
 }`
 						}
 					]
@@ -286,60 +293,6 @@ export const apiGroups: ApiGroup[] = [
 				}
 			},
 			{
-				id: 'auth-oauth',
-				method: 'POST',
-				path: '/auth',
-				title: 'OAuth login (Google/GitHub)',
-				description:
-					'Authenticate via Google or GitHub OAuth. Sets cookies: access_token, refresh_token.',
-				auth: 'None',
-				rateLimit: '5 req/min',
-				requestBody: [
-					{
-						name: 'provider',
-						type: 'string',
-						description: "Required, oneof: 'google' | 'github'.",
-						required: true
-					},
-					{
-						name: 'code',
-						type: 'string',
-						description: 'Required. OAuth authorization code.',
-						required: true
-					}
-				],
-				codeExample: {
-					language: 'bash',
-					label: 'Example Request',
-					code: `curl -X POST http://localhost:27346/api/v1/auth \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "provider": "google",
-    "code": "oauth_authorization_code"
-  }'`,
-					responses: [
-						{
-							status: '200 OK',
-							code: `{
-  "message": "Login successfully"
-}`
-						},
-						{
-							status: '400 Bad Request',
-							code: `{
-  "error": "string"
-}`
-						},
-						{
-							status: '500 Internal Server Error',
-							code: `{
-  "error": "string"
-}`
-						}
-					]
-				}
-			},
-			{
 				id: 'auth-profile',
 				method: 'GET',
 				path: '/auth/profile',
@@ -356,11 +309,13 @@ export const apiGroups: ApiGroup[] = [
 							status: '200 OK',
 							code: `{
   "user": {
-    "id": "uuid",
-    "name": "John Doe",
+    "id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
     "email": "user@example.com",
-    "avatar": "https://...",
-    "auth_provider": "google"
+    "name": "John Doe",
+    "avatar_url": "https://api.dicebear.com/7.x/identicon/svg?seed=user",
+    "is_verified": true,
+    "has_password": true,
+    "created_at": "2026-10-04T12:00:00Z"
   }
 }`
 						},
@@ -380,6 +335,7 @@ export const apiGroups: ApiGroup[] = [
 				title: 'Initiate password change',
 				description: 'Sends a 6-digit verification code to the user email for password change.',
 				auth: 'Bearer token (cookie)',
+				rateLimit: '60 req/min (AUTH_RATE_LIMIT)',
 				requestBody: [
 					{
 						name: 'current_password',
@@ -420,6 +376,7 @@ export const apiGroups: ApiGroup[] = [
 				title: 'Verify password change',
 				description: 'Verify the 6-digit code and set the new password.',
 				auth: 'Bearer token (cookie)',
+				rateLimit: '60 req/min (AUTH_RATE_LIMIT)',
 				requestBody: [
 					{
 						name: 'code',
@@ -1013,13 +970,13 @@ export const apiGroups: ApiGroup[] = [
 					{
 						name: 'interval_seconds',
 						type: 'number',
-						description: 'Required, min 10.',
+						description: 'Required, min 10 (enforced >= MIN_MONITOR_INTERVAL_SECONDS, default 30).',
 						required: true
 					},
 					{
 						name: 'timeout_seconds',
 						type: 'number',
-						description: 'Required, min 1.',
+						description: 'Required, min 1, max 30 (default 10).',
 						required: true
 					},
 					{
@@ -1035,15 +992,22 @@ export const apiGroups: ApiGroup[] = [
 						required: true
 					},
 					{
-						name: 'MonitorPICs',
+						name: 'assignees',
 						type: 'array<string (uuid)>',
-						description: 'Required. Min 1, max 2 items.',
+						description:
+							'Required. Min 1, max 50 (accepts assignees or MonitorPICs, capped by MAX_ASSIGNEES_PER_MONITOR default 10).',
 						required: true
 					},
 					{
 						name: 'enable_ssl_domain_check',
 						type: 'boolean',
-						description: 'Optional.',
+						description: 'Optional. Default: true.',
+						required: false
+					},
+					{
+						name: 'alert_template_id',
+						type: 'string (uuid)',
+						description: 'Optional alert template UUID to attach upon creation.',
 						required: false
 					}
 				],
@@ -1061,15 +1025,47 @@ export const apiGroups: ApiGroup[] = [
     "timeout_seconds": 10,
     "expectation_status_code": 200,
     "criticality": "high",
-    "MonitorPICs": ["user_uuid"],
-    "enable_ssl_domain_check": true
+    "assignees": ["9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"],
+    "enable_ssl_domain_check": true,
+    "alert_template_id": "f5c2b3d4-e6f7-8a9b-0c1d-2e3f4a5b6c7d"
   }'`,
 					responses: [
 						{
 							status: '201 Created',
 							code: `{
   "status": "success",
-  "data": { ... }
+  "data": {
+    "id": "e4b1a2c3-d4e5-6f7a-8b9c-0d1e2f3a4b5c",
+    "organization_id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+    "alert_template_id": "f5c2b3d4-e6f7-8a9b-0c1d-2e3f4a5b6c7d",
+    "name": "Production API Health",
+    "type": "http",
+    "target": "https://api.example.com/health",
+    "interval_seconds": 60,
+    "timeout_seconds": 10,
+    "expectation_status_code": 200,
+    "status": "up",
+    "response_time": 42,
+    "last_checked": "2026-10-04T12:00:00Z",
+    "failure_count": 0,
+    "consecutive_timeouts": 0,
+    "is_active": true,
+    "criticality": "high",
+    "enable_ssl_domain_check": true,
+    "ssl_status": "valid",
+    "ssl_days_remaining": 64,
+    "domain_status": "valid",
+    "domain_days_remaining": 280,
+    "assignees": [
+      {
+        "id": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
+        "name": "Alex Mercer",
+        "email": "alex@example.com"
+      }
+    ],
+    "created_at": "2026-10-04T12:00:00Z",
+    "updated_at": "2026-10-04T12:00:00Z"
+  }
 }`
 						}
 					]
@@ -1093,6 +1089,91 @@ export const apiGroups: ApiGroup[] = [
 							code: `{
   "status": "success",
   "data": [ ... ]
+}`
+						}
+					]
+				}
+			},
+			{
+				id: 'monitor-overview',
+				method: 'GET',
+				path: '/organization/:orgId/monitors/overview',
+				title: 'Fleet overview telemetry',
+				description:
+					'Get aggregated fleet uptime, 24h latency statistics (avg, median, p95, min, max, fastest), monitor fleet breakdown by status, and SSL/DNS health summary. Cached in-memory for 60 seconds.',
+				auth: 'Bearer token + TenantMiddleware',
+				queryParams: [
+					{
+						name: 'window',
+						type: 'number',
+						description: 'Optional window in days (default 30, range 1-90).',
+						required: false
+					}
+				],
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X GET "http://localhost:27346/api/v1/organization/org_uuid/monitors/overview?window=30" \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "data": {
+    "uptime": {
+      "window_days": 30,
+      "overall_pct": 99.94,
+      "previous_window_pct": 99.92,
+      "delta_pct": 0.02,
+      "has_previous_window": true,
+      "total_checks": 43200,
+      "up_checks": 43174,
+      "down_checks": 26
+    },
+    "latency": {
+      "window_hours": 24,
+      "avg_ms": 42,
+      "median_ms": 38,
+      "p95_ms": 115,
+      "min_ms": 18,
+      "max_ms": 420,
+      "fastest_monitor": {
+        "id": "e4b1a2c3-d4e5-6f7a-8b9c-0d1e2f3a4b5c",
+        "name": "Edge Gateway",
+        "avg_ms": 18
+      },
+      "sample_count": 1440
+    },
+    "fleet": {
+      "total": 12,
+      "active": 10,
+      "paused": 2,
+      "up": 9,
+      "down": 1,
+      "degraded": 0,
+      "unresponsive": 0,
+      "uniform_interval_seconds": 60,
+      "min_interval_seconds": 30,
+      "max_interval_seconds": 300
+    },
+    "ssl_dns": {
+      "enabled_monitors": 8,
+      "healthy_monitors": 7,
+      "warning_monitors": 1,
+      "expired_monitors": 0,
+      "next_ssl_expiry": {
+        "monitor_id": "e4b1a2c3-d4e5-6f7a-8b9c-0d1e2f3a4b5c",
+        "name": "Production API Health",
+        "days_remaining": 14
+      },
+      "next_domain_expiry": {
+        "monitor_id": "e4b1a2c3-d4e5-6f7a-8b9c-0d1e2f3a4b5c",
+        "name": "Production API Health",
+        "days_remaining": 45
+      }
+    }
+  }
 }`
 						}
 					]
@@ -1132,7 +1213,7 @@ export const apiGroups: ApiGroup[] = [
 					{
 						name: 'days',
 						type: 'number',
-						description: 'Optional. Default: 30. Number of days for stats.',
+						description: 'Optional. Default: 30. Number of days for stats (range 1-90).',
 						required: false
 					}
 				],
@@ -1146,7 +1227,23 @@ export const apiGroups: ApiGroup[] = [
 							status: '200 OK',
 							code: `{
   "status": "success",
-  "data": [ ... ]
+  "data": [
+    {
+      "date": "2026-10-04T00:00:00Z",
+      "total_checks": 1440,
+      "up_checks": 1438,
+      "down_checks": 2,
+      "uptime_percentage": 99.86,
+      "avg_latency_ms": 42,
+      "min_latency_ms": 19,
+      "max_latency_ms": 380,
+      "count_2xx": 1438,
+      "count_3xx": 0,
+      "count_4xx": 0,
+      "count_5xx": 2,
+      "count_error": 0
+    }
+  ]
 }`
 						}
 					]
@@ -1159,7 +1256,7 @@ export const apiGroups: ApiGroup[] = [
 				title: 'Update monitor',
 				description:
 					'Update monitor configuration including name, target, interval, and other settings.',
-				auth: 'Bearer token + TenantMiddleware',
+				auth: 'Bearer token + TenantMiddleware + RequireRole("owner", "admin")',
 				requestBody: [
 					{
 						name: 'name',
@@ -1182,7 +1279,7 @@ export const apiGroups: ApiGroup[] = [
 					{
 						name: 'timeout_seconds',
 						type: 'number',
-						description: 'Optional, min 1.',
+						description: 'Optional, min 1, max 30.',
 						required: false
 					},
 					{
@@ -1194,7 +1291,7 @@ export const apiGroups: ApiGroup[] = [
 					{
 						name: 'is_active',
 						type: 'boolean',
-						description: 'Optional.',
+						description: 'Optional. Toggle false to pause monitoring, true to resume.',
 						required: false
 					},
 					{
@@ -1204,15 +1301,21 @@ export const apiGroups: ApiGroup[] = [
 						required: false
 					},
 					{
-						name: 'MonitorPICs',
+						name: 'assignees',
 						type: 'array<string (uuid)>',
-						description: 'Optional.',
+						description: 'Optional array of user UUIDs (accepts assignees or MonitorPICs).',
 						required: false
 					},
 					{
 						name: 'enable_ssl_domain_check',
 						type: 'boolean',
 						description: 'Optional.',
+						required: false
+					},
+					{
+						name: 'alert_template_id',
+						type: 'string (uuid) | null',
+						description: 'Optional template UUID to attach, or null to detach.',
 						required: false
 					}
 				],
@@ -1231,7 +1334,20 @@ export const apiGroups: ApiGroup[] = [
 							status: '200 OK',
 							code: `{
   "status": "success",
-  "data": { ... }
+  "data": {
+    "id": "e4b1a2c3-d4e5-6f7a-8b9c-0d1e2f3a4b5c",
+    "organization_id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+    "name": "Production API Health",
+    "type": "http",
+    "target": "https://api.example.com/health",
+    "interval_seconds": 30,
+    "timeout_seconds": 10,
+    "expectation_status_code": 200,
+    "status": "up",
+    "is_active": true,
+    "criticality": "high",
+    "updated_at": "2026-10-04T12:05:00Z"
+  }
 }`
 						}
 					]
@@ -1578,6 +1694,89 @@ export const apiGroups: ApiGroup[] = [
 						{
 							status: '201 Created',
 							code: `{ "status": "success", "data": { "id": "rule_uuid", "name": "High Response Latency" } }`
+						}
+					]
+				}
+			},
+			{
+				id: 'alerttemplate-update-rule',
+				method: 'PUT',
+				path: '/organization/:orgId/alert-templates/:templateId/rules/:ruleId',
+				title: 'Update rule in template',
+				description: 'Update an existing evaluation rule within an alert template.',
+				auth: 'Bearer token + TenantMiddleware + RequireRole("owner", "admin")',
+				requestBody: [
+					{
+						name: 'name',
+						type: 'string',
+						description: 'Optional rule label, min 2, max 100 chars, no HTML.',
+						required: false
+					},
+					{
+						name: 'metric',
+						type: 'string',
+						description: "Optional metric type: 'status_code' | 'response_time_ms' | 'timeout'.",
+						required: false
+					},
+					{
+						name: 'operator',
+						type: 'string',
+						description:
+							"Optional operator: '==' | '!=' | '>' | '>=' | '<' | '<=' | 'in' | 'not_in'.",
+						required: false
+					},
+					{
+						name: 'target_value',
+						type: 'string',
+						description: 'Optional target threshold value.',
+						required: false
+					},
+					{
+						name: 'consecutive',
+						type: 'number',
+						description: 'Optional consecutive breach count (1-20).',
+						required: false
+					},
+					{
+						name: 'severity',
+						type: 'string',
+						description: "Optional severity: 'critical' or 'warning'.",
+						required: false
+					},
+					{
+						name: 'is_active',
+						type: 'boolean',
+						description: 'Optional active status flag.',
+						required: false
+					}
+				],
+				codeExample: {
+					language: 'bash',
+					label: 'Example Request',
+					code: `curl -X PUT http://localhost:27346/api/v1/organization/org_uuid/alert-templates/template_uuid/rules/rule_uuid \\
+  -H "Content-Type: application/json" \\
+  --cookie "access_token=eyJhbGciOiJIUzI1NiIs..." \\
+  -d '{
+    "name": "Adjusted Latency Threshold",
+    "target_value": "1500",
+    "consecutive": 2
+  }'`,
+					responses: [
+						{
+							status: '200 OK',
+							code: `{
+  "status": "success",
+  "data": {
+    "id": "rule_uuid",
+    "name": "Adjusted Latency Threshold",
+    "metric": "response_time_ms",
+    "operator": ">",
+    "target_value": "1500",
+    "consecutive": 2,
+    "severity": "warning",
+    "is_active": true
+  }
+}`
 						}
 					]
 				}
@@ -1982,32 +2181,13 @@ export const apiGroups: ApiGroup[] = [
 				id: 'incident-list',
 				method: 'GET',
 				path: '/organization/:orgId/incident',
-				title: 'List all incidents',
-				description:
-					'List all incidents for the organization with optional status filtering and pagination.',
+				title: 'List incidents',
+				description: 'List all incidents for the organization, optionally filtered by monitor ID.',
 				auth: 'Bearer token + TenantMiddleware',
 				queryParams: [
 					{
-						name: 'status',
-						type: 'string',
-						description: "Optional filter by status: 'ongoing' or 'resolved'.",
-						required: false
-					},
-					{
-						name: 'page',
-						type: 'number',
-						description: 'Optional page number (default 1).',
-						required: false
-					},
-					{
-						name: 'limit',
-						type: 'number',
-						description: 'Optional results limit per page (default 20, max 100).',
-						required: false
-					},
-					{
 						name: 'monitor_id',
-						type: 'string',
+						type: 'string (uuid)',
 						description: 'Optional filter by specific monitor UUID.',
 						required: false
 					}
@@ -2015,7 +2195,7 @@ export const apiGroups: ApiGroup[] = [
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET "http://localhost:27346/api/v1/organization/org_uuid/incident?status=ongoing&page=1&limit=10" \\
+					code: `curl -X GET "http://localhost:27346/api/v1/organization/org_uuid/incident?monitor_id=monitor_uuid" \\
   --cookie "access_token=eyJhbGciOiJIUzI1NiIs..."`,
 					responses: [
 						{
@@ -3327,18 +3507,6 @@ export const apiGroups: ApiGroup[] = [
 						type: 'number',
 						description: 'Optional. Default: 0.',
 						required: false
-					},
-					{
-						name: 'status',
-						type: 'string',
-						description: "Optional filter by delivery status: 'sent' or 'failed'.",
-						required: false
-					},
-					{
-						name: 'channel_id',
-						type: 'string',
-						description: 'Optional filter by notification channel UUID.',
-						required: false
 					}
 				],
 				codeExample: {
@@ -3401,7 +3569,7 @@ export const apiGroups: ApiGroup[] = [
     {
       "id": "uuid",
       "name": "CI/CD Integration",
-      "key_prefix": "pw_live_abc",
+      "key_prefix": "nuk_5f7a8b9c",
       "permissions": "read",
       "last_used_at": "2023-11-01T14:35:00Z",
       "last_used_ip": "127.0.0.1",
@@ -3463,14 +3631,14 @@ export const apiGroups: ApiGroup[] = [
   "data": {
     "id": "uuid",
     "name": "CI/CD Integration",
-    "key_prefix": "pw_live_abc",
+    "key_prefix": "nuk_5f7a8b9c",
     "permissions": "read",
     "last_used_at": null,
     "last_used_ip": "",
     "expires_at": "2024-01-01T00:00:00Z",
     "created_at": "2023-11-01T14:32:00Z",
     "created_by": "uuid",
-    "plaintext_key": "pw_live_xxxxxxxxxxxxxxxx"
+    "plaintext_key": "nuk_5f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a"
   }
 }`
 						}
@@ -3573,7 +3741,7 @@ ws.onclose = () => {
 					language: 'bash',
 					label: 'Example Request',
 					code: `curl -X GET http://localhost:27346/api/v1/public/monitors \\
-  -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx"`,
+  -H "Authorization: Bearer nuk_5f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a"`,
 					responses: [
 						{
 							status: '200 OK',
@@ -3596,7 +3764,7 @@ ws.onclose = () => {
 					language: 'bash',
 					label: 'Example Request',
 					code: `curl -X GET http://localhost:27346/api/v1/public/monitors/monitor_uuid \\
-  -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx"`,
+  -H "Authorization: Bearer nuk_5f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a"`,
 					responses: [
 						{
 							status: '200 OK',
@@ -3649,7 +3817,7 @@ ws.onclose = () => {
 					{
 						name: 'timeout_seconds',
 						type: 'number',
-						description: 'Required, min 1.',
+						description: 'Required, min 1, max 30.',
 						required: true
 					},
 					{
@@ -3659,9 +3827,9 @@ ws.onclose = () => {
 						required: true
 					},
 					{
-						name: 'MonitorPICs',
+						name: 'assignees',
 						type: 'array<string (uuid)>',
-						description: 'Required. Min 1, max 2 items.',
+						description: 'Required. Min 1, max 50 items.',
 						required: true
 					}
 				],
@@ -3669,7 +3837,7 @@ ws.onclose = () => {
 					language: 'bash',
 					label: 'Example Request',
 					code: `curl -X POST http://localhost:27346/api/v1/public/monitors \\
-  -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx" \\
+  -H "Authorization: Bearer nuk_5f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a" \\
   -H "Content-Type: application/json" \\
   -d '{
     "name": "New Monitor",
@@ -3678,7 +3846,7 @@ ws.onclose = () => {
     "interval_seconds": 60,
     "timeout_seconds": 10,
     "criticality": "high",
-    "MonitorPICs": ["user_uuid"]
+    "assignees": ["user_uuid"]
   }'`,
 					responses: [
 						{
@@ -3729,7 +3897,7 @@ ws.onclose = () => {
 					language: 'bash',
 					label: 'Example Request',
 					code: `curl -X PUT http://localhost:27346/api/v1/public/monitors/monitor_uuid \\
-  -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx" \\
+  -H "Authorization: Bearer nuk_5f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a" \\
   -H "Content-Type: application/json" \\
   -d '{
     "is_active": false
@@ -3757,7 +3925,7 @@ ws.onclose = () => {
 					language: 'bash',
 					label: 'Example Request',
 					code: `curl -X DELETE http://localhost:27346/api/v1/public/monitors/monitor_uuid \\
-  -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx"`,
+  -H "Authorization: Bearer nuk_5f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a"`,
 					responses: [
 						{
 							status: '200 OK',
@@ -3770,47 +3938,25 @@ ws.onclose = () => {
 				}
 			},
 			{
-				id: 'public-monitors-check',
-				method: 'POST',
-				path: '/public/monitors/:id/check',
-				title: 'Trigger manual check (API Key)',
-				description:
-					'Force the background worker pool to immediately check the monitor using API Key authentication.',
-				auth: 'API Key (write permission)',
-				codeExample: {
-					language: 'bash',
-					label: 'Example Request',
-					code: `curl -X POST http://localhost:27346/api/v1/public/monitors/monitor_uuid/check \\
-  -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx"`,
-					responses: [
-						{
-							status: '200 OK',
-							code: `{
-  "status": "success",
-  "message": "Manual check queued and processed successfully",
-  "data": {
-    "status": "up",
-    "latency_ms": 48,
-    "status_code": 200,
-    "checked_at": "2026-10-04T12:00:00Z"
-  }
-}`
-						}
-					]
-				}
-			},
-			{
 				id: 'public-incidents-list',
 				method: 'GET',
 				path: '/public/incidents',
 				title: 'List incidents (API Key)',
 				description: 'List all incidents using API Key authentication.',
 				auth: 'API Key (read permission)',
+				queryParams: [
+					{
+						name: 'monitor_id',
+						type: 'string (uuid)',
+						description: 'Optional filter by monitor UUID.',
+						required: false
+					}
+				],
 				codeExample: {
 					language: 'bash',
 					label: 'Example Request',
-					code: `curl -X GET http://localhost:27346/api/v1/public/incidents \\
-  -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx"`,
+					code: `curl -X GET "http://localhost:27346/api/v1/public/incidents?monitor_id=monitor_uuid" \\
+  -H "Authorization: Bearer nuk_5f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a"`,
 					responses: [
 						{
 							status: '200 OK',
@@ -3847,7 +3993,7 @@ ws.onclose = () => {
 					language: 'bash',
 					label: 'Example Request',
 					code: `curl -X POST http://localhost:27346/api/v1/public/incidents \\
-  -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx" \\
+  -H "Authorization: Bearer nuk_5f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a" \\
   -H "Content-Type: application/json" \\
   -d '{
     "incident_id": "incident_uuid",
@@ -3876,7 +4022,7 @@ ws.onclose = () => {
 					language: 'bash',
 					label: 'Example Request',
 					code: `curl -X GET http://localhost:27346/api/v1/public/status-pages \\
-  -H "Authorization: Bearer pw_live_xxxxxxxxxxxxxxxx"`,
+  -H "Authorization: Bearer nuk_5f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a"`,
 					responses: [
 						{
 							status: '200 OK',
@@ -3900,7 +4046,7 @@ ws.onclose = () => {
 				path: '/healthz',
 				title: 'Liveness & Readiness probe',
 				description:
-					'Check container health, database connectivity, and Redis ping. Suitable for Kubernetes or Docker container health checks.',
+					'Check container health, database connectivity, and engine status. Suitable for Kubernetes or Docker container health checks.',
 				auth: 'None',
 				codeExample: {
 					language: 'bash',
@@ -3910,10 +4056,21 @@ ws.onclose = () => {
 						{
 							status: '200 OK',
 							code: `{
-  "status": "healthy",
+  "status": "ok",
   "database": "connected",
-  "redis": "connected",
-  "version": "1.0.0"
+  "db_driver": "postgres",
+  "app_mode": "selfhosted",
+  "timestamp": "2026-10-04T12:00:00Z"
+}`
+						},
+						{
+							status: '503 Service Unavailable',
+							code: `{
+  "status": "degraded",
+  "database": "unreachable",
+  "db_driver": "postgres",
+  "app_mode": "selfhosted",
+  "timestamp": "2026-10-04T12:00:00Z"
 }`
 						}
 					]
@@ -3924,7 +4081,8 @@ ws.onclose = () => {
 				method: 'GET',
 				path: '/api/v1/health',
 				title: 'API Health status',
-				description: 'Verify API engine uptime, memory usage, and background worker queue metrics.',
+				description:
+					'Verify API health and database connectivity. Shares the same handler as /healthz.',
 				auth: 'None',
 				codeExample: {
 					language: 'bash',
@@ -3935,12 +4093,19 @@ ws.onclose = () => {
 							status: '200 OK',
 							code: `{
   "status": "ok",
-  "uptime": "72h34m12s",
-  "worker_pool": {
-    "workers": 10,
-    "active_jobs": 0,
-    "queue_depth": 0
-  },
+  "database": "connected",
+  "db_driver": "postgres",
+  "app_mode": "selfhosted",
+  "timestamp": "2026-10-04T12:00:00Z"
+}`
+						},
+						{
+							status: '503 Service Unavailable',
+							code: `{
+  "status": "degraded",
+  "database": "unreachable",
+  "db_driver": "postgres",
+  "app_mode": "selfhosted",
   "timestamp": "2026-10-04T12:00:00Z"
 }`
 						}

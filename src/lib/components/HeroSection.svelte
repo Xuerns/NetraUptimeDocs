@@ -21,7 +21,7 @@
 		},
 		{
 			title: 'System Architecture',
-			description: 'Go worker pool, alert state machine, and Redis caching internals.',
+			description: 'Go worker pool, alert state machine, and in-memory caching internals.',
 			route: '/docs/architecture' as const,
 			hash: '#architecture',
 			icon: Cpu
@@ -50,8 +50,9 @@
 				</h1>
 				<p class="mt-4 max-w-2xl text-base leading-7 text-zinc-400">
 					Netra Uptime is a single-container Go and Svelte monitoring platform backed by PostgreSQL
-					and Redis. Track HTTP, TCP, ICMP, SSL, and domain expiry, manage incidents automatically,
-					and route alerts to Slack, Discord, email, or webhooks.
+					or embedded SQLite with thread-safe in-memory caching. Track HTTP, TCP, Ping, SSL, and
+					domain expiry, manage incidents automatically, and route alerts to Slack, Discord, email,
+					or webhooks.
 				</p>
 
 				<div class="mt-6 flex flex-wrap items-center gap-3">
@@ -86,7 +87,8 @@
 				<InstallCommand id="hero" class="max-w-none" />
 				<div class="mt-2.5 flex items-center justify-between text-xs text-zinc-500">
 					<span
-						>Starts web UI and workers on <code class="font-mono text-zinc-300">localhost:27346</code
+						>Starts web UI and workers on <code class="font-mono text-zinc-300"
+							>localhost:27346</code
 						></span
 					>
 					<a

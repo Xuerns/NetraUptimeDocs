@@ -17,7 +17,7 @@
 				{step.description}
 			</p>
 			<div
-				class="rounded-lg border border-white/5 bg-[#0e0e0f] p-6 font-mono text-sm text-[#bbcabf]/70 shadow-inner"
+				class="rounded-lg border border-white/5 bg-[#0e0e0f] p-6 font-mono text-sm text-[#bbcabf]/70"
 			>
 				{#each step.commands as command, i (i)}
 					<span class="text-[#4edea3]/60">$</span>

@@ -1,6 +1,6 @@
 # Contributing to Netra Uptime Documentation
 
-Thank you for your interest in contributing to **Netra Uptime Documentation** (`NetraUptime.dev`)! Clear, accurate, and comprehensive documentation helps everyone deploy, monitor, and scale their infrastructure with Netra Uptime.
+Thank you for your interest in contributing to **Netra Uptime Documentation** (`NetraUptimeDocs`)! Clear, accurate, and comprehensive documentation helps everyone deploy, monitor, and scale their infrastructure with Netra Uptime.
 
 We welcome all contributions, including fixing typos, clarifying guides, updating API endpoint specifications, and adding new architecture diagrams.
 
@@ -12,7 +12,7 @@ All contributions are submitted through GitHub Pull Requests using the fork work
 
 ### 1. Fork the Repository
 
-1. Visit the official documentation repository: [https://github.com/Xuerns/NetraUptime.dev](https://github.com/Xuerns/NetraUptime.dev).
+1. Visit the official documentation repository: [https://github.com/Xuerns/NetraUptimeDocs](https://github.com/Xuerns/NetraUptimeDocs).
 2. Click the **Fork** button in the top right corner to create a copy under your personal GitHub account.
 
 ### 2. Clone Your Fork Locally
@@ -20,8 +20,8 @@ All contributions are submitted through GitHub Pull Requests using the fork work
 Clone your forked repository to your local machine:
 
 ```bash
-git clone https://github.com/<your-username>/NetraUptime.dev.git
-cd NetraUptime.dev
+git clone https://github.com/<your-username>/NetraUptimeDocs.git
+cd NetraUptimeDocs
 ```
 
 ### 3. Configure Upstream Remote
@@ -29,7 +29,7 @@ cd NetraUptime.dev
 Keep your fork synchronized with the official repository:
 
 ```bash
-git remote add upstream https://github.com/Xuerns/NetraUptime.dev.git
+git remote add upstream https://github.com/Xuerns/NetraUptimeDocs.git
 git fetch upstream
 ```
 
@@ -115,7 +115,7 @@ Once your changes are tested and verified:
    ```bash
    git push origin docs/your-topic-name
    ```
-3. Open a Pull Request from your branch against the `main` branch of [Xuerns/NetraUptime.dev](https://github.com/Xuerns/NetraUptime.dev).
+3. Open a Pull Request from your branch against the `main` branch of [Xuerns/NetraUptimeDocs](https://github.com/Xuerns/NetraUptimeDocs).
 
 ---
 
@@ -183,7 +183,7 @@ Ensure the following checks have been completed before submitting:
 ## Reporting Issues
 
 Found a typo, outdated instruction, or missing API parameter?
-Please open an issue on [GitHub Issues](https://github.com/Xuerns/NetraUptime.dev/issues) with:
+Please open an issue on [GitHub Issues](https://github.com/Xuerns/NetraUptimeDocs/issues) with:
 
 - The URL or file location of the affected page.
 - A description of the issue or suggested improvement.

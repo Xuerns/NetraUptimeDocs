@@ -4,6 +4,16 @@
 	import EndpointTable from './EndpointTable.svelte';
 
 	let { endpoint }: { endpoint: EndpointSection } = $props();
+
+	let fullUrl = $derived.by(() => {
+		if (endpoint.path.startsWith('/healthz')) {
+			return `http://localhost:27346${endpoint.path}`;
+		}
+		if (endpoint.path.startsWith('/api/v1')) {
+			return `http://localhost:27346${endpoint.path}`;
+		}
+		return `http://localhost:27346/api/v1${endpoint.path}`;
+	});
 </script>
 
 <main class="min-w-0 flex-1 px-4 py-10 sm:px-8">
@@ -21,7 +31,7 @@
 			<div class="flex flex-wrap items-center gap-2.5">
 				<HttpMethodBadge method={endpoint.method} />
 				<code class="font-mono text-sm text-zinc-200">
-					https://api.netrauptime.com/v1{endpoint.path}
+					{fullUrl}
 				</code>
 			</div>
 

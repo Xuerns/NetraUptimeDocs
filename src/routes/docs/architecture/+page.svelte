@@ -75,7 +75,7 @@
 	<title>Netra Uptime | Architecture & Internals</title>
 	<meta
 		name="description"
-		content="System architecture and internal design of Netra Uptime: Go concurrent worker pool, alert state machine, WebSocket rooms, Redis caching, and PostgreSQL data retention."
+		content="System architecture and internal design of Netra Uptime: Go concurrent worker pool, alert state machine, WebSocket rooms, in-memory caching, and PostgreSQL / SQLite data retention."
 	/>
 </svelte:head>
 
