@@ -1,6 +1,6 @@
 <script lang="ts">
 	import step1 from '$lib/assets/docs/notifications/discord/step1.webp';
-	import step2 from '$lib/assets/docs/notifications/discord/step2.png';
+	import step2 from '$lib/assets/docs/notifications/discord/step2.webp';
 	import step3 from '$lib/assets/docs/notifications/discord/step3.webp';
 	import step4 from '$lib/assets/docs/notifications/discord/step4.webp';
 </script>

@@ -15,18 +15,11 @@
 				'Runtime environment (development or production). Controls Gin release mode, secure cookie flags, and strict CORS enforcement.'
 		},
 		{
-			name: 'APP_MODE',
+			name: 'HOST',
 			type: 'string',
-			defaultVal: 'selfhosted',
+			defaultVal: '0.0.0.0 / 127.0.0.1',
 			description:
-				'Backend operational mode. Enforced as selfhosted at runtime in all standalone and container deployments.'
-		},
-		{
-			name: 'PUBLIC_APP_MODE',
-			type: 'string',
-			defaultVal: 'selfhosted',
-			description:
-				'Frontend application mode dynamically injected into the browser via /_app/env.js.'
+				'Network bind interface. Defaults to 127.0.0.1 in standalone SQLite desktop mode, 0.0.0.0 for Docker containers.'
 		},
 		{
 			name: 'PORT',
@@ -179,7 +172,7 @@
 			type: 'boolean',
 			defaultVal: 'false',
 			description:
-				'When false, SSRF protection blocks monitors and webhooks from reaching loopback (127.0.0.1, localhost), RFC 1918 subnets (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16), and cloud metadata (169.254.169.254). Set to true to monitor internal LAN targets.'
+				'When false, SSRF protection blocks monitors and webhooks from reaching loopback (127.0.0.1, localhost), RFC 1918 subnets (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16), and cloud metadata (169.254.169.254). Automatically defaults to true when running in SQLite mode with a loopback bind (127.0.0.1 / localhost) for out-of-the-box homelab/LAN monitoring, and defaults to false for Docker, PostgreSQL, or 0.0.0.0 network binds.'
 		}
 	];
 
@@ -187,7 +180,7 @@
 		{
 			name: 'MAX_MONITORS_PER_ORG',
 			type: 'integer',
-			defaultVal: '100',
+			defaultVal: '200',
 			description:
 				'Maximum number of monitors allowed per organization (0 = unlimited). Legacy fallback: SELFHOSTED_MAX_MONITORS.'
 		},
@@ -208,14 +201,14 @@
 		{
 			name: 'MAX_MEMBERS_PER_ORG',
 			type: 'integer',
-			defaultVal: '50',
+			defaultVal: '100',
 			description:
 				'Maximum members and pending invites allowed per organization (0 = unlimited). Legacy fallback: SELFHOSTED_MAX_MEMBERS.'
 		},
 		{
 			name: 'MAX_ASSIGNEES_PER_MONITOR',
 			type: 'integer',
-			defaultVal: '10',
+			defaultVal: '50',
 			description:
 				'Maximum Person-in-Charge (PIC) user assignments allowed per monitor. Legacy fallback: SELFHOSTED_MAX_PIC.'
 		},
@@ -224,7 +217,7 @@
 			type: 'integer',
 			defaultVal: '30',
 			description:
-				'Minimum check interval in seconds allowed on monitor creation or update (hard floor: 5s). Legacy fallback: SELFHOSTED_MIN_INTERVAL.'
+				'Minimum check interval in seconds allowed on monitor creation or update (hard floor: 30s). Legacy fallback: SELFHOSTED_MIN_INTERVAL.'
 		},
 		{
 			name: 'DEFAULT_MONITOR_INTERVAL_SECONDS',
@@ -243,9 +236,9 @@
 		{
 			name: 'SELFHOSTED_MAX_TIMEOUT',
 			type: 'integer',
-			defaultVal: '60',
+			defaultVal: '30',
 			description:
-				'Legacy configuration timeout ceiling in seconds. The monitor API enforces a maximum timeout of 30 seconds.'
+				'Maximum check timeout ceiling in seconds. The monitor API enforces a maximum timeout limit of 30 seconds.'
 		}
 	];
 

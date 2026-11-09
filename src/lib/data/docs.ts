@@ -209,10 +209,10 @@ export const docSections: DocSection[] = [
 			'Welcome to Netra Uptime. This guide will walk you through the process of setting up your own instance, configuring your first monitor, and setting up notification channels so you can know about downtime before your users do.',
 		headings: [
 			{ id: 'gs-overview', title: 'Overview', level: 2 },
-			{ id: 'gs-requirements', title: 'System Requirements', level: 2 },
 			{ id: 'gs-docker-deploy', title: 'Quick Start via CLI', level: 2 },
 			{ id: 'gs-cli-commands', title: 'CLI Command Reference', level: 2 },
 			{ id: 'gs-standalone', title: 'Standalone Binary (SQLite)', level: 2 },
+			{ id: 'gs-download-windows', title: 'Download for Windows', level: 3 },
 			{ id: 'gs-verify', title: 'Verifying Services & Healthcheck', level: 2 },
 			{ id: 'gs-next-steps', title: 'Next Steps', level: 2 }
 		]
@@ -334,9 +334,13 @@ export const docSections: DocSection[] = [
 		description:
 			'Deliver real-time incident and resolution alerts directly to your team Slack channels using incoming webhooks.',
 		headings: [
-			{ id: 'slack-setup', title: 'Slack App Setup', level: 2 },
-			{ id: 'slack-webhook', title: 'Incoming Webhook URL', level: 2 },
-			{ id: 'slack-configure', title: 'Configure in Netra Uptime', level: 2 }
+			{ id: 'slack-step1', title: '1. Create a Slack App', level: 2 },
+			{ id: 'slack-step2', title: '2. Choose Setup Method', level: 2 },
+			{ id: 'slack-step3', title: '3. App Name & Workspace', level: 2 },
+			{ id: 'slack-step4', title: '4. Configure Scopes', level: 2 },
+			{ id: 'slack-step5', title: '5. Authorize Target Channel', level: 2 },
+			{ id: 'slack-step6', title: '6. Copy Webhook URL', level: 2 },
+			{ id: 'slack-step7', title: '7. Add Channel in Netra Uptime', level: 2 }
 		]
 	},
 	{

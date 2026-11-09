@@ -9,9 +9,16 @@
 <div class="flex flex-col gap-16">
 	<ArchSection id="boot-sequence" title="Startup Sequence">
 		<ArchText>
-			The server entry point is main.go. Initialization order is deterministic: configuration
-			loading and secret verification, in-memory cache allocation, database connection and schema
-			migrations, WebSocket hub, worker pool, background schedulers, and finally the HTTP engine.
+			Lifecycle initialization is encapsulated in the shared <code class="font-mono text-zinc-300"
+				>internal/app</code
+			>
+			package, shared by both the headless server entrypoint (<code class="font-mono text-zinc-300"
+				>cmd/netra-uptime/main.go</code
+			>) and the standalone desktop tray binary (<code class="font-mono text-zinc-300"
+				>cmd/netra-uptime-desktop/main.go</code
+			>). Initialization order is deterministic: configuration loading and secret verification,
+			in-memory cache allocation, database connection and schema migrations, WebSocket hub, worker
+			pool, background schedulers, and finally the HTTP engine.
 		</ArchText>
 		<MermaidDiagram definition={bootstrapDiagram.definition} label={bootstrapDiagram.label} />
 	</ArchSection>

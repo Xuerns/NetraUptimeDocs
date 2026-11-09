@@ -26,7 +26,26 @@ export const links = {
 	issues: 'https://github.com/Xuerns/Netra-Uptime/issues',
 	license: 'https://github.com/Xuerns/Netra-Uptime/blob/main/LICENSE',
 	docs: '/docs',
-	apiReference: '/docs/api-reference'
+	apiReference: '/docs/api-reference',
+	releases: 'https://github.com/Xuerns/Netra-Uptime/releases/latest'
+};
+
+/**
+ * Windows standalone downloads served from GitHub Releases.
+ * The `/releases/latest/download/<asset>` URL always resolves to the newest
+ * published release, so asset names must stay stable across versions.
+ */
+const releaseDownloadBase = 'https://github.com/Xuerns/Netra-Uptime/releases/latest/download';
+
+export const windowsDownloads = {
+	exe: {
+		fileName: 'netra-uptime-windows-amd64.exe',
+		url: `${releaseDownloadBase}/netra-uptime-windows-amd64.exe`
+	},
+	zip: {
+		fileName: 'netra-uptime-windows-amd64.zip',
+		url: `${releaseDownloadBase}/netra-uptime-windows-amd64.zip`
+	}
 };
 
 export const logos = {
@@ -74,7 +93,7 @@ export const faqs: FaqItem[] = [
 	{
 		question: 'How do I deploy Netra Uptime on my own server?',
 		answer:
-			'Run "npx netra-uptime start" (or pnpm dlx, yarn dlx, bunx) to generate a production-ready .env and docker-compose.yml with secure random credentials in ~/.netra-uptime and start the 2-service stack (postgres + netra-uptime with built-in in-memory caching). The CLI provides full lifecycle management: start, stop, restart, update, logs, status, and config. You can also deploy Netra Uptime as a standalone single-binary with embedded SQLite (DB_DRIVER=sqlite) or clone the repository and run "docker compose up -d" manually.'
+			'Run "npx netra-uptime start" (or pnpm dlx, yarn dlx, bunx) to generate a production-ready .env and docker-compose.yml with secure random credentials in ~/.netra-uptime and start the 2-service stack (postgres + netra-uptime with built-in in-memory caching). The CLI provides full lifecycle management: start, stop, status, logs, update, and credentials. You can also deploy Netra Uptime as a standalone single-binary with embedded SQLite (DB_DRIVER=sqlite) or clone the repository and run "docker compose up -d" manually.'
 	},
 	{
 		question: 'What monitoring protocols and checks are supported?',
@@ -94,7 +113,7 @@ export const faqs: FaqItem[] = [
 	{
 		question: 'How do operational quotas and resource limits work in self-hosted mode?',
 		answer:
-			'Operational limits can be customized using environment variables such as MAX_MONITORS_PER_ORG (default 100), MAX_STATUS_PAGES_PER_ORG (default 10), MAX_ORGS_PER_USER (default 10), MAX_MEMBERS_PER_ORG (default 50), MAX_ASSIGNEES_PER_MONITOR (default 10), and MIN_MONITOR_INTERVAL_SECONDS (default 30s). Setting any limit to 0 removes the restriction.'
+			'Operational limits can be customized using environment variables such as MAX_MONITORS_PER_ORG (default 200), MAX_STATUS_PAGES_PER_ORG (default 10), MAX_ORGS_PER_USER (default 10), MAX_MEMBERS_PER_ORG (default 100), MAX_ASSIGNEES_PER_MONITOR (default 50), and MIN_MONITOR_INTERVAL_SECONDS (default 30s). Setting any limit to 0 removes the restriction.'
 	},
 	{
 		question: 'How does long-term data retention work?',

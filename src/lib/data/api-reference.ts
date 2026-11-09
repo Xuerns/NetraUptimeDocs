@@ -2219,7 +2219,7 @@ export const apiGroups: ApiGroup[] = [
 					{
 						name: 'message',
 						type: 'string',
-						description: 'Required, min 10, max 100 chars.',
+						description: 'Required, min 10, max 200 chars.',
 						required: true
 					}
 				],

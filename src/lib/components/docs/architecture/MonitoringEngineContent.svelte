@@ -41,7 +41,7 @@
 			items={[
 				'CheckHTTP: Issues an HTTP GET request with User-Agent: Netra-Uptime-Bot/1.0 using an isolated http.Client. Uses a custom net.Dialer.Control socket hook that enforces anti-SSRF protections, follows up to 10 HTTP redirects (re-validating SSRF rules on every hop), and wraps deadline timeouts as ErrTimeout.',
 				'CheckTCP: Establishes a raw TCP handshake via net.Dialer with timeout and SSRF socket validation, measuring connection establishment time before gracefully closing the socket.',
-				'CheckPing: Pure unprivileged user-space reachability check using net.LookupIP and dial fallback. Requires no root privileges and no Docker NET_RAW capability.'
+				'CheckPing: ICMP Echo request (native unprivileged socket on Linux/macOS and Win32 IcmpSendEcho via iphlpapi.dll on Windows) with automatic fallback to TCP reachability probe (ports 443/80) if ICMP sockets are unpermitted. Requires no root privileges and no Docker NET_RAW capability.'
 			]}
 		/>
 		<DataTable table={checkerMatrix} />

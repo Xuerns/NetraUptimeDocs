@@ -69,27 +69,29 @@ export const bootstrapDiagram: ArchitectureDiagram = {
 	label: 'Application bootstrap sequence',
 	definition: `sequenceDiagram
     autonumber
-    participant Main as main.go
+    participant Entry as "Entrypoint (Server / Desktop)"
+    participant App as "internal/app (Lifecycle)"
     participant Cfg as config
     participant Cache as MemoryCache
-    participant DB as PostgreSQL / SQLite
+    participant DB as "PostgreSQL / SQLite"
     participant Hub as WebSocket Hub
     participant WP as WorkerPool
     participant Sched as Scheduler
     participant SSL as SSLDomainScheduler
     participant Ret as RetentionJob
     participant Gin as Gin Engine
-    Main->>Cfg: Load environment & ensure JWT secret
-    Main->>Cache: NewMemoryCache (TTL & 60s eviction)
-    Main->>DB: Database Init (Postgres pool or SQLite WAL)
-    Main->>DB: AutoMigrate (27 tables)
-    Main->>Hub: NewHub and Run goroutine
-    Main->>WP: NewWorkerPool(10) and Start
-    Main->>Sched: Start ticker (20s)
-    Main->>SSL: Start daily ticker (24h)
-    Main->>Ret: Start ticker (1h)
-    Main->>Gin: Register validator, CORS, static routes
-    Main->>Gin: SetupRouter and Run on PORT`
+    Entry->>App: app.Setup(cfg)
+    App->>Cfg: Load environment & ensure JWT secret
+    App->>Cache: NewMemoryCache (TTL & 60s eviction)
+    App->>DB: Database Init (Postgres pool or SQLite WAL)
+    App->>DB: AutoMigrate (27 tables)
+    App->>Hub: NewHub and Run goroutine
+    App->>WP: NewWorkerPool(10) and Start
+    App->>Sched: Start ticker (20s)
+    App->>SSL: Start daily ticker (24h)
+    App->>Ret: Start ticker (1h)
+    App->>Gin: Register validator, CORS, static routes & SetupRouter
+    Entry->>Gin: ListenAndServe on PORT`
 };
 
 export const requestRoutingDiagram: ArchitectureDiagram = {

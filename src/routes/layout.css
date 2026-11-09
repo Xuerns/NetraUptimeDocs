@@ -121,3 +121,57 @@ a {
 	border-color: rgba(78, 222, 163, 0.45);
 	background: #161618;
 }
+
+/* ---------- Hero backdrop: dot grid with cursor spotlight ---------- */
+.hero-backdrop {
+	--mx: 70%;
+	--my: 20%;
+}
+
+.hero-backdrop-fade {
+	mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 75%);
+}
+
+.hero-grid {
+	background-image: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1px, transparent 1.2px);
+	background-size: 22px 22px;
+}
+
+.hero-grid-glow {
+	background-image: radial-gradient(circle, rgba(78, 222, 163, 0.75) 1px, transparent 1.4px);
+	background-size: 22px 22px;
+	mask-image: radial-gradient(240px circle at var(--mx) var(--my), #000 0%, transparent 100%);
+}
+
+/* ---------- Live monitor ticker ---------- */
+.ticker {
+	mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+@keyframes ticker-scroll {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		transform: translate3d(-50%, 0, 0);
+	}
+}
+
+.ticker-track {
+	width: max-content;
+	animation: ticker-scroll 60s linear infinite;
+}
+
+.ticker:hover .ticker-track {
+	animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ticker-track {
+		animation: none;
+	}
+
+	.ticker {
+		overflow-x: auto;
+	}
+}

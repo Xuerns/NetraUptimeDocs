@@ -6,6 +6,31 @@ We welcome all contributions, including fixing typos, clarifying guides, updatin
 
 ---
 
+## Who Can Contribute & Contribution Scope
+
+Anyone is welcome to contribute to **Netra Uptime Documentation**! You **do not** need to be an existing code contributor to Netra Uptime to help improve our docs.
+
+Contributions are divided into two categories:
+
+### 1. General Documentation Improvements (Open to Everyone)
+
+Anyone can directly submit a Pull Request without prior requirements for:
+
+- Fixing typos, grammatical mistakes, or formatting issues.
+- Improving readability, clarity, and explanations in existing guides.
+- Adding setup and reverse proxy guides (e.g., Docker, Nginx, Traefik, Caddy, Cloudflare).
+- Adding troubleshooting FAQs, examples, and community recipes.
+
+### 2. New Features & Architecture Changes (Requires Merged Core PR)
+
+If your contribution documents a **new feature**, an **API modification**, or an **architectural change** in Netra Uptime:
+
+- The corresponding code Pull Request in the core repository ([Xuerns/Netra-Uptime](https://github.com/Xuerns/Netra-Uptime)) **must be merged into `main` first**.
+- Documentation PRs for unmerged or proposed features will be put on hold until the core PR is merged, ensuring documentation always reflects stable, released functionality.
+- Please provide a link to the merged Netra-Uptime PR in your pull request description.
+
+---
+
 ## Fork Workflow
 
 All contributions are submitted through GitHub Pull Requests using the fork workflow.
@@ -164,6 +189,8 @@ Briefly explain the changes made and the motivation behind them:
 - **What was changed/added?**:
 - **Why is this change needed?**:
 - **Related issue (if any)**: Fixes #
+- **Merged Netra-Uptime PR (if applicable)**: https://github.com/Xuerns/Netra-Uptime/pull/...
+  _(Required when documenting new features or architectural changes; N/A for general guides/typos)_
 
 ---
 

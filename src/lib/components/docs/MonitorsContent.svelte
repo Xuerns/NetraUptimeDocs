@@ -129,7 +129,7 @@ Timeout:  5 seconds`;
 					<tr>
 						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">interval_seconds</td>
 						<td class="px-4 py-3 font-mono text-xs text-zinc-400">integer</td>
-						<td class="px-4 py-3 text-xs text-zinc-400">&ge; 30 (min allowed: 5)</td>
+						<td class="px-4 py-3 text-xs text-zinc-400">&ge; 30 (hard floor: 30s)</td>
 						<td class="px-4 py-3 text-sm text-zinc-400"
 							>Time between scheduled checks. Enforced by <code
 								class="font-mono text-xs text-zinc-300">MIN_MONITOR_INTERVAL_SECONDS</code
@@ -165,9 +165,11 @@ Timeout:  5 seconds`;
 						<td class="px-4 py-3 font-mono text-xs text-zinc-400">uuid[]</td>
 						<td class="px-4 py-3 text-xs text-zinc-400">1–50 items</td>
 						<td class="px-4 py-3 text-sm text-zinc-400"
-							>User UUIDs assigned as Persons-in-Charge (PIC). Also accepts alias <code
-								class="font-mono text-xs text-zinc-300">MonitorPICs</code
-							>.</td
+							>User UUIDs assigned as Persons-in-Charge (PIC). Governed by <code
+								class="font-mono text-xs text-zinc-300">MAX_ASSIGNEES_PER_MONITOR</code
+							>
+							(default: 50). Also accepts alias
+							<code class="font-mono text-xs text-zinc-300">MonitorPICs</code>.</td
 						>
 					</tr>
 					<tr>
@@ -378,10 +380,15 @@ Timeout:  5 seconds`;
 			schemes and path segments are automatically trimmed.
 		</p>
 		<div class="rounded-lg border border-zinc-800 bg-[#131315] p-4 text-sm leading-6 text-zinc-300">
-			<strong class="font-medium text-[#4edea3]">Unprivileged User-Space Operation:</strong> Netra
-			Uptime's Ping checker is implemented in pure Go using DNS resolution (<code
-				class="font-mono text-xs text-zinc-200">net.LookupIP</code
-			>) and unprivileged socket reachability probes. It does
+			<strong class="font-medium text-[#4edea3]"
+				>Unprivileged User-Space ICMP & TCP Fallback:</strong
+			>
+			Netra Uptime sends real ICMP echo requests using unprivileged native ICMP sockets on Linux/macOS
+			and Win32 <code class="font-mono text-xs text-zinc-200">IcmpSendEcho</code> (via
+			<code class="font-mono text-xs text-zinc-200">iphlpapi.dll</code>) on Windows without
+			requiring administrator privileges. If ICMP sockets are restricted (such as in unprivileged
+			container environments), it automatically falls back to TCP socket reachability probes
+			(probing port 443 or 80). It does
 			<strong class="text-zinc-100">not</strong> require root privileges or the Docker
 			<code class="font-mono text-xs text-zinc-200">NET_RAW</code> capability, enabling safe execution
 			inside hardened non-root containers (UID 10001).

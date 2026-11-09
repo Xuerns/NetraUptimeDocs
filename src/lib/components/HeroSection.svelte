@@ -3,6 +3,8 @@
 	import { ArrowRight, ArrowUpRight, BookOpen, Code2, Cpu, Layers, Terminal } from 'lucide-svelte';
 	import InstallCommand from './InstallCommand.svelte';
 	import DashboardPreview from './DashboardPreview.svelte';
+	import HeroBackdrop from './HeroBackdrop.svelte';
+	import LiveTicker from './LiveTicker.svelte';
 
 	const quickDocs = [
 		{
@@ -37,7 +39,8 @@
 </script>
 
 <section id="top" class="relative" aria-labelledby="hero-heading">
-	<div class="mx-auto max-w-[1380px] px-4 pt-10 pb-12 sm:px-6 lg:px-8 lg:pt-14 lg:pb-16">
+	<HeroBackdrop />
+	<div class="relative mx-auto max-w-[1380px] px-4 pt-10 pb-12 sm:px-6 lg:px-8 lg:pt-14 lg:pb-16">
 		<div class="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-10">
 			<div data-reveal class="lg:col-span-7">
 				<h1
@@ -99,6 +102,10 @@
 					</a>
 				</div>
 			</div>
+		</div>
+
+		<div data-reveal>
+			<LiveTicker />
 		</div>
 
 		<div data-reveal>

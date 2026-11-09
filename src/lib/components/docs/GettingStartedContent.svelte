@@ -2,6 +2,25 @@
 	import InstallCommand, { type CommandTab } from '$lib/components/InstallCommand.svelte';
 	import { logos } from '$lib/data/landing';
 	import CodeBlock from './CodeBlock.svelte';
+	import DownloadCard from './DownloadCard.svelte';
+
+	const windowsSteps = [
+		{
+			title: 'Move it to a dedicated folder',
+			description:
+				'For example C:\\NetraUptime. The database (netra.db), secret key, and logs are stored next to the executable, so avoid running it from Downloads.'
+		},
+		{
+			title: 'Double-click netra-uptime.exe',
+			description:
+				'The dashboard opens automatically in your browser at http://localhost:27346 and Netra Uptime keeps running in the system tray.'
+		},
+		{
+			title: 'Create your account',
+			description:
+				'Register your first account in the dashboard. Use the tray icon to reopen the dashboard (Open Netra) or stop the service (Quit).'
+		}
+	];
 
 	const globalInstallTabs: CommandTab[] = [
 		{ key: 'npm', label: 'npm', logo: logos.npm, cmd: 'npm install -g netra-uptime' },
@@ -64,54 +83,6 @@ netra-uptime logs`;
 			infrastructure with multi-protocol checks (HTTP/HTTPS, TCP, and unprivileged Ping), tracks SSL
 			and domain expiration, and routes alerts to Slack, Discord, Email, or custom webhooks.
 		</p>
-	</section>
-
-	<section id="gs-requirements" class="flex scroll-mt-24 flex-col gap-4">
-		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">System Requirements</h2>
-		<p class="text-sm leading-7 text-zinc-400">
-			Netra Uptime is engineered for minimal resource consumption and predictable self-hosting:
-		</p>
-		<div class="overflow-x-auto rounded-lg border border-zinc-800">
-			<table class="w-full text-left text-sm">
-				<thead>
-					<tr class="border-b border-zinc-800 bg-[#141416]">
-						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Resource</th>
-						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Requirement</th>
-						<th class="px-4 py-3 font-mono text-xs font-medium text-zinc-300">Notes</th>
-					</tr>
-				</thead>
-				<tbody class="divide-y divide-zinc-800/60 bg-transparent">
-					<tr>
-						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">CPU & RAM</td>
-						<td class="px-4 py-3 text-sm text-zinc-200">1 vCPU, 512 MB RAM</td>
-						<td class="px-4 py-3 text-xs text-zinc-400">
-							Sufficient for up to 100 monitors checking at 60-second intervals.
-						</td>
-					</tr>
-					<tr>
-						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">Operating System</td>
-						<td class="px-4 py-3 text-sm text-zinc-200">Linux, macOS, Windows</td>
-						<td class="px-4 py-3 text-xs text-zinc-400">
-							Runs natively as an OS binary or as a Docker container.
-						</td>
-					</tr>
-					<tr>
-						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">Container Runtime</td>
-						<td class="px-4 py-3 text-sm text-zinc-200">Docker 24+ &amp; Compose v2.20+</td>
-						<td class="px-4 py-3 text-xs text-zinc-400">
-							Optional if running the standalone binary with SQLite.
-						</td>
-					</tr>
-					<tr>
-						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">Network Port</td>
-						<td class="px-4 py-3 font-mono text-xs text-zinc-200">27346</td>
-						<td class="px-4 py-3 text-xs text-zinc-400">
-							Serves HTTP REST API, embedded UI, and real-time WebSocket.
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
 	</section>
 
 	<section id="gs-docker-deploy" class="flex scroll-mt-24 flex-col gap-4">
@@ -196,13 +167,6 @@ netra-uptime logs`;
 							Gracefully terminates all running containers (<code class="font-mono text-zinc-300"
 								>docker compose down</code
 							>).
-						</td>
-					</tr>
-					<tr>
-						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">netra-uptime restart</td>
-						<td class="px-4 py-3 text-sm text-zinc-200">Restart Services</td>
-						<td class="px-4 py-3 text-xs text-zinc-400">
-							Restarts the application and database containers cleanly.
 						</td>
 					</tr>
 					<tr>
@@ -292,16 +256,84 @@ netra-uptime logs`;
 			In addition to Docker Compose, Netra Uptime can run as a single standalone executable with
 			pure-Go embedded SQLite. In this mode, no PostgreSQL or Docker runtime is needed—the entire
 			application, database engine, web assets, and worker routines execute within a single
-			lightweight process:
+			lightweight process.
 		</p>
+
+		<h3
+			id="gs-download-windows"
+			class="mt-2 scroll-mt-24 text-base font-medium tracking-tight text-zinc-200"
+		>
+			Download for Windows
+		</h3>
+		<DownloadCard id="gs-download-card" />
+
+		<ol class="flex flex-col gap-3">
+			{#each windowsSteps as step, index (step.title)}
+				<li class="flex gap-3">
+					<span
+						class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-zinc-700 font-mono text-xs text-zinc-300"
+					>
+						{index + 1}
+					</span>
+					<div class="flex flex-col gap-0.5">
+						<span class="text-sm font-medium text-zinc-200">{step.title}</span>
+						<span class="text-sm leading-6 text-zinc-400">{step.description}</span>
+					</div>
+				</li>
+			{/each}
+		</ol>
+
+		<h3 class="mt-2 text-base font-medium tracking-tight text-zinc-200">
+			Background Desktop Features &amp; Flags
+		</h3>
 		<p class="text-sm leading-7 text-zinc-400">
-			Configure SQLite mode by providing a minimal <code
-				class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-200">.env</code
-			> file:
+			The Windows desktop binary includes built-in background management designed for system startup
+			and seamless desktop integration:
+		</p>
+		<ul class="ml-5 flex list-disc flex-col gap-2 text-sm leading-7 text-zinc-400">
+			<li>
+				<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-200"
+					>--background</code
+				>
+				— Launches Netra Uptime silently in the system tray without opening a browser window or console
+				popup. Ideal when placing a shortcut inside the Windows Startup folder (<code
+					class="font-mono text-zinc-300">shell:startup</code
+				>).
+			</li>
+			<li>
+				<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-200"
+					>--no-browser</code
+				>
+				— Prevents the web browser from opening automatically on startup, allowing you to access the dashboard
+				manually at your convenience.
+			</li>
+			<li>
+				<strong class="font-medium text-zinc-200">Single-Instance Mutex Guard</strong> — Uses a
+				Windows named mutex (<code class="font-mono text-zinc-300"
+					>Local\NetraUptimeSingleInstanceMutex</code
+				>) to guarantee that only one instance of Netra Uptime runs at any time. If you double-click
+				the executable or shortcut while Netra Uptime is already active, the new process detects the
+				running instance, focuses the existing browser tab, and terminates cleanly without causing
+				port conflicts or duplicate workers.
+			</li>
+		</ul>
+		<h3 class="mt-2 text-base font-medium tracking-tight text-zinc-200">Optional Configuration</h3>
+		<p class="text-sm leading-7 text-zinc-400">
+			The executable runs with zero configuration: it defaults to SQLite on
+			<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-200"
+				>127.0.0.1:27346</code
+			>. To customize it, place a
+			<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-200">.env</code>
+			file next to the executable:
 		</p>
 		<CodeBlock code={standaloneEnvCode} language="env" id="gs-standalone-env" />
 
-		<p class="text-sm leading-7 text-zinc-400">Build and execute the standalone binary directly:</p>
+		<h3 class="mt-2 text-base font-medium tracking-tight text-zinc-200">
+			Build from Source (Advanced)
+		</h3>
+		<p class="text-sm leading-7 text-zinc-400">
+			Only needed for Linux and macOS binaries or when contributing. Requires Go and pnpm:
+		</p>
 		<CodeBlock code={standaloneRunCode} language="bash" id="gs-standalone-run" />
 
 		<p class="text-sm leading-7 text-zinc-400">

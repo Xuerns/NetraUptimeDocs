@@ -10,7 +10,6 @@
       - "27346:27346"
     environment:
       - APP_ENV=production
-      - APP_MODE=selfhosted
       - PORT=27346
       - DB_DRIVER=postgres
       - DB_HOST=postgres
@@ -24,7 +23,7 @@
       - PUBLIC_API_URL=/api/v1
       - ALLOW_REGISTRATION=true
       - ALLOW_PRIVATE_NETWORK_MONITORING=false
-      - MAX_MONITORS_PER_ORG=100
+      - MAX_MONITORS_PER_ORG=200
       - MAX_STATUS_PAGES_PER_ORG=10
       - MIN_MONITOR_INTERVAL_SECONDS=30
     depends_on:

@@ -149,7 +149,7 @@ export const checkerMatrix: TableData = {
 		],
 		[
 			'checker/ping.go',
-			'Unprivileged user-space reachability probe (net.LookupIP + dial reachability, no root or NET_RAW capability required).',
+			'ICMP echo request (unprivileged native ICMP socket on Linux/macOS, Win32 IcmpSendEcho via iphlpapi.dll on Windows) with automatic fallback to TCP reachability probe (port 443/80) if ICMP sockets are unpermitted. No root or Docker NET_RAW capability required.',
 			'Hosts and IP addresses'
 		]
 	]

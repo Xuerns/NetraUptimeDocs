@@ -3,8 +3,8 @@
 	import ShotImage from './ShotImage.svelte';
 </script>
 
-<div class="mx-auto mt-10 max-w-[1380px]">
-	<div class="overflow-hidden rounded-lg border border-zinc-800 bg-[#101112]">
+<div class="mx-auto mt-6 max-w-[1380px]">
+	<div data-tilt class="overflow-hidden rounded-lg border border-zinc-800 bg-[#101112]">
 		<div
 			class="flex items-center justify-between border-b border-zinc-800/80 bg-[#131315] px-4 py-2.5"
 		>

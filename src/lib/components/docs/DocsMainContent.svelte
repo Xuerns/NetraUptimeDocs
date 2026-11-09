@@ -1,5 +1,5 @@
 <script lang="ts">
-	import DiscordDocContent from './notifications/DiscordDocContent.svelte';
+	import DiscordDocContent from './DiscordDocContent.svelte';
 	import GettingStartedContent from './GettingStartedContent.svelte';
 	import MonitorsContent from './MonitorsContent.svelte';
 	import ConfigurationContent from './ConfigurationContent.svelte';
