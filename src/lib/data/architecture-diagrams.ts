@@ -133,14 +133,21 @@ export const schedulerDiagram: ArchitectureDiagram = {
     W1 --> Switch{"Monitor type"}
     W2 --> Switch
     WN --> Switch
-    Switch -->|http| HTTP["CheckHTTP"]
+    Switch -->|http| HTTP["CheckHTTPWithOptions"]
     Switch -->|tcp| TCP["CheckTCP"]
     Switch -->|ping| Ping["CheckPing"]
-    HTTP --> Result["Latency and status code"]
-    TCP --> Result
-    Ping --> Result
-    Result --> Rules["EvaluateRules"]
-    Rules --> Save["Persist to checks table"]`
+    HTTP --> Attempt1["Attempt #1 Result"]
+    TCP --> Attempt1
+    Ping --> Attempt1
+    Attempt1 --> ShouldRetry{"Transient error / 5xx / timeout?"}
+    ShouldRetry -->|Yes| RetryWait["Sleep 2s & Attempt #2 (Immediate Retry)"]
+    RetryWait --> FinalResult["Final Check Result"]
+    ShouldRetry -->|No / SSRF| FinalResult
+    FinalResult --> MaintCheck{"syncAndCheckMaintenance"}
+    MaintCheck -->|Window Active| Suppress["Tag status = 'maintenance' & Suppress Alert"]
+    MaintCheck -->|Normal Operation| Rules["EvaluateRules (Alert Template)"]
+    Rules --> Save["Persist to checks & incidents table"]
+    Suppress --> Save`
 };
 
 export const stateMachineDiagram: ArchitectureDiagram = {
@@ -153,13 +160,19 @@ export const stateMachineDiagram: ArchitectureDiagram = {
     UP --> UNRESPONSIVE: Consecutive Timeouts >= 3 (Amber Warning)
     UP --> UP: Critical breach below threshold
     UP --> DOWN: FailureCount >= RequiredBreaches / Hard Failure
+    UP --> MAINTENANCE: Scheduled maintenance window starts
     DEGRADED --> UP: Healthy again
     DEGRADED --> UNRESPONSIVE: Consecutive Timeouts >= 3
     DEGRADED --> DOWN: Critical breach at threshold
+    DEGRADED --> MAINTENANCE: Maintenance starts
     UNRESPONSIVE --> UP: Healthy check (Auto-resolved)
     UNRESPONSIVE --> DOWN: Hard crash / Connection refused
+    UNRESPONSIVE --> MAINTENANCE: Maintenance starts
     DOWN --> DOWN: Still breached
-    DOWN --> UP: All rules passed (Auto-resolve)`
+    DOWN --> UP: All rules passed (Auto-resolve)
+    DOWN --> MAINTENANCE: Maintenance starts
+    MAINTENANCE --> UP: Maintenance completes (target healthy)
+    MAINTENANCE --> DOWN: Maintenance completes (target down)`
 };
 
 export const incidentDiagram: ArchitectureDiagram = {
@@ -168,17 +181,19 @@ export const incidentDiagram: ArchitectureDiagram = {
 	definition: `sequenceDiagram
     autonumber
     participant WP as WorkerPool
-    participant DB as PostgreSQL
+    participant DB as DB (Postgres / SQLite)
     participant D as Dispatcher
     participant SMTP as SMTP
     participant Slack as Slack
     participant Discord as Discord
     participant WH as Custom webhook
-    alt Status becomes UNRESPONSIVE (3x Timeout)
+    alt Target in Active Scheduled Maintenance
+        WP->>DB: Record check as status = 'maintenance' (Alert suppressed)
+    else Status becomes UNRESPONSIVE (3x Timeout)
         WP->>DB: Create medium severity incident
         WP->>D: Dispatch monitor.unresponsive (Calm warning)
     else Status becomes DOWN (Critical failure / breach)
-        WP->>DB: Create critical incident (ongoing)
+        WP->>DB: Create critical incident (with triggered_rule & response_snippet)
         WP->>SMTP: Email the monitor PIC
         WP->>D: Dispatch monitor.down
         D->>DB: Load active channels
@@ -190,7 +205,7 @@ export const incidentDiagram: ArchitectureDiagram = {
         end
         D->>DB: Save NotificationLog
     else Status recovers to UP
-        WP->>DB: Resolve incident
+        WP->>DB: Resolve incident (calculate real downtime duration)
         WP->>SMTP: Service restored email
         WP->>D: Dispatch monitor.up
         D->>DB: Save NotificationLog

@@ -20,9 +20,9 @@
 		</ArchText>
 		<ArchList
 			items={[
-				'Total & Health Counts: total_checks, up_checks (status in up or degraded), and down_checks (status in down or unresponsive).',
-				'Uptime & Latency Metrics: uptime_percentage, avg_latency_ms, min_latency_ms, and max_latency_ms.',
-				'HTTP Status Code Histogram Buckets: count2xx (200–299), count3xx (300–399), count4xx (400–499), count5xx (>= 500), and count_error (status_code is NULL or 0, indicating socket timeouts, DNS drops, or connection refusals).',
+				'Total & Health Counts: total_checks, up_checks (status is up, or degraded with valid HTTP status < 500 / latency breach), and down_checks (status is down, or degraded with status 0 timeout). All checks with status = \'maintenance\' are strictly excluded (status != \'maintenance\').',
+				'Unbiased Latency Metrics: avg_latency_ms, min_latency_ms, and max_latency_ms exclude down, maintenance, and timeout checks (response_time_ms > 0 and status != \'down\') to eliminate statistical skew from 0ms connection resets and 30s timeout aborts. When merging buckets on conflict, average latency is weighted by up_checks.',
+				'HTTP Status Code Histogram Buckets: count_2xx (200–299), count_3xx (300–399), count_4xx (400–499), count_5xx (>= 500), and count_error (status_code is NULL or 0, indicating socket timeouts, DNS drops, or connection refusals).',
 				'Idempotent Upsert: Writes into monitor_daily_stats using clause.OnConflict on (monitor_id, date), ensuring re-runs merge cleanly before deleting old raw rows.'
 			]}
 		/>

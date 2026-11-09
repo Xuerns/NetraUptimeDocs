@@ -98,12 +98,12 @@ export const faqs: FaqItem[] = [
 	{
 		question: 'What monitoring protocols and checks are supported?',
 		answer:
-			'Netra Uptime supports HTTP/HTTPS status code and latency assertions, TCP port handshakes, unprivileged Ping reachability probes, daily SSL/TLS certificate validity checks, and WHOIS/RDAP domain expiration tracking.'
+			'Netra Uptime supports advanced HTTP/HTTPS checks (custom methods GET/POST/PUT/PATCH/HEAD, custom headers with CRLF protection, request payloads, and sanitized error response snippet capture), TCP port handshakes, unprivileged Ping reachability probes, daily SSL/TLS certificate validity checks, and WHOIS/RDAP domain expiration tracking.'
 	},
 	{
 		question: 'How does alert evaluation avoid false-positive notifications?',
 		answer:
-			'Alert rules use a template-first state machine that differentiates between timeouts (amber state) and hard connection or status failures (red state). You can require consecutive breach counts before opening an incident or dispatching alerts.'
+			'Alert evaluation uses an automatic 1x Immediate Retry with a 2-second sleep delay upon transient network drops, timeouts, 5xx server errors, or status code mismatches before updating failure counters. It also suppresses alerts during active Scheduled Maintenance windows and differentiates timeouts (amber state) from hard crashes (red state) using configurable consecutive breach thresholds.'
 	},
 	{
 		question: 'Which notification channels are built in?',

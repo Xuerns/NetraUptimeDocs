@@ -12,17 +12,18 @@
 <div class="flex flex-col gap-16">
 	<ArchSection id="ae-state" title="Status State Machine">
 		<ArchText>
-			After each check completes, evaluator.go and pool.go process results through a 4-state finite
-			state machine (UP, DEGRADED, UNRESPONSIVE, and DOWN) governed by latency, HTTP status code,
-			and socket failure conditions.
+			After each check completes, evaluator.go and pool.go process results through a 5-state finite
+			state machine (UP, DEGRADED, UNRESPONSIVE, DOWN, and MAINTENANCE) governed by latency, HTTP status code,
+			scheduled maintenance status, and socket failure conditions.
 		</ArchText>
 		<MermaidDiagram definition={stateMachineDiagram.definition} label={stateMachineDiagram.label} />
 		<ArchList
 			items={[
 				'UP (Healthy): Check succeeded, latency is within normal thresholds, and status code matches expectation. Resets FailureCount and ConsecutiveTimeouts to 0, auto-resolves any open incidents, emails PICs, and emits monitor.up.',
-				'DEGRADED (Warning): Target responded but breached a warning rule (such as elevated latency or unexpected non-critical status code). Resets FailureCount to 0 and dispatches monitor.degraded.',
+				'DEGRADED (Warning): Target responded but breached a warning rule (such as elevated latency or unexpected non-critical status code). Resets FailureCount to 0 and dispatches monitor.degraded. Note that degraded checks with valid HTTP status codes (< 500) remain counted as available (UP) in SLA calculations.',
 				'UNRESPONSIVE (Amber Warning): Target exceeded connection or read deadlines (ErrTimeout) for 3 consecutive checks. Opens a medium-severity incident and dispatches monitor.unresponsive.',
-				'DOWN (Critical Outage): Target encountered a hard socket error (connection refused, DNS failure) or breached a critical rule for RequiredBreaches consecutive checks. Dispatches monitor.down.'
+				'DOWN (Critical Outage): Target encountered a hard socket error (connection refused, DNS failure) or breached a critical rule for RequiredBreaches consecutive checks. Dispatches monitor.down.',
+				'MAINTENANCE (Suppressed): Target is covered by an active scheduled maintenance window. Checks are marked with status \'maintenance\', alert rules are not breached, incidents are suppressed, notifications are muted, and checks are excluded from 90-day SLA calculations.'
 			]}
 		/>
 	</ArchSection>
@@ -75,6 +76,7 @@
 		</ArchText>
 		<ArchList
 			items={[
+				'Immediate Retry Gate: Prior to evaluating consecutive breaches, the worker automatically re-checks the target after a 2-second sleep delay if transient connection failures, timeouts, 5xx server crashes, or status mismatches occur, preventing isolated blips from incrementing failure counters.',
 				'Consecutive Strikes: FailureCount increments only when the same critical condition persists across consecutive checks.',
 				'Threshold Trigger: The state transitions to DOWN and fires alert dispatches only when FailureCount >= RequiredBreaches (default: 2, or the highest consecutive threshold among breached critical rules).',
 				'Single Passing Recovery: A single successful check immediately resets FailureCount and ConsecutiveTimeouts to 0, transitions the monitor to UP, marks open incidents as resolved, and logs an auto-recovery note in the incident timeline.'

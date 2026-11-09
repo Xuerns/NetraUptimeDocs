@@ -197,7 +197,16 @@ Primary CTA: solid fill (`primary` / near-black on light contexts, or `on-surfac
 
 ### Status Indicators
 
-Unchanged from the base system: an 8px dot inside a pill chip, mono label. The dot still pulses gently for "Healthy"/live states — this is the one element allowed a soft animated glow, since it represents a genuinely live signal, not decorative atmosphere.
+Pill chip with an 8px dot, mono label, and tokenized colors:
+- **Healthy (`UP`)**: Emerald green dot and matching subtle tint.
+- **Degraded (`DEGRADED` / `UNRESPONSIVE`)**: Amber warning dot and border.
+- **Down (`DOWN`)**: Rose red outage indicator.
+- **Maintenance (`MAINTENANCE`)**: Muted blue/indigo chip (`#60A5FA` / `text-blue-400`, `border-blue-500/30`, soft blue fill) signaling planned maintenance without triggering false alarms.
+
+### Response Snippet Box
+
+Diagnostic monospace container rendered on incident workspace:
+- Flat `bg-background` fill, 1px `border-border` rule, `font-mono text-xs text-rose-300` (Dark) / `text-rose-700` (Light), `p-3 rounded` (4px), `overflow-x-auto whitespace-pre-wrap break-all`. Displays up to 512 bytes of sanitized printable response text on HTTP >= 400 breaches.
 
 ### Panels (formerly "Glass Cards")
 

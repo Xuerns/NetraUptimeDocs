@@ -277,7 +277,7 @@ export const docSections: DocSection[] = [
 			{ id: 'mon-ssl', title: 'SSL / TLS Certificate Expiry', level: 2 },
 			{ id: 'mon-domain', title: 'Domain Expiration (RDAP & WHOIS)', level: 2 },
 			{ id: 'mon-criticality-pic', title: 'Criticality & PIC Assignment', level: 2 },
-			{ id: 'mon-smart-detection', title: 'Smart Incident Detection & 4-State Machine', level: 2 },
+			{ id: 'mon-smart-detection', title: 'Smart Incident Detection & 5-State Machine', level: 2 },
 			{ id: 'mon-manual-check', title: 'On-Demand Manual Checks', level: 2 }
 		]
 	},

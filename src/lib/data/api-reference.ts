@@ -947,7 +947,7 @@ export const apiGroups: ApiGroup[] = [
 				title: 'Create a monitor',
 				description:
 					'Creates a new monitor to continuously check the health of an endpoint or service.',
-				auth: 'Bearer token + TenantMiddleware + RequireRole("owner")',
+				auth: 'Bearer token + TenantMiddleware + RequireRole("owner", "admin")',
 				requestBody: [
 					{
 						name: 'name',
@@ -983,6 +983,24 @@ export const apiGroups: ApiGroup[] = [
 						name: 'expectation_status_code',
 						type: 'number',
 						description: 'Optional. Default: 200.',
+						required: false
+					},
+					{
+						name: 'http_method',
+						type: 'string',
+						description: "Optional, oneof: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'HEAD'. Default: 'GET'.",
+						required: false
+					},
+					{
+						name: 'http_headers',
+						type: 'string',
+						description: 'Optional JSON-encoded string of key-value pairs (max 25 headers, max 4096 bytes). Protected against CRLF and Host header overrides.',
+						required: false
+					},
+					{
+						name: 'http_body',
+						type: 'string',
+						description: 'Optional request body payload (max 16384 bytes).',
 						required: false
 					},
 					{
@@ -1024,6 +1042,8 @@ export const apiGroups: ApiGroup[] = [
     "interval_seconds": 60,
     "timeout_seconds": 10,
     "expectation_status_code": 200,
+    "http_method": "GET",
+    "http_headers": "{\\"Accept\\": \\"application/json\\"}",
     "criticality": "high",
     "assignees": ["9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"],
     "enable_ssl_domain_check": true,
@@ -1044,6 +1064,9 @@ export const apiGroups: ApiGroup[] = [
     "interval_seconds": 60,
     "timeout_seconds": 10,
     "expectation_status_code": 200,
+    "http_method": "GET",
+    "http_headers": "{\\"Accept\\": \\"application/json\\"}",
+    "http_body": "",
     "status": "up",
     "response_time": 42,
     "last_checked": "2026-10-04T12:00:00Z",
@@ -1207,7 +1230,8 @@ export const apiGroups: ApiGroup[] = [
 				method: 'GET',
 				path: '/organization/:orgId/monitors/:monitorId/stats',
 				title: 'Get monitor stats',
-				description: 'Get daily statistics for a monitor.',
+				description:
+					'Get daily statistics for a monitor. Latency metrics (avg/min/max) exclude failed, maintenance, and timeout checks to eliminate statistical skew. Degraded checks with valid HTTP status (< 500) are counted in up_checks.',
 				auth: 'Bearer token + TenantMiddleware',
 				queryParams: [
 					{
@@ -1289,6 +1313,24 @@ export const apiGroups: ApiGroup[] = [
 						required: false
 					},
 					{
+						name: 'http_method',
+						type: 'string',
+						description: "Optional, oneof: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'HEAD'.",
+						required: false
+					},
+					{
+						name: 'http_headers',
+						type: 'string',
+						description: 'Optional JSON-encoded string of custom headers (max 25 headers, max 4096 bytes).',
+						required: false
+					},
+					{
+						name: 'http_body',
+						type: 'string',
+						description: 'Optional request body payload (max 16384 bytes).',
+						required: false
+					},
+					{
 						name: 'is_active',
 						type: 'boolean',
 						description: 'Optional. Toggle false to pause monitoring, true to resume.',
@@ -1343,6 +1385,9 @@ export const apiGroups: ApiGroup[] = [
     "interval_seconds": 30,
     "timeout_seconds": 10,
     "expectation_status_code": 200,
+    "http_method": "GET",
+    "http_headers": "{\"Accept\": \"application/json\"}",
+    "http_body": "",
     "status": "up",
     "is_active": true,
     "criticality": "high",
@@ -2159,7 +2204,10 @@ export const apiGroups: ApiGroup[] = [
     "id": "uuid",
     "monitor_id": "uuid",
     "status": "ongoing",
-    "summary": "High response time detected",
+    "severity": "critical",
+    "summary": "HTTP status mismatch: expected 200, got 502",
+    "triggered_rule": "consecutive_failures >= 3",
+    "response_snippet": "502 Bad Gateway - upstream connect error or disconnect/reset before headers",
     "started_at": "2023-11-01T10:00:00Z",
     "resolved_at": null,
     "monitor": { "name": "Production API Health", "target": "https://api.example.com/health" },
@@ -2202,7 +2250,20 @@ export const apiGroups: ApiGroup[] = [
 							status: '200 OK',
 							code: `{
   "status": "success",
-  "data": [ ... ]
+  "data": [
+    {
+      "id": "uuid",
+      "monitor_id": "uuid",
+      "status": "ongoing",
+      "severity": "critical",
+      "summary": "HTTP status mismatch: expected 200, got 502",
+      "triggered_rule": "consecutive_failures >= 3",
+      "response_snippet": "502 Bad Gateway - upstream connect error or disconnect/reset before headers",
+      "started_at": "2023-11-01T10:00:00Z",
+      "resolved_at": null,
+      "monitor": { "name": "Production API Health", "target": "https://api.example.com/health" }
+    }
+  ]
 }`
 						}
 					]
@@ -3821,6 +3882,30 @@ ws.onclose = () => {
 						required: true
 					},
 					{
+						name: 'expectation_status_code',
+						type: 'number',
+						description: 'Optional. Default: 200.',
+						required: false
+					},
+					{
+						name: 'http_method',
+						type: 'string',
+						description: "Optional, oneof: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'HEAD'. Default: 'GET'.",
+						required: false
+					},
+					{
+						name: 'http_headers',
+						type: 'string',
+						description: 'Optional JSON-encoded string of key-value pairs (max 25 headers, max 4096 bytes). Protected against CRLF and Host header overrides.',
+						required: false
+					},
+					{
+						name: 'http_body',
+						type: 'string',
+						description: 'Optional request body payload (max 16384 bytes).',
+						required: false
+					},
+					{
 						name: 'criticality',
 						type: 'string',
 						description: "Required, oneof: 'extreme' | 'high' | 'medium' | 'low'.",
@@ -3831,6 +3916,18 @@ ws.onclose = () => {
 						type: 'array<string (uuid)>',
 						description: 'Required. Min 1, max 50 items.',
 						required: true
+					},
+					{
+						name: 'enable_ssl_domain_check',
+						type: 'boolean',
+						description: 'Optional. Default: true.',
+						required: false
+					},
+					{
+						name: 'alert_template_id',
+						type: 'string (uuid)',
+						description: 'Optional alert template UUID.',
+						required: false
 					}
 				],
 				codeExample: {
@@ -3887,9 +3984,63 @@ ws.onclose = () => {
 						required: false
 					},
 					{
+						name: 'timeout_seconds',
+						type: 'number',
+						description: 'Optional, min 1, max 30.',
+						required: false
+					},
+					{
+						name: 'expectation_status_code',
+						type: 'number',
+						description: 'Optional.',
+						required: false
+					},
+					{
+						name: 'http_method',
+						type: 'string',
+						description: "Optional, oneof: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'HEAD'.",
+						required: false
+					},
+					{
+						name: 'http_headers',
+						type: 'string',
+						description: 'Optional JSON-encoded string of custom headers (max 25 headers, max 4096 bytes).',
+						required: false
+					},
+					{
+						name: 'http_body',
+						type: 'string',
+						description: 'Optional request body payload (max 16384 bytes).',
+						required: false
+					},
+					{
 						name: 'is_active',
 						type: 'boolean',
 						description: 'Optional.',
+						required: false
+					},
+					{
+						name: 'criticality',
+						type: 'string',
+						description: "Optional, oneof: 'extreme' | 'high' | 'medium' | 'low'.",
+						required: false
+					},
+					{
+						name: 'assignees',
+						type: 'array<string (uuid)>',
+						description: 'Optional array of user UUIDs.',
+						required: false
+					},
+					{
+						name: 'enable_ssl_domain_check',
+						type: 'boolean',
+						description: 'Optional.',
+						required: false
+					},
+					{
+						name: 'alert_template_id',
+						type: 'string (uuid) | null',
+						description: 'Optional template UUID to attach, or null to detach.',
 						required: false
 					}
 				],
@@ -3962,7 +4113,20 @@ ws.onclose = () => {
 							status: '200 OK',
 							code: `{
   "status": "success",
-  "data": [ ... ]
+  "data": [
+    {
+      "id": "uuid",
+      "monitor_id": "uuid",
+      "status": "ongoing",
+      "severity": "critical",
+      "summary": "HTTP status mismatch: expected 200, got 502",
+      "triggered_rule": "consecutive_failures >= 3",
+      "response_snippet": "502 Bad Gateway - upstream connect error or disconnect/reset before headers",
+      "started_at": "2023-11-01T10:00:00Z",
+      "resolved_at": null,
+      "monitor": { "name": "Production API Health", "target": "https://api.example.com/health" }
+    }
+  ]
 }`
 						}
 					]

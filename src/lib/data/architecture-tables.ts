@@ -8,6 +8,12 @@ export const runtimeConstants = {
 	schedulerIntervalSeconds: 20,
 	workerCount: 10,
 	jobQueueSize: 1000,
+	immediateRetryDelaySeconds: 2,
+	maxResponseSnippetBytes: 512,
+	maxCustomHeaders: 25,
+	maxHeaderBytes: 4096,
+	maxBodyBytes: 16384,
+	httpMaxRedirects: 5,
 	wsPingSeconds: 54,
 	wsPongWaitSeconds: 60,
 	wsMaxMessageBytes: 512,
@@ -139,7 +145,7 @@ export const checkerMatrix: TableData = {
 	rows: [
 		[
 			'checker/http.go',
-			'Isolated http.Client with user timeout; GET request with net.Dialer.Control anti-SSRF socket guard, up to 10 redirects (re-validated per hop), measures latency, verifies status code.',
+			'Isolated http.Client with user timeout; GET, POST, PUT, PATCH, HEAD requests with net.Dialer.Control anti-SSRF socket guard, up to 5 redirects (re-validated per hop), custom headers (max 25 / 4KB, CRLF-protected), request body (max 16KB), sanitized error response snippets (max 512B for status >= 400), measures latency, verifies status code.',
 			'Websites and REST APIs'
 		],
 		[
@@ -196,7 +202,7 @@ export const rbacMatrix: TableData = {
 		],
 		[
 			'admin',
-			'Manage monitors, alert templates & rules, notification channels, status pages & maintenance, invite new users as Member only (cannot invite Admin or promote members)'
+			'Create and manage monitors, alert templates & rules, notification channels, status pages & maintenance, invite new users as Member only (cannot invite Admin or promote members)'
 		],
 		[
 			'member',
