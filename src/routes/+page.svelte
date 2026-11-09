@@ -8,6 +8,7 @@
 	import FeatureSection from '$lib/components/FeatureSection.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import HeroSection from '$lib/components/HeroSection.svelte';
+	import IncidentSimulator from '$lib/components/IncidentSimulator.svelte';
 	import Navigation from '$lib/components/Navigation.svelte';
 
 	function animatePage() {
@@ -27,6 +28,21 @@
 						ease: 'power2.out'
 					})
 			});
+
+			const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			const tilt = document.querySelector<HTMLElement>('[data-tilt]');
+			if (tilt && !reduceMotion) {
+				gsap.fromTo(
+					tilt,
+					{ rotateX: 16, scale: 0.94, transformPerspective: 1600, transformOrigin: '50% 0%' },
+					{
+						rotateX: 0,
+						scale: 1,
+						ease: 'none',
+						scrollTrigger: { trigger: tilt, start: 'top 95%', end: 'top 25%', scrub: 0.6 }
+					}
+				);
+			}
 		});
 	}
 
@@ -60,12 +76,21 @@
 		name="description"
 		content="Netra Uptime is an open-source, self-hosted uptime monitor with incident management, alerts to Slack and Discord, and public status pages. Install with one command."
 	/>
+	<meta property="og:url" content="https://netrauptime.dev/" />
 	<meta property="og:title" content="Netra Uptime | Self-hosted uptime monitoring & status pages" />
 	<meta
 		property="og:description"
 		content="Open-source uptime monitoring, incident management, and public status pages you host yourself."
 	/>
-	<meta property="og:type" content="website" />
+	<meta name="twitter:url" content="https://netrauptime.dev/" />
+	<meta
+		name="twitter:title"
+		content="Netra Uptime | Self-hosted uptime monitoring & status pages"
+	/>
+	<meta
+		name="twitter:description"
+		content="Open-source uptime monitoring, incident management, and public status pages you host yourself."
+	/>
 </svelte:head>
 
 <div class="landing min-h-screen">
@@ -73,6 +98,7 @@
 	<main class="relative">
 		<HeroSection />
 		<FeatureSection />
+		<IncidentSimulator />
 		<ArchitectureSection />
 		<FaqSection />
 	</main>

@@ -77,6 +77,18 @@
 		name="description"
 		content="System architecture and internal design of Netra Uptime: Go concurrent worker pool, alert state machine, WebSocket rooms, in-memory caching, and PostgreSQL / SQLite data retention."
 	/>
+	<meta property="og:url" content="https://netrauptime.dev/docs/architecture" />
+	<meta property="og:title" content="Netra Uptime | Architecture & Internals" />
+	<meta
+		property="og:description"
+		content="System architecture and internal design of Netra Uptime: Go concurrent worker pool, alert state machine, WebSocket rooms, in-memory caching, and PostgreSQL / SQLite data retention."
+	/>
+	<meta name="twitter:url" content="https://netrauptime.dev/docs/architecture" />
+	<meta name="twitter:title" content="Netra Uptime | Architecture & Internals" />
+	<meta
+		name="twitter:description"
+		content="System architecture and internal design of Netra Uptime: Go concurrent worker pool, alert state machine, WebSocket rooms, in-memory caching, and PostgreSQL / SQLite data retention."
+	/>
 </svelte:head>
 
 <div class="docs-fonts min-h-screen bg-[#0d0d0e] text-zinc-300">

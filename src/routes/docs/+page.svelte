@@ -80,6 +80,18 @@
 		name="description"
 		content="Documentation for Netra Uptime uptime monitoring platform. Learn how to deploy, configure, and manage your monitoring setup."
 	/>
+	<meta property="og:url" content="https://netrauptime.dev/docs" />
+	<meta property="og:title" content="Netra Uptime | Documentation" />
+	<meta
+		property="og:description"
+		content="Documentation for Netra Uptime uptime monitoring platform. Learn how to deploy, configure, and manage your monitoring setup."
+	/>
+	<meta name="twitter:url" content="https://netrauptime.dev/docs" />
+	<meta name="twitter:title" content="Netra Uptime | Documentation" />
+	<meta
+		name="twitter:description"
+		content="Documentation for Netra Uptime uptime monitoring platform. Learn how to deploy, configure, and manage your monitoring setup."
+	/>
 </svelte:head>
 
 <div class="docs-fonts min-h-screen bg-[#0d0d0e] text-zinc-300">

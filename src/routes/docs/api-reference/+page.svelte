@@ -70,6 +70,18 @@
 		name="description"
 		content="REST API reference for Netra Uptime uptime monitoring platform. Integrate monitors, incidents, and status pages programmatically."
 	/>
+	<meta property="og:url" content="https://netrauptime.dev/docs/api-reference" />
+	<meta property="og:title" content="Netra Uptime | API Reference" />
+	<meta
+		property="og:description"
+		content="REST API reference for Netra Uptime uptime monitoring platform. Integrate monitors, incidents, and status pages programmatically."
+	/>
+	<meta name="twitter:url" content="https://netrauptime.dev/docs/api-reference" />
+	<meta name="twitter:title" content="Netra Uptime | API Reference" />
+	<meta
+		name="twitter:description"
+		content="REST API reference for Netra Uptime uptime monitoring platform. Integrate monitors, incidents, and status pages programmatically."
+	/>
 </svelte:head>
 
 <div class="docs-fonts min-h-screen bg-[#0d0d0e] text-zinc-300">
