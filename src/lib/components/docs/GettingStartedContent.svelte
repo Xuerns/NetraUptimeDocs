@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AlertTriangle, Info } from 'lucide-svelte';
+	import { AlertTriangle } from 'lucide-svelte';
 	import InstallCommand, { type CommandTab } from '$lib/components/InstallCommand.svelte';
 	import { logos } from '$lib/data/landing';
 	import CodeBlock from './CodeBlock.svelte';
@@ -112,8 +112,6 @@ netra-uptime logs`;
 			Launch Netra Uptime on demand using your preferred package runner:
 		</p>
 		<InstallCommand id="gs-instant-run" variant="docs" />
-
-		
 
 		<h3 class="mt-2 text-base font-medium tracking-tight text-zinc-200">
 			Global Installation (Recommended for CLI Commands)

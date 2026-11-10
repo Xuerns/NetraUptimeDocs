@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { AlertTriangle } from 'lucide-svelte';
 	import CodeBlock from './CodeBlock.svelte';
 
 	const composeFile = `services:
@@ -20,7 +21,7 @@
       - DB_SSLMODE=disable
       - JWT_SECRET=change_me_to_a_random_secure_secret_string
       - ALLOWED_ORIGIN=http://localhost:27346
-      - PUBLIC_API_URL=/api/v1
+      - PUBLIC_API_URL=http://localhost:27346/api/v1
       - ALLOW_REGISTRATION=true
       - ALLOW_PRIVATE_NETWORK_MONITORING=false
       - MAX_MONITORS_PER_ORG=200
@@ -29,6 +30,8 @@
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - netra_uptime_net
 
   postgres:
     image: postgres:16-alpine
@@ -39,15 +42,21 @@
       POSTGRES_PASSWORD: netra_secret_change_me
       POSTGRES_DB: netra_uptime
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U netra -d netra_uptime"]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - netra_uptime_net
 
 volumes:
-  pgdata:`;
+  postgres_data:
+
+networks:
+  netra_uptime_net:
+    driver: bridge`;
 
 	const backupCommand = `docker compose exec -T postgres pg_dump -U netra -d netra_uptime > backup_$(date +%Y%m%d_%H%M%S).sql`;
 	const restoreCommand = `cat backup.sql | docker compose exec -T postgres psql -U netra -d netra_uptime`;
@@ -128,7 +137,7 @@ volumes:
 				</thead>
 				<tbody class="divide-y divide-zinc-800/60 bg-transparent">
 					<tr>
-						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">pgdata</td>
+						<td class="px-4 py-3 font-mono text-xs text-[#4edea3]">postgres_data</td>
 						<td class="px-4 py-3 font-mono text-xs text-zinc-300">/var/lib/postgresql/data</td>
 						<td class="px-4 py-3 text-sm text-zinc-400">
 							All relational tables, users, monitor configs, metrics, daily rollups, and incident
@@ -137,6 +146,32 @@ volumes:
 					</tr>
 				</tbody>
 			</table>
+		</div>
+		<div
+			class="flex items-start gap-3 rounded-lg border border-amber-900/40 bg-amber-950/20 p-4 text-xs leading-6 text-zinc-300"
+		>
+			<AlertTriangle size={18} class="mt-0.5 shrink-0 text-amber-400" />
+			<div class="flex flex-col gap-1">
+				<p class="font-semibold text-amber-300">
+					Important Note on Database Passwords &amp; Persistent Volumes
+				</p>
+				<p class="text-zinc-400">
+					PostgreSQL initializes user credentials only when creating a new data volume. If you
+					modify
+					<code class="rounded bg-zinc-800/80 px-1 py-0.5 font-mono text-zinc-200"
+						>POSTGRES_PASSWORD</code
+					>
+					or
+					<code class="rounded bg-zinc-800/80 px-1 py-0.5 font-mono text-zinc-200">DB_PASSWORD</code
+					>
+					on an existing volume, PostgreSQL retains the original password. To reset passwords on a fresh
+					instance, wipe the old volume using
+					<code class="rounded bg-zinc-800/80 px-1 py-0.5 font-mono text-zinc-200"
+						>docker compose down -v</code
+					>
+					before starting.
+				</p>
+			</div>
 		</div>
 	</section>
 
