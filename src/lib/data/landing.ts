@@ -93,7 +93,7 @@ export const faqs: FaqItem[] = [
 	{
 		question: 'How do I deploy Netra Uptime on my own server?',
 		answer:
-			'Run "npx netra-uptime start" (or pnpm dlx, yarn dlx, bunx) to generate a production-ready .env and docker-compose.yml with secure random credentials in ~/.netra-uptime and start the 2-service stack (postgres + netra-uptime with built-in in-memory caching). The CLI provides full lifecycle management: start, stop, status, logs, update, and credentials. You can also deploy Netra Uptime as a standalone single-binary with embedded SQLite (DB_DRIVER=sqlite) or clone the repository and run "docker compose up -d" manually.'
+			'Run "npx netra-uptime start" (or "npm install -g netra-uptime" for permanent terminal CLI commands) to generate a production-ready .env and docker-compose.yml with secure random credentials in ~/.netra-uptime and start the 2-service stack (postgres + netra-uptime with built-in in-memory caching). The CLI provides full lifecycle management: start, stop, status, logs, update, and credentials. You can also deploy Netra Uptime as a standalone single-binary with embedded SQLite (DB_DRIVER=sqlite) or clone the repository and run "docker compose up -d" manually.'
 	},
 	{
 		question: 'What monitoring protocols and checks are supported?',

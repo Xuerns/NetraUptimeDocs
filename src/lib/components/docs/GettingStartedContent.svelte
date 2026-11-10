@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { AlertTriangle, Info } from 'lucide-svelte';
 	import InstallCommand, { type CommandTab } from '$lib/components/InstallCommand.svelte';
 	import { logos } from '$lib/data/landing';
 	import CodeBlock from './CodeBlock.svelte';
@@ -48,7 +49,7 @@ cd server && go build -tags netgo -ldflags="-s -w" -o netra-uptime ./cmd/netra-u
 .\\scripts\\build-windows.ps1
 .\\netra-uptime.exe`;
 
-	const verifyCode = `# Check container status
+	const verifyCode = `# Check container status (requires global install or: npx netra-uptime status)
 netra-uptime status
 
 # Verify health endpoint
@@ -62,7 +63,7 @@ curl -s http://localhost:27346/healthz
 #   "timestamp": "2026-10-04T12:00:00Z"
 # }
 
-# View container logs
+# View container logs (requires global install or: npx netra-uptime logs)
 netra-uptime logs`;
 </script>
 
@@ -107,20 +108,24 @@ netra-uptime logs`;
 		<h3 class="mt-2 text-base font-medium tracking-tight text-zinc-200">
 			Instant Run (No Installation Required)
 		</h3>
+		<p class="text-sm leading-7 text-zinc-400">
+			Launch Netra Uptime on demand using your preferred package runner:
+		</p>
 		<InstallCommand id="gs-instant-run" variant="docs" />
 
+		
+
 		<h3 class="mt-2 text-base font-medium tracking-tight text-zinc-200">
-			Global Installation (Optional)
+			Global Installation (Recommended for CLI Commands)
 		</h3>
 		<p class="text-sm leading-7 text-zinc-400">
-			If you prefer having the
+			If you want the
 			<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-200"
 				>netra-uptime</code
 			>
-			command permanently available in your terminal, install it globally and run
-			<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-200"
-				>netra-uptime start</code
-			> anywhere:
+			command permanently available in your terminal to manage services without prefixing with
+			<code class="rounded bg-zinc-800/80 px-1.5 py-0.5 font-mono text-xs text-zinc-200">npx</code>,
+			install it globally:
 		</p>
 		<InstallCommand id="gs-global-install" tabs={globalInstallTabs} variant="docs" />
 
@@ -141,6 +146,32 @@ netra-uptime logs`;
 				>~/.netra-uptime</code
 			>):
 		</p>
+
+		<div
+			class="flex items-start gap-3 rounded-lg border border-amber-900/40 bg-amber-950/20 p-4 text-xs leading-6 text-zinc-300"
+		>
+			<AlertTriangle size={18} class="mt-0.5 shrink-0 text-amber-400" />
+			<div class="flex flex-col gap-1">
+				<p class="font-semibold text-amber-300">Global Installation Required for Direct Commands</p>
+				<p class="text-zinc-400">
+					The commands below assume Netra Uptime is installed globally (<code
+						class="rounded bg-zinc-800/80 px-1 py-0.5 font-mono text-zinc-200"
+						>npm install -g netra-uptime</code
+					>). If you launched using
+					<code class="rounded bg-zinc-800/80 px-1 py-0.5 font-mono text-zinc-200"
+						>npx netra-uptime start</code
+					>, prefix each command below with
+					<code class="rounded bg-zinc-800/80 px-1 py-0.5 font-mono text-zinc-200">npx</code>
+					(e.g.
+					<code class="rounded bg-zinc-800/80 px-1 py-0.5 font-mono text-zinc-200"
+						>npx netra-uptime stop</code
+					>,
+					<code class="rounded bg-zinc-800/80 px-1 py-0.5 font-mono text-zinc-200"
+						>npx netra-uptime credentials</code
+					>).
+				</p>
+			</div>
+		</div>
 		<div class="overflow-x-auto rounded-lg border border-zinc-800">
 			<table class="w-full text-left text-sm">
 				<thead>
