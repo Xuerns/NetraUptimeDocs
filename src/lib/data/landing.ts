@@ -39,12 +39,12 @@ const releaseDownloadBase = 'https://github.com/Xuerns/Netra-Uptime/releases/lat
 
 export const windowsDownloads = {
 	exe: {
-		fileName: 'netra-uptime-windows-amd64.exe',
-		url: `${releaseDownloadBase}/netra-uptime-windows-amd64.exe`
+		fileName: 'netra-uptime.exe',
+		url: `${releaseDownloadBase}/netra-uptime.exe`
 	},
 	zip: {
-		fileName: 'netra-uptime-windows-amd64.zip',
-		url: `${releaseDownloadBase}/netra-uptime-windows-amd64.zip`
+		fileName: 'netra-uptime-windows.zip',
+		url: `${releaseDownloadBase}/netra-uptime-windows.zip`
 	}
 };
 

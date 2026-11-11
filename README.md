@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://netra-uptime.com" target="_blank">
+  <a href="https://netrauptime.dev" target="_blank">
     <img src="assets/Logo.png" alt="Netra Uptime Logo" width="84" />
   </a>
   <h1 style="border:none; margin-top: 10px; margin-bottom: 6px;">Netra Uptime Documentation</h1>
@@ -12,12 +12,12 @@
   </p>
 
   <p>
-    <a href="https://netra-uptime.com"><strong>Live Website</strong></a> •
+    <a href="https://netrauptime.dev"><strong>Live Website</strong></a> •
     <a href="https://github.com/Xuerns/Netra-Uptime"><strong>Core Repository</strong></a> •
     <a href="#overview"><strong>Overview</strong></a> •
     <a href="#quick-start"><strong>Quick Start</strong></a> •
     <a href="CONTRIBUTING.md"><strong>Contributing</strong></a> •
-    <a href="https://github.com/Xuerns/NetraUptimeDocs/issues"><strong>Report Issue</strong></a>
+    <a href="https://github.com/Xuerns/Netra-Uptime/issues"><strong>Report Issue</strong></a>
   </p>
 </div>
 

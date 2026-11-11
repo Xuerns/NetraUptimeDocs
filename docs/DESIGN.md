@@ -198,6 +198,7 @@ Primary CTA: solid fill (`primary` / near-black on light contexts, or `on-surfac
 ### Status Indicators
 
 Pill chip with an 8px dot, mono label, and tokenized colors:
+
 - **Healthy (`UP`)**: Emerald green dot and matching subtle tint.
 - **Degraded (`DEGRADED` / `UNRESPONSIVE`)**: Amber warning dot and border.
 - **Down (`DOWN`)**: Rose red outage indicator.
@@ -206,6 +207,7 @@ Pill chip with an 8px dot, mono label, and tokenized colors:
 ### Response Snippet Box
 
 Diagnostic monospace container rendered on incident workspace:
+
 - Flat `bg-background` fill, 1px `border-border` rule, `font-mono text-xs text-rose-300` (Dark) / `text-rose-700` (Light), `p-3 rounded` (4px), `overflow-x-auto whitespace-pre-wrap break-all`. Displays up to 512 bytes of sanitized printable response text on HTTP >= 400 breaches.
 
 ### Panels (formerly "Glass Cards")

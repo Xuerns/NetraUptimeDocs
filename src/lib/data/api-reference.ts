@@ -988,13 +988,15 @@ export const apiGroups: ApiGroup[] = [
 					{
 						name: 'http_method',
 						type: 'string',
-						description: "Optional, oneof: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'HEAD'. Default: 'GET'.",
+						description:
+							"Optional, oneof: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'HEAD'. Default: 'GET'.",
 						required: false
 					},
 					{
 						name: 'http_headers',
 						type: 'string',
-						description: 'Optional JSON-encoded string of key-value pairs (max 25 headers, max 4096 bytes). Protected against CRLF and Host header overrides.',
+						description:
+							'Optional JSON-encoded string of key-value pairs (max 25 headers, max 4096 bytes). Protected against CRLF and Host header overrides.',
 						required: false
 					},
 					{
@@ -1321,7 +1323,8 @@ export const apiGroups: ApiGroup[] = [
 					{
 						name: 'http_headers',
 						type: 'string',
-						description: 'Optional JSON-encoded string of custom headers (max 25 headers, max 4096 bytes).',
+						description:
+							'Optional JSON-encoded string of custom headers (max 25 headers, max 4096 bytes).',
 						required: false
 					},
 					{
@@ -1386,7 +1389,7 @@ export const apiGroups: ApiGroup[] = [
     "timeout_seconds": 10,
     "expectation_status_code": 200,
     "http_method": "GET",
-    "http_headers": "{\"Accept\": \"application/json\"}",
+    "http_headers": "{\\"Accept\\": \\"application/json\\"}",
     "http_body": "",
     "status": "up",
     "is_active": true,
@@ -3890,13 +3893,15 @@ ws.onclose = () => {
 					{
 						name: 'http_method',
 						type: 'string',
-						description: "Optional, oneof: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'HEAD'. Default: 'GET'.",
+						description:
+							"Optional, oneof: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'HEAD'. Default: 'GET'.",
 						required: false
 					},
 					{
 						name: 'http_headers',
 						type: 'string',
-						description: 'Optional JSON-encoded string of key-value pairs (max 25 headers, max 4096 bytes). Protected against CRLF and Host header overrides.',
+						description:
+							'Optional JSON-encoded string of key-value pairs (max 25 headers, max 4096 bytes). Protected against CRLF and Host header overrides.',
 						required: false
 					},
 					{
@@ -4004,7 +4009,8 @@ ws.onclose = () => {
 					{
 						name: 'http_headers',
 						type: 'string',
-						description: 'Optional JSON-encoded string of custom headers (max 25 headers, max 4096 bytes).',
+						description:
+							'Optional JSON-encoded string of custom headers (max 25 headers, max 4096 bytes).',
 						required: false
 					},
 					{

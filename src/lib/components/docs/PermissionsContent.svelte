@@ -25,9 +25,10 @@
 				promote members to Admin, and invite new users with the Admin role.
 			</li>
 			<li>
-				<strong class="font-medium text-zinc-200">Admin</strong> — Operational manager. Can create,
-				configure, and update monitors, manage alert templates, notification channels, and status pages.
-				Cannot transfer organization ownership, disband the organization (Owner only), invite Admins (Owner only), promote members, or remove members.
+				<strong class="font-medium text-zinc-200">Admin</strong> — Operational manager. Can create, configure,
+				and update monitors, manage alert templates, notification channels, and status pages. Cannot transfer
+				organization ownership, disband the organization (Owner only), invite Admins (Owner only), promote
+				members, or remove members.
 			</li>
 			<li>
 				<strong class="font-medium text-zinc-200">Member</strong> — Read-only stakeholder. Can inspect
@@ -113,16 +114,24 @@
 
 		<!-- Role-Based UI Gating & Dynamic API Errors -->
 		<div class="mt-2 flex flex-col gap-3 rounded-lg border border-zinc-800 bg-[#141416] p-4">
-			<h3 class="text-sm font-semibold text-zinc-200">Role-Based UI Gating & Dynamic Error Handling</h3>
+			<h3 class="text-sm font-semibold text-zinc-200">
+				Role-Based UI Gating & Dynamic Error Handling
+			</h3>
 			<p class="text-xs leading-6 text-zinc-400">
-				The dashboard dynamically gates interactive controls based on the active user's organization role.
-				Computed guards such as <code class="rounded bg-zinc-800 px-1 py-0.5 font-mono text-zinc-300">canManage</code>
-				(true for Owner and Admin) and <code class="rounded bg-zinc-800 px-1 py-0.5 font-mono text-zinc-300">isOwner</code>
+				The dashboard dynamically gates interactive controls based on the active user's organization
+				role. Computed guards such as <code
+					class="rounded bg-zinc-800 px-1 py-0.5 font-mono text-zinc-300">canManage</code
+				>
+				(true for Owner and Admin) and
+				<code class="rounded bg-zinc-800 px-1 py-0.5 font-mono text-zinc-300">isOwner</code>
 				conditionally render mutation triggers, form submissions, and settings panes.
 			</p>
 			<p class="text-xs leading-6 text-zinc-400">
-				When API mutations are invoked, the client helper <code class="rounded bg-zinc-800 px-1 py-0.5 font-mono text-[#4edea3]">handleApiError</code>
-				captures exact server-side validation and 403 Forbidden feedback, surfacing precise rejection reasons to the user rather than generic error fallbacks.
+				When API mutations are invoked, the client helper <code
+					class="rounded bg-zinc-800 px-1 py-0.5 font-mono text-[#4edea3]">handleApiError</code
+				>
+				captures exact server-side validation and 403 Forbidden feedback, surfacing precise rejection
+				reasons to the user rather than generic error fallbacks.
 			</p>
 		</div>
 	</section>

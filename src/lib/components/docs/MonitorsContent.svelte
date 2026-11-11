@@ -167,7 +167,8 @@ Timeout:  5 seconds`;
 						<td class="px-4 py-3 font-mono text-xs text-zinc-400">string (JSON)</td>
 						<td class="px-4 py-3 text-xs text-zinc-400">max 25 headers / 4096 bytes</td>
 						<td class="px-4 py-3 text-sm text-zinc-400"
-							>JSON-encoded key-value object of custom request headers. Protected against CRLF injection and Host header overrides.</td
+							>JSON-encoded key-value object of custom request headers. Protected against CRLF
+							injection and Host header overrides.</td
 						>
 					</tr>
 					<tr>
@@ -299,25 +300,30 @@ Timeout:  5 seconds`;
 	<section id="mon-http" class="flex scroll-mt-24 flex-col gap-4">
 		<h2 class="text-xl font-semibold tracking-tight text-zinc-100">HTTP / HTTPS Monitoring</h2>
 		<p class="text-sm leading-7 text-zinc-400">
-			HTTP monitors test web applications, microservices, and REST APIs. The Go worker issues requests with
-			configurable HTTP methods (<code class="font-mono text-xs text-zinc-300">GET</code>,
+			HTTP monitors test web applications, microservices, and REST APIs. The Go worker issues
+			requests with configurable HTTP methods (<code class="font-mono text-xs text-zinc-300"
+				>GET</code
+			>,
 			<code class="font-mono text-xs text-zinc-300">POST</code>,
 			<code class="font-mono text-xs text-zinc-300">PUT</code>,
 			<code class="font-mono text-xs text-zinc-300">PATCH</code>, or
 			<code class="font-mono text-xs text-zinc-300">HEAD</code>) using the official user agent
-			<code class="font-mono text-xs text-zinc-300">User-Agent: Netra-Uptime/1.0</code>, follows up to
-			5 HTTP redirects, reads up to 4 KB of response content, and records total latency in milliseconds.
+			<code class="font-mono text-xs text-zinc-300">User-Agent: Netra-Uptime/1.0</code>, follows up
+			to 5 HTTP redirects, reads up to 4 KB of response content, and records total latency in
+			milliseconds.
 		</p>
 		<p class="text-sm leading-7 text-zinc-400">
-			Monitors support custom HTTP headers (JSON key-value map, up to 25 headers and 4 KB) protected against
-			CRLF injection and host header spoofing, as well as request payloads (up to 16 KB) for testing mutation
-			endpoints.
+			Monitors support custom HTTP headers (JSON key-value map, up to 25 headers and 4 KB) protected
+			against CRLF injection and host header spoofing, as well as request payloads (up to 16 KB) for
+			testing mutation endpoints.
 		</p>
 		<p class="text-sm leading-7 text-zinc-400">
-			When an HTTP check encounters an error or status code breach (&ge; 400), the worker automatically captures
-			a sanitized <strong class="font-medium text-zinc-200">response snippet</strong> (up to 512 bytes of printable UTF-8 text).
-			This snippet is persisted with the check result and displayed on incident records to provide instant diagnostic
-			context without storing sensitive binary blobs.
+			When an HTTP check encounters an error or status code breach (&ge; 400), the worker
+			automatically captures a sanitized <strong class="font-medium text-zinc-200"
+				>response snippet</strong
+			> (up to 512 bytes of printable UTF-8 text). This snippet is persisted with the check result and
+			displayed on incident records to provide instant diagnostic context without storing sensitive binary
+			blobs.
 		</p>
 		<p class="text-sm leading-7 text-zinc-400">
 			Checks are executed via an isolated HTTP client equipped with an anti-SSRF dialer guard. By
@@ -600,13 +606,16 @@ Timeout:  5 seconds`;
 				</p>
 			</div>
 
-			<div class="rounded-lg border border-blue-900/40 bg-[#131315] p-4 sm:col-span-2 lg:col-span-1">
+			<div
+				class="rounded-lg border border-blue-900/40 bg-[#131315] p-4 sm:col-span-2 lg:col-span-1"
+			>
 				<span class="font-mono text-xs font-semibold tracking-wider text-blue-400 uppercase"
 					>MAINTENANCE (Suppressed)</span
 				>
 				<p class="mt-2 text-xs leading-6 text-zinc-400">
-					Active during scheduled maintenance windows. Checks are recorded with status 'maintenance',
-					error alerts and incident generation are suppressed, and checks are excluded from 90-day SLA calculations.
+					Active during scheduled maintenance windows. Checks are recorded with status
+					'maintenance', error alerts and incident generation are suppressed, and checks are
+					excluded from 90-day SLA calculations.
 				</p>
 			</div>
 		</div>
@@ -615,11 +624,13 @@ Timeout:  5 seconds`;
 			Immediate Retry Mechanism (False-Positive Suppression)
 		</h3>
 		<p class="text-sm leading-7 text-zinc-400">
-			To prevent false alarms caused by fleeting network blips, the worker pool executes an automatic
-			<strong class="font-medium text-zinc-200">Immediate Retry</strong>. If the initial check fails due to a
-			transient network error, timeout, 5xx server error, or HTTP status mismatch (SSRF denials are excluded from retry),
-			the worker pauses for a 2-second sleep delay and retries the check once. Alert rules and consecutive failure
-			counters are only updated if the second attempt also fails.
+			To prevent false alarms caused by fleeting network blips, the worker pool executes an
+			automatic
+			<strong class="font-medium text-zinc-200">Immediate Retry</strong>. If the initial check fails
+			due to a transient network error, timeout, 5xx server error, or HTTP status mismatch (SSRF
+			denials are excluded from retry), the worker pauses for a 2-second sleep delay and retries the
+			check once. Alert rules and consecutive failure counters are only updated if the second
+			attempt also fails.
 		</p>
 
 		<h3 class="mt-2 text-lg font-semibold tracking-tight text-zinc-200">
@@ -627,10 +638,12 @@ Timeout:  5 seconds`;
 		</h3>
 		<p class="text-sm leading-7 text-zinc-400">
 			Netra Uptime strictly decouples availability SLA from latency degradation. A check marked as
-			<code class="font-mono text-xs text-amber-300">degraded</code> due to high response time that nonetheless
-			returned a valid HTTP status code (&lt; 500) is counted as an <strong class="font-medium text-zinc-200">up_check</strong>
-			in uptime formulas. In contrast, request timeouts (status code 0) are categorized as <strong class="font-medium text-zinc-200">down_checks</strong>.
-			Downtime duration is accurately measured from the exact timestamps between incident creation and resolution.
+			<code class="font-mono text-xs text-amber-300">degraded</code> due to high response time that
+			nonetheless returned a valid HTTP status code (&lt; 500) is counted as an
+			<strong class="font-medium text-zinc-200">up_check</strong>
+			in uptime formulas. In contrast, request timeouts (status code 0) are categorized as
+			<strong class="font-medium text-zinc-200">down_checks</strong>. Downtime duration is
+			accurately measured from the exact timestamps between incident creation and resolution.
 		</p>
 
 		<h3 class="mt-2 text-lg font-semibold tracking-tight text-zinc-200">

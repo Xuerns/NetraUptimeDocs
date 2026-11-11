@@ -24,13 +24,13 @@
 			Ten worker goroutines read from a buffered channel with a capacity of 1000 jobs. Each worker
 			applies the monitor timeout (clamped to a maximum of 30 seconds), runs the matching protocol
 			checker, measures millisecond latency, executes immediate retries for transient failures,
-			synchronizes scheduled maintenance status, evaluates alert rules, records checks, and broadcasts
-			updates over WebSocket rooms.
+			synchronizes scheduled maintenance status, evaluates alert rules, records checks, and
+			broadcasts updates over WebSocket rooms.
 		</ArchText>
 		<ArchList
 			items={[
 				'Immediate Retry (2s Delay): If an initial check fails due to a transient connection error, timeout, 5xx server error, or status mismatch (shouldRetryCheck), the worker sleeps for 2 seconds and executes a 1x immediate retry before updating rule breach counts. Intentional SSRF rejections are excluded from retry.',
-				'Maintenance Suppression: Before rule evaluation, syncAndCheckMaintenance automatically advances scheduled maintenance windows (scheduled -> in_progress -> completed). If a target is in active maintenance, check status is marked as \'maintenance\', incident creation is suppressed, and alert notifications are muted.'
+				"Maintenance Suppression: Before rule evaluation, syncAndCheckMaintenance automatically advances scheduled maintenance windows (scheduled -> in_progress -> completed). If a target is in active maintenance, check status is marked as 'maintenance', incident creation is suppressed, and alert notifications are muted."
 			]}
 		/>
 		<Callout>

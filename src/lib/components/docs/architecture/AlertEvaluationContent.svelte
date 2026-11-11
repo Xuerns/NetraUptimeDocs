@@ -13,8 +13,8 @@
 	<ArchSection id="ae-state" title="Status State Machine">
 		<ArchText>
 			After each check completes, evaluator.go and pool.go process results through a 5-state finite
-			state machine (UP, DEGRADED, UNRESPONSIVE, DOWN, and MAINTENANCE) governed by latency, HTTP status code,
-			scheduled maintenance status, and socket failure conditions.
+			state machine (UP, DEGRADED, UNRESPONSIVE, DOWN, and MAINTENANCE) governed by latency, HTTP
+			status code, scheduled maintenance status, and socket failure conditions.
 		</ArchText>
 		<MermaidDiagram definition={stateMachineDiagram.definition} label={stateMachineDiagram.label} />
 		<ArchList
@@ -23,7 +23,7 @@
 				'DEGRADED (Warning): Target responded but breached a warning rule (such as elevated latency or unexpected non-critical status code). Resets FailureCount to 0 and dispatches monitor.degraded. Note that degraded checks with valid HTTP status codes (< 500) remain counted as available (UP) in SLA calculations.',
 				'UNRESPONSIVE (Amber Warning): Target exceeded connection or read deadlines (ErrTimeout) for 3 consecutive checks. Opens a medium-severity incident and dispatches monitor.unresponsive.',
 				'DOWN (Critical Outage): Target encountered a hard socket error (connection refused, DNS failure) or breached a critical rule for RequiredBreaches consecutive checks. Dispatches monitor.down.',
-				'MAINTENANCE (Suppressed): Target is covered by an active scheduled maintenance window. Checks are marked with status \'maintenance\', alert rules are not breached, incidents are suppressed, notifications are muted, and checks are excluded from 90-day SLA calculations.'
+				"MAINTENANCE (Suppressed): Target is covered by an active scheduled maintenance window. Checks are marked with status 'maintenance', alert rules are not breached, incidents are suppressed, notifications are muted, and checks are excluded from 90-day SLA calculations."
 			]}
 		/>
 	</ArchSection>

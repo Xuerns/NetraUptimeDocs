@@ -83,10 +83,12 @@
 		<ul class="ml-5 flex list-disc flex-col gap-2 text-sm leading-7 text-zinc-400">
 			<li>
 				When active (<code class="font-mono text-xs text-zinc-200">in_progress</code>), monitor
-				checks continue in the background while suppressing incident notifications and logging checks with status <code class="font-mono text-xs text-blue-400">'maintenance'</code>.
+				checks continue in the background while suppressing incident notifications and logging
+				checks with status <code class="font-mono text-xs text-blue-400">'maintenance'</code>.
 			</li>
 			<li>
-				Planned downtime during scheduled maintenance does not reduce your SLA uptime percentage: all maintenance checks are excluded from the 90-day history bars and public JSON feeds.
+				Planned downtime during scheduled maintenance does not reduce your SLA uptime percentage:
+				all maintenance checks are excluded from the 90-day history bars and public JSON feeds.
 			</li>
 			<li>
 				The public status page displays a scheduled maintenance banner with start and end times.

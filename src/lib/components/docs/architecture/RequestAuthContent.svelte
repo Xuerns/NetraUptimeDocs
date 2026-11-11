@@ -40,10 +40,11 @@
 	<ArchSection id="req-rbac" title="Role-Based Access Control">
 		<ArchText>
 			RequireRole middleware enforces role boundaries at the handler level. Monitor creation,
-			modification, and deletion are permitted for both Owner and Admin roles (RequireRole("owner", "admin")).
-			Restricted actions reserved exclusively for the Owner role include transferring organization ownership,
-			disbanding the organization, inviting new Admins, promoting members, and expelling team members.
-			Members maintain read-only visibility across organization telemetry.
+			modification, and deletion are permitted for both Owner and Admin roles (RequireRole("owner",
+			"admin")). Restricted actions reserved exclusively for the Owner role include transferring
+			organization ownership, disbanding the organization, inviting new Admins, promoting members,
+			and expelling team members. Members maintain read-only visibility across organization
+			telemetry.
 		</ArchText>
 		<DataTable table={rbacMatrix} />
 	</ArchSection>

@@ -12,9 +12,10 @@
 		<ArchText>
 			On a status transition, Netra Uptime opens or resolves an incident, emails the person in
 			charge, and dispatches the event to every active notification channel of the organization in
-			parallel. If the target is covered by an active scheduled maintenance window, incident creation
-			is suppressed and notification channels are muted. Incidents record the triggered_rule expression,
-			sanitized error response_snippet (max 512B), and real downtime duration measured from started_at to resolved_at.
+			parallel. If the target is covered by an active scheduled maintenance window, incident
+			creation is suppressed and notification channels are muted. Incidents record the
+			triggered_rule expression, sanitized error response_snippet (max 512B), and real downtime
+			duration measured from started_at to resolved_at.
 		</ArchText>
 		<MermaidDiagram definition={incidentDiagram.definition} label={incidentDiagram.label} />
 	</ArchSection>
